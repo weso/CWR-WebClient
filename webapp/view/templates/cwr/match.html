@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}Matching{% endblock %}
+{% block page_title %}CWR processing and matching{% endblock %}
+{% block head %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='js/progressbar.js') }}"></script>
+    <script type="text/javascript">
+        //<![CDATA[
+        window.onload = function () {
+            $('#progress-bar').css({opacity: 0});
+            $('#button-next').css({opacity: 0});
+
+            $('#button-progress').click(function () {
+                $('#button-progress').attr("disabled", "disabled");
+                $('#progress-bar').css({opacity: 1});
+
+                timedIncrease = setInterval(function () {
+                    conditionedIncrease()
+                }, 500)
+            });
+        };
+        //]]>
+    </script>
+{% endblock %}
+{% block content %}
+    <div class="jumbotron">
+        <h2>Matching the file against other sources</h2>
+
+        <p>Choose the sources for the matching.</p>
+
+        <p>External enrichment sources will be applied.</p>
+
+        <p>As this is a mock, these sources won't really be used.</p>
+
+        <form action="">
+            <table>
+                <tr>
+                    <th>USO file</th>
+                    <th>Has matches?</th>
+                    <th>Use?</th>
+                </tr>
+                {% for source in sources.uso %}
+                    <tr>
+                        <td>{{ source.name }}</td>
+                        <td>
+                            {% if source.matched %}
+                                Yes
+                            {% else %}
+                                No
+                            {% endif %}
+                        </td>
+                        <td>
+                            <input type="checkbox" name="source" value={{ source.id }} checked><br>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </form>
+        <p></p>
+
+        <form action="">
+            <table>
+                <tr>
+                    <th>CWR file</th>
+                    <th>Use?</th>
+                </tr>
+                {% for source in sources.cwr %}
+                    <tr>
+                        <td>{{ source.name }}</td>
+                        <td>
+                            <input type="checkbox" name="source" value={{ source.id }} checked><br>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </form>
+
+
+    </div>
+    <a id="button-progress" class="btn btn-primary btn-lg" role="button">Use sources</a>
+    <div id="progress-bar">
+        <p>Matching</p>
+
+        <div class="progress progress-striped active">
+            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+            </div>
+        </div>
+    </div>
+    <a id="button-next" class="btn btn-primary btn-lg" role="button" href="{{ url_for('cwr_match_report') }}">Go to
+        matching reports</a>
+    <p></p>
+{% endblock %}
