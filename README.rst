@@ -69,7 +69,7 @@ The project is released under the `MIT License`_.
 
 .. _CISAC: http://www.cisac.org/
 .. _BMAT: http://www.bmat.com/
-.. _CWR Data Model API: http://www.bmat.com/
+.. _CWR Data Model API: https://github.com/weso/CWR-DataApi
 .. _WESO: http://www.weso.es/
 .. _project issues page: https://github.com/weso/CWR-WebClient/issues
 .. _project wiki: https://github.com/weso/CWR-WebClient/wiki
