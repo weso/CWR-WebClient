@@ -3,10 +3,11 @@ python:
   - "2.6"
   - "2.7"
 before_script:
+  # Making executable the deployment script
   - chmod +x ./.scripts/deploy.sh
 install:
-  - "pip install -r requirements.txt"
+  - pip install tox
 script:
-  - nosetests
+  - tox -e $(echo py$TRAVIS_PYTHON_VERSION | tr -d . | sed -e 's/pypypy/pypy/')-$REQUIREMENTS
 after_success:
   - ./.scripts/deploy.sh
