@@ -1,0 +1,43 @@
+{% extends "cwr/validation/base.html" %}
+{% block head %}
+    {{ super() }}
+    <script type="text/javascript">
+        //<![CDATA[
+        window.onload = function () {
+            current = document.getElementById("{{ current_tab }}");
+            current.setAttribute("class", "active")
+        };
+        //]]>
+    </script>
+{% endblock %}
+{% block current_pane %}
+    <p>Sender information.</p>
+    <dl>
+        <dt>Sender ID</dt>
+        <dd> {{ cwr.header.sender_id }} </dd>
+        <dt>Sender Name</dt>
+        <dd>{{ cwr.header.sender_name }}</dd>
+        <dt>Sender Type</dt>
+        <dd>{{ cwr.header.sender_type }}</dd>
+    </dl>
+    <p>File information.</p>
+    <dl>
+        <dt>Created on</dt>
+        <dd> {{ cwr.header.creation_date_time }} </dd>
+        <dt>Sent on</dt>
+        <dd> {{ cwr.header.transmission_date }} </dd>
+        <dt>EDI Standard</dt>
+        <dd> {{ cwr.header.edi_standard }} </dd>
+        <dt>Character Set</dt>
+        <dd> {{ cwr.header.character_set }} </dd>
+    </dl>
+    <p>Contents counts.</p>
+    <dl>
+        <dt>Group count</dt>
+        <dd> {{ cwr.trailer.group_count }} </dd>
+        <dt>Transaction Count</dt>
+        <dd> {{ cwr.trailer.transaction_count }} </dd>
+        <dt>Record Count</dt>
+        <dd> {{ cwr.trailer.record_count }} </dd>
+    </dl>
+{% endblock %}
