@@ -1,0 +1,27 @@
+{% extends "cwr/validation/base.html" %}
+{% import "macro/pagination.html" as pagination %}
+{% import "macro/cwr.html" as record_functions %}
+{% block head %}
+    {{ super() }}
+    <script type="text/javascript">
+        //<![CDATA[
+        window.onload = function () {
+            current = document.getElementById("{{ current_tab }}");
+            current.setAttribute("class", "active")
+        };
+        //]]>
+    </script>
+{% endblock %}
+{% block current_pane %}
+    {{ record_functions.show_group_info(group) }}
+    {{ pagination.render_pagination(paginator) }}
+    {% for transaction in transactions %}
+        <hr>
+        <p>New transaction</p>
+        {% for record in transaction %}
+            {{ record_functions.show_transaction_record(record) }}
+        {% endfor %}
+    {% endfor %}
+    {{ pagination.render_pagination(paginator) }}
+    <hr>
+{% endblock %}
