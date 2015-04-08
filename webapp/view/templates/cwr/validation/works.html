@@ -1,90 +1,91 @@
 {% extends "cwr/validation/base.html" %}
+{% import "macro/pagination.html" as pagination %}
 {% block head %}
-    {{ super() }}
-    <script type="text/javascript">
-        //<![CDATA[
-        window.onload = function () {
-            current = document.getElementById("{{ current_tab }}");
-            current.setAttribute("class", "active")
-        };
-        //]]>
-    </script>
+{{ super() }}
+<script type="text/javascript">
+    //<![CDATA[
+    window.onload = function () {
+        current = document.getElementById("{{ current_tab }}");
+        current.setAttribute("class", "active")
+    };
+    //]]>
+</script>
 {% endblock %}
 {% block current_pane %}
-    <dl>
-        <dt>Total number of works</dt>
-        <dd> {{ total_entries }} </dd>
-    </dl>
-    <hr>
-    {{ pagination.render_pagination(paginator) }}
-    {% for work in works %}
-        <hr>
-        <h2>{{ work.title }} ({{ work.id }})</h2>
-        <dl>
-            <dt>Language</dt>
-            <dd> {{ work.language }} </dd>
-            <dt>Publishers</dt>
-            <dd> {{ work.publishers|length }} </dd>
-            <dt>Writers</dt>
-            <dd> {{ work.writers|length }} </dd>
-            <dt>Artists</dt>
-            <dd> {{ work.artists|length }} </dd>
-        </dl>
-        <p></p>
-        <table>
-            <tr>
-                <th>Publisher</th>
-                <th>Controlled?</th>
-                <th>Role</th>
-                <th>Ownership</th>
-            </tr>
-            {% for publisher in work.publishers %}
-                <tr>
-                    <td>{{ publisher.name }}</td>
-                    {% if publisher.controlled == True %}
-                        <td>Yes</td>
-                    {% else %}
-                        <td>No</td>
-                    {% endif %}
-                    <td>{{ publisher.role }}</td>
-                    <td>{{ publisher.ownership * 100 }}%</td>
-                </tr>
-            {% endfor %}
-        </table>
-        <p></p>
-        <table>
-            <tr>
-                <th>Writer first name</th>
-                <th>Writer last name</th>
-                <th>Controlled?</th>
-            </tr>
-            {% for writer in work.writers %}
-                <tr>
-                    <td>{{ writer.first_name }}</td>
-                    <td>{{ writer.last_name }}</td>
-                    {% if writer.controlled == True %}
-                        <td>Yes</td>
-                    {% else %}
-                        <td>No</td>
-                    {% endif %}
-                </tr>
-            {% endfor %}
-        </table>
-        <p></p>
-        <table>
-            <tr>
-                <th>Artist first name</th>
-                <th>Artist last name</th>
-            </tr>
-            {% for artist in work.artists %}
-                <tr>
-                    <td>{{ artist.first_name }}</td>
-                    <td>{{ artist.last_name }}</td>
-                </tr>
-            {% endfor %}
-        </table>
-        <hr>
+<dl>
+    <dt>Total number of works</dt>
+    <dd> {{ total_entries }}</dd>
+</dl>
+<hr>
+{{ pagination.render_pagination(paginator) }}
+{% for work in works %}
+<hr>
+<h2>{{ work.title }} ({{ work.id }})</h2>
+<dl>
+    <dt>Language</dt>
+    <dd> {{ work.language }}</dd>
+    <dt>Publishers</dt>
+    <dd> {{ work.publishers|length }}</dd>
+    <dt>Writers</dt>
+    <dd> {{ work.writers|length }}</dd>
+    <dt>Artists</dt>
+    <dd> {{ work.artists|length }}</dd>
+</dl>
+<p></p>
+<table>
+    <tr>
+        <th>Publisher</th>
+        <th>Controlled?</th>
+        <th>Role</th>
+        <th>Ownership</th>
+    </tr>
+    {% for publisher in work.publishers %}
+    <tr>
+        <td>{{ publisher.name }}</td>
+        {% if publisher.controlled == True %}
+        <td>Yes</td>
+        {% else %}
+        <td>No</td>
+        {% endif %}
+        <td>{{ publisher.role }}</td>
+        <td>{{ publisher.ownership * 100 }}%</td>
+    </tr>
     {% endfor %}
-    {{ pagination.render_pagination(paginator) }}
-    <hr>
+</table>
+<p></p>
+<table>
+    <tr>
+        <th>Writer first name</th>
+        <th>Writer last name</th>
+        <th>Controlled?</th>
+    </tr>
+    {% for writer in work.writers %}
+    <tr>
+        <td>{{ writer.first_name }}</td>
+        <td>{{ writer.last_name }}</td>
+        {% if writer.controlled == True %}
+        <td>Yes</td>
+        {% else %}
+        <td>No</td>
+        {% endif %}
+    </tr>
+    {% endfor %}
+</table>
+<p></p>
+<table>
+    <tr>
+        <th>Artist first name</th>
+        <th>Artist last name</th>
+    </tr>
+    {% for artist in work.artists %}
+    <tr>
+        <td>{{ artist.first_name }}</td>
+        <td>{{ artist.last_name }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<hr>
+{% endfor %}
+{{ pagination.render_pagination(paginator) }}
+<hr>
 {% endblock %}
