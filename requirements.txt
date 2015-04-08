@@ -4,5 +4,5 @@ wsgiref==0.1.2
 werkzeug==0.10.1
 gunicorn==19.2.1
 whitenoise==1.0.6
-CWR-API==0.0.3
+CWR-API==0.0.5
 chardet==2.3.0

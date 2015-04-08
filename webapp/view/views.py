@@ -1,15 +1,12 @@
 # -*- encoding: utf-8 -*-
 from flask import render_template, redirect, url_for, abort, request, session
-
-import chardet
-import codecs
 import flask as f
 
 from webapp.view import app
 from webapp.config import app_conf, view_conf
 from webapp.model.pagination import Paginator
 from webapp.utils.file_manager import FileManager
-from cwr.file import Transmission
+
 
 __author__ = 'Bernardo'
 
@@ -36,6 +33,7 @@ Upload routes.
 def upload_cwr():
     return render_template('cwr/upload.html')
 
+
 @app.route('/upload/cwr', methods=['POST'])
 def upload_cwr_handler():
     # Get the name of the uploaded file
@@ -50,6 +48,7 @@ def upload_cwr_handler():
         return redirect(url_for('cwr_validation_report'))
     else:
         return redirect(url_for('upload_cwr'))
+
 
 @app.route('/uso/upload', methods=['GET'])
 def upload_uso():
@@ -134,6 +133,7 @@ def cwr_match_edit():
 CWR validation routes.
 """
 
+
 @app.route('/cwr/validation/report', methods=['GET'])
 def cwr_validation_report():
     cwr = f.cwr
@@ -149,10 +149,10 @@ def cwr_validation_report_agreements(page):
     if not cwr and page != 1:
         abort(404)
 
-    group = cwr.groups[0]
+    group = cwr.transmission.groups[0]
 
-    pos = (page-1)*PER_PAGE
-    transactions = group.transactions[pos:pos+PER_PAGE]
+    pos = (page - 1) * PER_PAGE
+    transactions = group.transactions[pos:pos + PER_PAGE]
 
     total_entries = len(group.transactions)
 
