@@ -138,7 +138,29 @@ CWR validation routes.
 def cwr_validation_report():
     cwr = f.cwr
 
-    return render_template('cwr/validation/summary.html', cwr=cwr, current_tab='summary_item')
+    return render_template('cwr/validation/summary.html', cwr=cwr, current_tab='summary_item',
+                           groups=cwr.transmission.groups)
+
+
+@app.route('/cwr/validation/report/group/<int:index>', defaults={'page': 1}, methods=['GET'])
+@app.route('/cwr/validation/report/group/<int:index>/page/<int:page>', methods=['GET'])
+def cwr_validation_report_transactions(index, page):
+    cwr = f.cwr
+
+    if not cwr and page != 1:
+        abort(404)
+
+    group = cwr.transmission.groups[index]
+
+    pos = (page - 1) * PER_PAGE
+    transactions = group.transactions[pos:pos + PER_PAGE]
+
+    total_entries = len(group.transactions)
+
+    pagination = Paginator(page, PER_PAGE, total_entries)
+
+    return render_template('cwr/validation/transactions.html', paginator=pagination, groups=cwr.transmission.groups,
+                           group=group, transactions=transactions, current_tab='agreements_item')
 
 
 @app.route('/cwr/validation/report/agreements', defaults={'page': 1}, methods=['GET'])
