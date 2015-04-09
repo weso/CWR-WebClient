@@ -41,3 +41,8 @@
 .report-sidebar {
     float: left;
 }
+
+.transaction-info {
+    border-style: solid;
+    border-width: 1px;
+}
