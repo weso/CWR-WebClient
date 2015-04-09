@@ -6,24 +6,34 @@
                 <p>Group Information</p>
                 <dl>
                     <dt>Group ID</dt>
-                    <dd> {{ group.group_header.group_id }}</dd>
+                    <dd>{{ group.group_header.group_id }}</dd>
                     <dt>Version number</dt>
-                    <dd> {{ group.group_header.version_number }}</dd>
+                    <dd>{{ group.group_header.version_number }}</dd>
                     <dt>Batch Request ID</dt>
-                    <dd> {{ group.group_header.batch_request_id }}</dd>
+                    <dd>{{ group.group_header.batch_request_id }}</dd>
                 </dl>
             </li>
             <li>
                 <p>Group Counts</p>
                 <dl>
                     <dt>Transaction Count</dt>
-                    <dd> {{ group.group_trailer.transaction_count }}</dd>
+                    <dd>{{ group.group_trailer.transaction_count }}</dd>
                     <dt>Record Count</dt>
-                    <dd> {{ group.group_trailer.record_count }}</dd>
+                    <dd>{{ group.group_trailer.record_count }}</dd>
                 </dl>
             </li>
         </ul>
     </div>
+</div>
+{% endmacro %}
+
+{% macro show_groups_list(groups) %}
+<div class="transactions-menu">
+    <ul>
+        {% for group in groups %}
+        <li>{{ group.group_header.transaction_type }}</li>
+        {% endfor %}
+    </ul>
 </div>
 {% endmacro %}
 
