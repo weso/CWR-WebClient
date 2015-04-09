@@ -15,13 +15,7 @@
 {% block current_pane %}
 {{ record_functions.show_group_info(group) }}
 {{ pagination.render_pagination(paginator) }}
-{% for transaction in transactions %}
-<hr>
-<p>New transaction</p>
-{% for record in transaction %}
-{{ record_functions.show_transaction_record(record) }}
-{% endfor %}
-{% endfor %}
+{{ record_functions.show_transactions(transactions) }}
 {{ pagination.render_pagination(paginator) }}
 <hr>
 {% endblock %}
