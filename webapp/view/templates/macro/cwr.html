@@ -32,7 +32,7 @@
     <ul>
         <li><a href="{{ url_for('cwr_validation_report') }}">Summary</a></li>
         {% for group in groups %}
-        <li><a href="{{ url_for('cwr_validation_report_transactions', index=loop.index-1) }}">{{
+        <li><a href="{{ url_for('cwr_validation_report_transactions', index=loop.index0) }}">{{
             group.group_header.transaction_type }}</a></li>
         {% endfor %}
     </ul>
