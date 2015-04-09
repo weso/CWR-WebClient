@@ -14,25 +14,13 @@
 </script>
 {% endblock %}
 {% block content %}
-<ul class="nav nav-tabs nav-justified" role="tablist">
-    <li id="summary_item"><a href="{{ url_for('cwr_validation_report') }}">Summary</a></li>
-    <li id="agreements_item"><a href="{{ url_for('cwr_validation_report_agreements') }}">Agreements</a></li>
-    <li id="new_reg_item"><a href="{{ url_for('cwr_validation_report_new_registrations') }}">New
-        registrations</a>
-    </li>
-    <li id="revisions_item"><a href="{{ url_for('cwr_validation_report_revisions') }}">Revisions</a></li>
-</ul>
 <div class="report">
     <div class="report-sidebar">
         {{ record_functions.show_groups_list(groups) }}
     </div>
     <div class="report-body">
-        <div class="tab-content">
-            <div class="tab-pane active" id={{ current_tab }}>
-                {% block current_pane %}
-                {% endblock %}
-            </div>
-        </div>
+        {% block current_pane %}
+        {% endblock %}
     </div>
 </div>
 <hr>
