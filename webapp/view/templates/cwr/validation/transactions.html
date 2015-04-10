@@ -1,6 +1,7 @@
 {% extends "cwr/validation/base.html" %}
 {% import "macro/pagination.html" as pagination %}
 {% import "macro/cwr.html" as record_functions %}
+{% import "macro/cwr_record_print.html" as record_printer %}
 {% block head %}
 {{ super() }}
 <script type="text/javascript">
@@ -15,7 +16,7 @@
 {% block current_pane %}
 {{ record_functions.show_group_info(group) }}
 {{ pagination.render_pagination(paginator) }}
-{{ record_functions.show_transactions(transactions) }}
+{{ record_printer.print_transactions(transactions) }}
 {{ pagination.render_pagination(paginator) }}
 <hr>
 {% endblock %}

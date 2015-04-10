@@ -1,0 +1,148 @@
+{% macro print_transactions(transactions) %}
+{% for transaction in transactions %}
+<hr>
+{{ print_transaction(transaction) }}
+{% endfor %}
+{% endmacro %}
+
+{% macro print_transaction(transaction) %}
+<div class="transaction-info">
+    {% for record in transaction %}
+    {{ print_transaction_record(record) }}
+    {% if loop.revindex0 > 0%}
+    <hr>
+    {% endif %}
+    {% endfor %}
+</div>
+{% endmacro %}
+
+{% macro print_transaction_record(record) %}
+<div class="transaction-record-info">
+    <dl>
+        {{ print_transaction_record_head(record) }}
+        {% if record.record_type == 'IPA' %}
+        {{ print_ipa(record) }}
+        {% endif %}
+        {% if record.record_type == 'AGR' %}
+        {{ print_agr_record(record) }}
+        {% endif %}
+        {% if record.record_type == 'TER' %}
+        {{ print_ter_record(record) }}
+        {% endif %}
+    </dl>
+</div>
+{% endmacro %}
+
+{% macro print_transaction_record_head(record) %}
+<h3>{{ record.record_type }} [{{ record.transaction_sequence_n }}:{{ record.record_sequence_n }}]</h3>
+{% endmacro %}
+
+{% macro print_ipa(record) %}
+<dt>IP Number</dt>
+<dd> {{ record.ip_n }}</dd>
+<dt>Writer Name</dt>
+<dd> {{ record.ip_writer_first_name }}</dd>
+<dt>Last Name</dt>
+<dd> {{ record.ip_last_name }}</dd>
+<dt>Agreement Role Code</dt>
+<dd> {{ record.agreement_role_code }}</dd>
+<dt>IPI Name Number</dt>
+<dd> {{ record.ipi_name_n }}</dd>
+<dt>IPI Base Number</dt>
+<dd> {{ record.ipi_base_n }}</dd>
+<dt>PR Society</dt>
+<dd> {{ record.pr_society }}</dd>
+<dt>PR Shares</dt>
+<dd> {{ record.pr_share }}</dd>
+<dt>MR Society</dt>
+<dd> {{ record.mr_society }}</dd>
+<dt>MR Shares</dt>
+<dd> {{ record.mr_share }}</dd>
+<dt>SR Society</dt>
+<dd> {{ record.sr_society }}</dd>
+<dt>SR Shares</dt>
+<dd> {{ record.sr_share }}</dd>
+{% endmacro %}
+
+{% macro print_npa_record(record) %}
+<dt>IP Number</dt>
+<dd> {{ record.ip_n }}</dd>
+<dt>Writer Name</dt>
+<dd> {{ record.ip_writer_name }}</dd>
+<dt>Name</dt>
+<dd> {{ record.ip_name }}</dd>
+<dt>Language</dt>
+<dd> {{ record.language_code }}</dd>
+{% endmacro %}
+
+{% macro print_agr_record(record) %}
+<!-- Submitter Agreement Number -->
+{% if record.submitter_agreement_n %}
+<p>Number: <strong>{{ record.submitter_agreement_n }}</strong></p>
+{% endif %}
+<!-- Society Assigned Agreement Number -->
+{% if record.society_assigned_agreement_n %}
+<p>Society number: <strong>{{ record.society_assigned_agreement_n }}</strong></p>
+{% endif %}
+<!-- International Standard Code -->
+{% if record.international_standard_code %}
+<p>International Standard Code: {{ record.international_standard_code }}</p>
+{% endif %}
+<!-- Agreement type, works and date of signature -->
+<p><strong>{{ record.agreement_type }}</strong> agreement for <strong>{{ record.number_of_works }}</strong> works</p>
+<p>
+    {% if record.agreement_end_date %}
+    From <strong>{{ record.agreement_start_date }}</strong> to <strong>{{ record.agreement_end_date }}</strong>
+    {% else %}
+    Begins on <strong>{{ record.agreement_start_date }}</strong>
+    {% endif %}
+    {% if record.date_of_signature %}
+    ,signed on <strong>{{ record.date_of_signature }}
+    {% endif %}
+</strong></p>
+<!-- Prior Royalty Status -->
+{% if record.prior_royalty_status == 'Y' %}
+<p>There is a prior royalty</p>
+{% elif record.prior_royalty_status == 'D' %}
+<p>There is a prior royalty beginning on {{ record.prior_royalty_start_date }} </p>
+{% else %}
+<p>No prior royalty</p>
+{% endif %}
+<!-- Post Term Collection Status -->
+{% if record.post_term_collection_status == 'Y' %}
+<p>There is a post term collection</p>
+{% elif record.post_term_collection_status == 'D' %}
+<p>There is a post term collection ending on {{ record.post_term_collection_end_date }} </p>
+{% else %}
+<p>No post term collection</p>
+{% endif %}
+<!-- Retention End Date -->
+{% if record.retention_end_date %}
+<p>Retention end date: {{ record.retention_end_date }}</p>
+{% endif %}
+<!-- Sales/Manufacture Clause -->
+{% if record.sales_manufacture_clause %}
+<p>Sales/Manufacture clause: {{ record.sales_manufacture_clause }}</p>
+{% endif %}
+<!-- Shares Change -->
+{% if record.shares_change %}
+<p>Shares have changed</p>
+{% else %}
+<p>Shares have not changed</p>
+{% endif %}
+<!-- Advance Given -->
+{% if record.advance_given %}
+<p>Advance has been given</p>
+{% else %}
+<p>Advance has not been given</p>
+{% endif %}
+{% endmacro %}
+
+{% macro print_ter_record(record) %}
+<p>TIS code <strong>{{ record.tis_numeric_code }}</strong></p>
+{% if record.inclusion_exclusion_indicator == 'I' %}
+<p>This territory is included</p>
+{% else %}
+<p>This territory is excluded</p>
+{% endif %}
+{% endmacro %}
