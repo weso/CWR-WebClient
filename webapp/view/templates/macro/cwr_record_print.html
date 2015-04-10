@@ -40,42 +40,98 @@
 {% endmacro %}
 
 {% macro print_ipa(record) %}
-<p>{{ record.ip_last_name }}
-    {% if record.ip_writer_first_name %}
-    , {{ record.ip_writer_first_name }}
-    {% endif %}
-    {% if record.ip_n %}
-    ({{ record.ip_n }})
-    {% endif %}
-</p>
-<p>Acting as {{ record.agreement_role_code }}</p>
-{% if record.ipi_name_n %}
-<p>IPI Name Number: {{ record.ipi_name_n }}</p>
-{% endif %}
-{% if record.ipi_name_n %}
-<p>IPI Base Number: {{ record.ipi_base_n }}</p>
-{% endif %}
-{% if record.pr_society and record.pr_share > 0 %}
-<p>Performing rights shares of {{ record.pr_share }}% for the society {{ record.pr_society }}</p>
-{% endif %}
-{% if record.mr_society and record.mr_share > 0 %}
-<p>Mechanical rights shares of {{ record.mr_share }}% for the society {{ record.mr_society }}</p>
-{% endif %}
-{% if record.sr_society and record.sr_share > 0 %}
-<p>Synchronization rights shares of {{ record.sr_share }}% for the society {{ record.sr_society }}</p>
-{% endif %}
+<div class="info">
+    <div class="head">
+        <p>{{ record.ip_last_name }}
+            {% if record.ip_writer_first_name %}
+            , {{ record.ip_writer_first_name }}
+            {% endif %}
+            {% if record.ip_n %}
+            ({{ record.ip_n }})
+            {% endif %}
+        </p>
+    </div>
+    <div class="sheet">
+        <table>
+            <tr>
+                <td>Role</td>
+                <td>{{ record.agreement_role_code }}
+                </td>
+            </tr>
+            {% if record.ipi_name_n %}
+            <tr>
+                <td>IPI Name Number</td>
+                <td>{{ record.ipi_name_n }}
+                </td>
+            </tr>
+            {% endif %}
+            {% if record.ipi_base_n %}
+            <tr>
+                <td>IPI Base Number</td>
+                <td>{{ record.ipi_base_n }}
+                </td>
+            </tr>
+            {% endif %}
+        </table>
+    </div>
+</div>
+<div class="details">
+    <table>
+        {% if record.pr_society and record.pr_share > 0 %}
+        <tr>
+            <td>Performing Rights Society</td>
+            <td>{{ record.pr_society }}
+            </td>
+        </tr>
+        <tr>
+            <td>Performing Rights Shares</td>
+            <td>{{ record.pr_share }}%
+            </td>
+        </tr>
+        {% endif %}
+        {% if record.mr_society and record.mr_share > 0 %}
+        <tr>
+            <td>Mechanical Rights Society</td>
+            <td>{{ record.mr_society }}
+            </td>
+        </tr>
+        <tr>
+            <td>Mechanical Rights Shares</td>
+            <td>{{ record.mr_share }}%
+            </td>
+        </tr>
+        {% endif %}
+        {% if record.sr_society and record.sr_share > 0 %}
+        <tr>
+            <td>Synchronization Rights Society</td>
+            <td>{{ record.sr_society }}
+            </td>
+        </tr>
+        <tr>
+            <td>Synchronization Rights Shares</td>
+            <td>{{ record.sr_share }}%
+            </td>
+        </tr>
+        {% endif %}
+    </table>
+</div>
 {% endmacro %}
 
 {% macro print_npa_record(record) %}
-<p>{{ record.ip_name }}
-    {% if record.ip_writer_name %}
-    , {{ record.ip_writer_name }}
-    {% endif %}
-    {% if record.ip_n %}
-    ({{ record.ip_n }})
-    {% endif %}
-</p>
-<p>{{ record.language_code }}</p>
+<div class="info">
+    <div class="head">
+        <p>{{ record.ip_name }}
+            {% if record.ip_writer_name %}
+            , {{ record.ip_writer_name }}
+            {% endif %}
+            {% if record.ip_n %}
+            ({{ record.ip_n }})
+            {% endif %}
+        </p>
+
+        <p>{{ record.language_code }}</p>
+    </div>
+</div>
 {% endmacro %}
 
 {% macro print_agr_record(record) %}
@@ -209,32 +265,84 @@
 {% endmacro %}
 
 {% macro print_ter_record(record) %}
-<p>TIS code <strong>{{ record.tis_numeric_code }}</strong></p>
-{% if record.inclusion_exclusion_indicator == 'I' %}
-<p>This territory is included</p>
-{% else %}
-<p>This territory is excluded</p>
-{% endif %}
+<div class="info">
+    <div class="head">
+        <p>TIS code <strong>{{ record.tis_numeric_code }}</strong></p>
+    </div>
+    <div class="sheet">
+        <table>
+            <tr>
+                <td>Included</td>
+                {% if record.inclusion_exclusion_indicator == 'I' %}
+                <td><input type="checkbox" name="included" value="included" disabled="disabled"
+                           checked="checked"></td>
+            </tr>
+            {% else %}
+            <td><input type="checkbox" name="included" value="included" disabled="disabled"></td>
+            </tr>
+            {% endif %}
+        </table>
+    </div>
+</div>
 {% endmacro %}
 
 {% macro print_ari_record(record) %}
-<p>Work {{ record.submitter_work_n }}</p>
-<p>Society {{ record.society_n }}</p>
-<p>Subject Code {{ record.subject_code }}</p>
-<p>Type of Right {{ record.type_of_right }}</p>
-{% if record.note %}
-<p>Note: {{ record.note }}</p>
+<div class="info">
+    <div class="head">
+        <p>Work {{ record.submitter_work_n }}</p>
+    </div>
+    <div class="sheet">
+        <table>
+            <tr>
+                <td>Society</td>
+                <td>
+                    {{ record.society_n }}
+                </td>
+            </tr>
+            <tr>
+                <td>Subject Code</td>
+                <td>
+                    {{ record.subject_code }}
+                </td>
+            </tr>
+            <tr>
+                <td>Type of Right</td>
+                <td>
+                    {{ record.type_of_right }}
+                </td>
+            </tr>
+        </table>
+    </div>
+    {% if record.note %}
+    <div class="body">
+        <p>Note: {{ record.note }}</p>
+    </div>
+</div>
 {% endif %}
 {% endmacro %}
 
 {% macro print_npn_record(record) %}
-<p>{{ record.publisher_name }}
-    {% if record.note %}
-    ({{ record.ip_n }})
-    {% endif %}
-</p>
-<p>Publisher Sequence Number {{ record.publisher_sequence_n }}</p>
-<p>{{ record.language_code }}</p>
+<div class="info">
+    <div class="head">
+        <p>{{ record.publisher_name }}
+            {% if record.ip_n %}
+            ({{ record.ip_n }})
+            {% endif %}
+        </p>
+
+        <p>{{ record.language_code }}</p>
+    </div>
+    <div class="sheet">
+        <table>
+            <tr>
+                <td>Publisher Sequence Number</td>
+                <td>
+                    {{ record.publisher_sequence_n }}
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
 {% endmacro %}
 
 {% macro print_ipter_record(record) %}
