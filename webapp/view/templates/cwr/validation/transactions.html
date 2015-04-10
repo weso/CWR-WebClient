@@ -13,7 +13,7 @@
     //]]>
 </script>
 {% endblock %}
-{% block current_pane %}
+{% block report_data %}
 {{ record_functions.show_group_info(group) }}
 {{ pagination.render_pagination(paginator) }}
 {{ record_printer.print_transactions(transactions) }}

@@ -24,25 +24,6 @@
     width: 20em;
 }
 
-.transactions-menu {
-    border-style: solid;
-    border-width: 1px;
-    background-color: #f0f0f0;
-}
-
-.transactions-menu > ul {
-    padding-left: 0;
-}
-
-.transactions-menu > ul > li {
-    list-style-type: none;
-}
-
 .report-sidebar {
     float: left;
-}
-
-.transaction-info {
-    border-style: solid;
-    border-width: 1px;
 }
