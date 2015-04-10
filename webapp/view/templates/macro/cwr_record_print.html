@@ -17,9 +17,11 @@
 {% endmacro %}
 
 {% macro print_transaction_record(record) %}
-<div class="transaction-record-info">
-    <dl>
+<div class="record-info">
+    <div class="header">
         {{ print_transaction_record_head(record) }}
+    </div>
+    <div class="contents">
         {% if record.record_type == 'IPA' %}
         {{ print_ipa(record) }}
         {% endif %}
@@ -29,7 +31,7 @@
         {% if record.record_type == 'TER' %}
         {{ print_ter_record(record) }}
         {% endif %}
-    </dl>
+    </div>
 </div>
 {% endmacro %}
 
@@ -39,12 +41,12 @@
 
 {% macro print_ipa(record) %}
 <p>{{ record.ip_last_name }}
-{% if record.ip_writer_first_name %}
-, {{ record.ip_writer_first_name }}
-{% endif %}
-{% if record.ip_n %}
-({{ record.ip_n }})
-{% endif %}
+    {% if record.ip_writer_first_name %}
+    , {{ record.ip_writer_first_name }}
+    {% endif %}
+    {% if record.ip_n %}
+    ({{ record.ip_n }})
+    {% endif %}
 </p>
 <p>Acting as {{ record.agreement_role_code }}</p>
 {% if record.ipi_name_n %}
@@ -66,77 +68,144 @@
 
 {% macro print_npa_record(record) %}
 <p>{{ record.ip_name }}
-{% if record.ip_writer_name %}
-, {{ record.ip_writer_name }}
-{% endif %}
-{% if record.ip_n %}
-({{ record.ip_n }})
-{% endif %}
+    {% if record.ip_writer_name %}
+    , {{ record.ip_writer_name }}
+    {% endif %}
+    {% if record.ip_n %}
+    ({{ record.ip_n }})
+    {% endif %}
 </p>
 <p>{{ record.language_code }}</p>
 {% endmacro %}
 
 {% macro print_agr_record(record) %}
-<!-- Submitter Agreement Number -->
-{% if record.submitter_agreement_n %}
-<p>Number: <strong>{{ record.submitter_agreement_n }}</strong></p>
-{% endif %}
-<!-- Society Assigned Agreement Number -->
-{% if record.society_assigned_agreement_n %}
-<p>Society number: <strong>{{ record.society_assigned_agreement_n }}</strong></p>
-{% endif %}
-<!-- International Standard Code -->
-{% if record.international_standard_code %}
-<p>International Standard Code: {{ record.international_standard_code }}</p>
-{% endif %}
-<!-- Agreement type, works and date of signature -->
-<p><strong>{{ record.agreement_type }}</strong> agreement for <strong>{{ record.number_of_works }}</strong> works</p>
-<p>
-    {% if record.agreement_end_date %}
-    From <strong>{{ record.agreement_start_date }}</strong> to <strong>{{ record.agreement_end_date }}</strong>
-    {% else %}
-    Begins on <strong>{{ record.agreement_start_date }}</strong>
+<div class="info">
+    <div class="head">
+        <p><strong>{{ record.agreement_type }}</strong> agreement for <strong>{{ record.number_of_works }}</strong>
+            works</p>
+    </div>
+    <div class="sheet">
+        <table>
+            <!-- Post Term Collection Status -->
+            {% if record.post_term_collection_status == 'Y' %}
+            <tr>
+                <td>Post Term Collection (No date given)</td>
+                <td><input type="checkbox" name="post_term_collection" value="post_term_collection" disabled="disabled">
+                </td>
+            </tr>
+            {% endif %}
+            <!-- Prior Royalty Status -->
+            {% if record.prior_royalty_status == 'Y' %}
+            <tr>
+                <td>Prior Royalty (No date given)</td>
+                <td><input type="checkbox" name="prior_royalty" value="prior_royalty" disabled="disabled"></td>
+            </tr>
+            {% endif %}
+            <!-- Sales/Manufacture Clause -->
+            {% if record.sales_manufacture_clause %}
+            <tr>
+                <td>Sales/Manufacture clause</td>
+                <td>{{ record.sales_manufacture_clause }}</td>
+            </tr>
+            {% endif %}
+            <!-- Shares Change -->
+            <tr>
+                <td>Shares change</td>
+                <td>
+                    {% if record.shares_change %}
+                    <input type="checkbox" name="shares_change" value="shares_change" disabled="disabled"
+                           checked="checked">
+                    {% else %}
+                    <input type="checkbox" name="shares_change" value="shares_change" disabled="disabled">
+                    {% endif %}
+                </td>
+            </tr>
+            <!-- Advance Given -->
+            <tr>
+                <td>Advance given</td>
+                <td>
+                    {% if record.advance_given %}
+                    <input type="checkbox" name="advance_given" value="advance_given" disabled="disabled"
+                           checked="checked">
+                    {% else %}
+                    <input type="checkbox" name="advance_given" value="advance_given" disabled="disabled">
+                    {% endif %}
+                </td>
+        </table>
+    </div>
+    <div class="body">
+        <!-- International Standard Code -->
+        {% if record.international_standard_code %}
+        <p>International Standard Code: {{ record.international_standard_code }}</p>
+        {% endif %}
+    </div>
+</div>
+<div class="details">
+    {% if record.submitter_agreement_n or record.society_assigned_agreement_n %}
+    <p>Assigned numbers:</p>
+    <table>
+        <tr>
+            <th>Assigner</th>
+            <th>Number</th>
+        </tr>
+        {% if record.submitter_agreement_n %}
+        <!-- Submitter Assigned Agreement Number -->
+        <tr>
+            <td>Submitter</td>
+            <td>{{ record.submitter_agreement_n }}</td>
+        </tr>
+        {% endif %}
+        <!-- Society Assigned Agreement Number -->
+        {% if record.society_assigned_agreement_n %}
+        <tr>
+            <td>Society</td>
+            <td>{{ record.society_assigned_agreement_n }}</td>
+        </tr>
+        {% endif %}
+    </table>
     {% endif %}
-    {% if record.date_of_signature %}
-    ,signed on <strong>{{ record.date_of_signature }}
-    {% endif %}
-</strong></p>
-<!-- Prior Royalty Status -->
-{% if record.prior_royalty_status == 'Y' %}
-<p>There is a prior royalty</p>
-{% elif record.prior_royalty_status == 'D' %}
-<p>There is a prior royalty beginning on {{ record.prior_royalty_start_date }} </p>
-{% else %}
-<p>No prior royalty</p>
-{% endif %}
-<!-- Post Term Collection Status -->
-{% if record.post_term_collection_status == 'Y' %}
-<p>There is a post term collection</p>
-{% elif record.post_term_collection_status == 'D' %}
-<p>There is a post term collection ending on {{ record.post_term_collection_end_date }} </p>
-{% else %}
-<p>No post term collection</p>
-{% endif %}
-<!-- Retention End Date -->
-{% if record.retention_end_date %}
-<p>Retention end date: {{ record.retention_end_date }}</p>
-{% endif %}
-<!-- Sales/Manufacture Clause -->
-{% if record.sales_manufacture_clause %}
-<p>Sales/Manufacture clause: {{ record.sales_manufacture_clause }}</p>
-{% endif %}
-<!-- Shares Change -->
-{% if record.shares_change %}
-<p>Shares have changed</p>
-{% else %}
-<p>Shares have not changed</p>
-{% endif %}
-<!-- Advance Given -->
-{% if record.advance_given %}
-<p>Advance has been given</p>
-{% else %}
-<p>Advance has not been given</p>
-{% endif %}
+    <p>Dates:</p>
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Date</th>
+        </tr>
+        <tr>
+            <td>Start</td>
+            <td>{{ record.agreement_start_date }}</td>
+        </tr>
+        {% if record.agreement_end_date %}
+        <tr>
+            <td>End</td>
+            <td>{{ record.agreement_end_date }}</td>
+        </tr>
+        {% endif %}
+        {% if record.date_of_signature %}
+        <tr>
+            <td>Signature</td>
+            <td>{{ record.date_of_signature }}</td>
+        </tr>
+        {% endif %}
+        {% if record.prior_royalty_status == 'D' %}
+        <tr>
+            <td>Prior Royalty Start</td>
+            <td>{{ record.prior_royalty_start_date }}</td>
+        </tr>
+        {% endif %}
+        {% if record.post_term_collection_status == 'D' %}
+        <tr>
+            <td>Post Term Collection End</td>
+            <td>{{ record.post_term_collection_end_date }}</td>
+        </tr>
+        {% endif %}
+        {% if record.retention_end_date %}
+        <tr>
+            <td>Retention End</td>
+            <td>{{ record.retention_end_date }}</td>
+        </tr>
+        {% endif %}
+    </table>
+</div>
 {% endmacro %}
 
 {% macro print_ter_record(record) %}
@@ -147,3 +216,89 @@
 <p>This territory is excluded</p>
 {% endif %}
 {% endmacro %}
+
+{% macro print_ari_record(record) %}
+<p>Work {{ record.submitter_work_n }}</p>
+<p>Society {{ record.society_n }}</p>
+<p>Subject Code {{ record.subject_code }}</p>
+<p>Type of Right {{ record.type_of_right }}</p>
+{% if record.note %}
+<p>Note: {{ record.note }}</p>
+{% endif %}
+{% endmacro %}
+
+{% macro print_npn_record(record) %}
+<p>{{ record.publisher_name }}
+    {% if record.note %}
+    ({{ record.ip_n }})
+    {% endif %}
+</p>
+<p>Publisher Sequence Number {{ record.publisher_sequence_n }}</p>
+<p>{{ record.language_code }}</p>
+{% endmacro %}
+
+{% macro print_ipter_record(record) %}
+<p>{{ record.tis_numeric_code }} for IP {{ record.ip_n }} and record {{ record.sequence_n }}</p>
+{% if record.inclusion_exclusion_indicator == 'I' %}
+<p>This territory is included</p>
+{% else %}
+<p>This territory is excluded</p>
+{% endif %}
+{% if record.pr_collection_share > 0 %}
+<p>Performing rights share: {{ record.pr_collection_share }}%</p>
+{% endif %}
+{% if record.mr_collection_share > 0 %}
+<p>Mechanical rights share: {{ record.mr_collection_share }}%</p>
+{% endif %}
+{% if record.sr_collection_share > 0 %}
+<p>Synchronization rights share: {{ record.sr_collection_share }}%</p>
+{% endif %}
+{% if record.shares_change %}
+<p>Shares have changed</p>
+{% else %}
+<p>Shares have not changed</p>
+{% endif %}
+{% endmacro %}
+
+{% macro print_pubr_record(record) %}
+{% if record.record.publisher.publisher_name %}
+<p>{{ record.publisher.publisher_name }}
+    {% if record.record.publisher.ip_n %}
+    ({{ record.publisher.ip_n }})
+</p>
+{% endif %}
+{% else %}
+<p>Number {{ record.publisher.ip_n }}</p>
+{% endif %}
+{% if record.publisher_unknown == 'Y' %}
+<p>The publisher is unknown</p>
+{% endif %}
+<p>Type of publisher: {{record.publisher_type}}</p>
+{% if record.publisher.tax_id %}
+<p>Sequence number: {{ record.publisher_sequence_n }}</p>
+{% endif %}
+{% if record.publisher.ipi_base_n %}
+<p>IPI Base: {{ record.publisher.ipi_base_n }}</p>
+{% endif %}
+{% if record.publisher.ipi_name_n %}
+<p>IPI Name: {{ record.publisher.ipi_name_n }}</p>
+{% endif %}
+{% if record.publisher.tax_id %}
+<p>Tax ID: {{ record.publisher.tax_id }}</p>
+{% endif %}
+{% endmacro %}
+<!--
+        print('Agreement Number: %s' % (record.submitter_agreement_n))
+        print('Society Agreement Number: %s' % (record.society_assigned_agreement_n))
+        print('Agreement Type: %s' % (record.agreement_type))
+        print('ISAC: %s' % (record.international_standard_code))
+        print('Special Agreements Indicator: %s' % (record.special_agreements))
+        print('First Record Refusal Indicator: %s' % (record.first_recording_refusal))
+        print('USA License: %s' % (record.usa_license))
+        print('PR Society: %s' % (record.pr_society))
+        print('PR Owner Share: %s' % (record.pr_ownership_share))
+        print('MR Society: %s' % (record.mr_society))
+        print('MR Owner Share: %s' % (record.mr_ownership_share))
+        print('SR Society: %s' % (record.sr_society))
+        print('SR Owner Share: %s' % (record.sr_ownership_share))
+        -->
