@@ -138,7 +138,7 @@ CWR validation routes.
 def cwr_validation_report():
     cwr = f.cwr
 
-    return render_template('cwr/validation/summary.html', cwr=cwr, current_tab='summary_item',
+    return render_template('cwr/report/summary.html', cwr=cwr, current_tab='summary_item',
                            groups=cwr.transmission.groups)
 
 
@@ -159,7 +159,7 @@ def cwr_validation_report_transactions(index, page):
 
     pagination = Paginator(page, PER_PAGE, total_entries)
 
-    return render_template('cwr/validation/transactions.html', paginator=pagination, groups=cwr.transmission.groups,
+    return render_template('cwr/report/transactions.html', paginator=pagination, groups=cwr.transmission.groups,
                            group=group, transactions=transactions, current_tab='agreements_item')
 
 

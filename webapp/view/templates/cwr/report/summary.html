@@ -1,4 +1,4 @@
-{% extends "cwr/validation/base.html" %}
+{% extends "cwr/report/base.html" %}
 {% import "macro/cwr.html" as record_functions %}
 {% block head %}
 {{ super() }}
@@ -11,7 +11,7 @@
     //]]>
 </script>
 {% endblock %}
-{% block current_pane %}
+{% block report_data %}
 <div class="infohead">
     <div class="infotable">
         <ul>
