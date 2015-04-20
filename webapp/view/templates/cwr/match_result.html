@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}CWR Matche{% endblock %}
+{% block page_title %}CWR processing and matching{% endblock %}
+{% block head %}
+{{ super() }}
+<script type="text/javascript">
+    //<![CDATA[
+    window.onload = function () {
+        $('#button-download').click(function () {
+            alert('This would start a download dialog for the report file')
+        });
+    };
+    //]]>
+</script>
+{% endblock %}
+{% block content %}
+<div class="jumbotron">
+    <h2>Matchmaking results</h2>
+
+    <dl>
+        <dt>Total matches</dt>
+        <dd> {{ result.pairs|length }}</dd>
+    </dl>
+
+    <p>Here the matching results would be shown in detail.</p>
+
+    <p>Matches</p>
+    <table border="1">
+        <tr>
+            <th>CWR entry</th>
+            <th>Match</th>
+            <th>Source</th>
+        </tr>
+        {% for pair in result.pairs %}
+        <tr>
+            <td>{{ pair.cwr }}</td>
+            <td>{{ pair.match }}</td>
+            <td>{{ pair.source }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</div>
+</div>
+<a id="button-download" class="btn btn-primary btn-lg" role="button">Download report</a>
+<a id="button-next" class="btn btn-primary btn-lg" role="button" href="{{ url_for('cwr_match_edit') }}">Manual
+    matchmaking</a>
+<p></p>
+{% endblock %}

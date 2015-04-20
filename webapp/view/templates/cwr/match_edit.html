@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Matching{% endblock %}
+{% block page_title %}CWR processing and matching{% endblock %}
+{% block head %}
+{{ super() }}
+<script type="text/javascript">
+    //<![CDATA[
+    function deleteRow(btn) {
+        var row = btn.parentNode.parentNode;
+        row.parentNode.removeChild(row);
+    }
+    //]]>
+</script>
+{% endblock %}
+{% block content %}
+<div class="jumbotron">
+    <h2>Matchmaking manual edition</h2>
+
+    <p>Matches</p>
+    <table id="table">
+        <tr>
+            <th>CWR entry</th>
+            <th>Match</th>
+            <th>Source</th>
+            <th>Delete</th>
+        </tr>
+        {% for pair in result.pairs %}
+        {% set rowloop = loop %}
+        <tr>
+            <td>{{ pair.cwr }}</td>
+            <td>
+                <select>
+                    {% for option in options %}
+                    {% if loop.index == rowloop.index %}
+                    <option value={{ option.value }} selected>{{ option.name }}</option>
+                    {% else %}
+                    <option value={{ option.value }}>{{ option.name }}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+            </td>
+            <td>{{ pair.source }}</td>
+            <td><input type="button" value="X" onclick="deleteRow(this)"/></td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</div>
+</div>
+<a id="button-next" class="btn btn-primary btn-lg" role="button" href="{{ url_for('cwr_match_report') }}">Back to
+    matchmaking
+    results</a>
+<p></p>
+{% endblock %}
