@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Matching{% endblock %}
+{% block page_title %}CWR processing and matching{% endblock %}
+{% block head %}
+{{ super() }}
+<script type="text/javascript">
+    //<![CDATA[
+    window.onload = function () {
+        $('#button-download').click(function () {
+            alert('This would start a download dialog for the report file')
+        });
+    };
+    //]]>
+</script>
+{% endblock %}
+{% block content %}
+<div class="report">
+    <div class="report-sidebar">
+        {{ record_functions.show_groups_list(groups) }}
+    </div>
+    <div class="report-body">
+        {% block report_data %}
+        {% endblock %}
+    </div>
+</div>
+<hr>
+<div>
+    <a id="button-download" class="btn btn-primary" role="button">Download report</a>
+    <a class="btn btn-primary" role="button" href="{{ url_for('cwr_acknowledgement_generation') }}">Generate
+        acknowledgement file</a>
+    <a class="btn btn-primary" role="button" href="{{ url_for('cwr_match') }}">Go to matches reconciliation</a>
+
+    <p></p></div>
+{% endblock %}

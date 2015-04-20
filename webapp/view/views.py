@@ -1,21 +1,22 @@
 # -*- encoding: utf-8 -*-
 from flask import render_template, redirect, url_for, abort, request, session
 
-import chardet
-import codecs
-import flask as f
-
 from webapp.view import app
 from webapp.config import app_conf, view_conf
-from webapp.model.pagination import Paginator
-from webapp.utils.file_manager import FileManager
-from cwr.file import Transmission
+from webapp.service.cwr import LocalCWRFileService
+from webapp.service.match import LocalMatchingService
+from webapp.service.pagination import DefaultPaginationService
 
-__author__ = 'Bernardo'
+
+__author__ = 'Bernardo Martínez Garrido'
+__license__ = 'MIT'
+__status__ = 'Development'
 
 PER_PAGE = view_conf.per_page
 
-fileManager = FileManager
+cwr_service = LocalCWRFileService()
+match_service = LocalMatchingService()
+pagination_service = DefaultPaginationService()
 
 """
 Basic routes.
@@ -36,20 +37,21 @@ Upload routes.
 def upload_cwr():
     return render_template('cwr/upload.html')
 
+
 @app.route('/upload/cwr', methods=['POST'])
 def upload_cwr_handler():
     # Get the name of the uploaded file
     sent_file = request.files['file']
 
     if sent_file:
-        fileManager.save_file_cwr(sent_file)
-        session['cwr_file_name'] = sent_file.filename
-        ctx = app.app_context()
-        f.cwr = fileManager.read_cwr(sent_file.filename)
+        file_id = cwr_service.save_file(sent_file)
+
+        session['cwr_file_id'] = file_id
 
         return redirect(url_for('cwr_validation_report'))
     else:
         return redirect(url_for('upload_cwr'))
+
 
 @app.route('/uso/upload', methods=['GET'])
 def upload_uso():
@@ -63,20 +65,7 @@ CWR matching routes.
 
 @app.route('/cwr/match', methods=['GET'])
 def cwr_match():
-    uso = (
-        {'id': 'USO_1', 'name': 'USO_1', 'matched': True},
-        {'id': 'USO_2', 'name': 'USO_2', 'matched': False},
-        {'id': 'USO_3', 'name': 'USO_3', 'matched': True},
-        {'id': 'USO_4', 'name': 'USO_4', 'matched': True},
-    )
-    cwr = (
-        {'id': 'CWR_1', 'name': 'CWR_1', 'matched': True},
-        {'id': 'CWR_2', 'name': 'CWR_2', 'matched': False},
-        {'id': 'CWR_3', 'name': 'CWR_3', 'matched': True},
-        {'id': 'CWR_4', 'name': 'CWR_4', 'matched': True},
-    )
-
-    sources = {'uso': uso, 'cwr': cwr}
+    sources = match_service.get_sources()
     return render_template('cwr/match.html', sources=sources)
 
 
@@ -84,16 +73,7 @@ def cwr_match():
 def cwr_match_report():
     result = {}
 
-    pairs = (
-        {'cwr': 'The Beatles', 'match': 'The Beatels', 'source': 'Music Database'},
-        {'cwr': 'The Beatles', 'match': 'Los Bitels', 'source': 'Music Database'},
-        {'cwr': 'The Beatles', 'match': 'The Beatel', 'source': 'Music Database'},
-        {'cwr': 'The Beatles', 'match': 'Beatles Lennon', 'source': 'Music Database'},
-        {'cwr': 'Shakira', 'match': 'Shikira', 'source': 'Music Database'},
-        {'cwr': 'Shakira', 'match': 'Shaquira', 'source': 'Music Database'},
-    )
-
-    result['pairs'] = pairs
+    result['pairs'] = match_service.get_match_pairs()
 
     return render_template('cwr/match_result.html', result=result)
 
@@ -107,25 +87,9 @@ def cwr_match_report_download():
 def cwr_match_edit():
     result = {}
 
-    pairs = (
-        {'cwr': 'The Beatles', 'match': 'The Beatels', 'source': 'Music Database'},
-        {'cwr': 'The Beatles', 'match': 'Los Bitels', 'source': 'Music Database'},
-        {'cwr': 'The Beatles', 'match': 'The Beatel', 'source': 'Music Database'},
-        {'cwr': 'The Beatles', 'match': 'Beatles Lennon', 'source': 'Music Database'},
-        {'cwr': 'Shakira', 'match': 'Shikira', 'source': 'Music Database'},
-        {'cwr': 'Shakira', 'match': 'Shaquira', 'source': 'Music Database'},
-    )
+    result['pairs'] = match_service.get_match_pairs()
 
-    result['pairs'] = pairs
-
-    options = (
-        {'value': 'The Beatels', 'name': 'The Beatels'},
-        {'value': 'Los Bitels', 'name': 'Los Bitels'},
-        {'value': 'The Beatel', 'name': 'The Beatel'},
-        {'value': 'Beatles Lennon', 'name': 'Beatles Lennon'},
-        {'value': 'Shikira', 'name': 'Shikira'},
-        {'value': 'Shaquira', 'name': 'Shaquira'},
-    )
+    options = match_service.get_match_options()
 
     return render_template('cwr/match_edit.html', result=result, options=options)
 
@@ -134,113 +98,30 @@ def cwr_match_edit():
 CWR validation routes.
 """
 
+
 @app.route('/cwr/validation/report', methods=['GET'])
 def cwr_validation_report():
-    cwr = f.cwr
+    cwr = cwr_service.get_data(session['cwr_file_id'])
 
-    return render_template('cwr/validation/summary.html', cwr=cwr, current_tab='summary_item')
+    return render_template('cwr/report/summary.html', cwr=cwr, current_tab='summary_item',
+                           groups=cwr.transmission.groups)
 
 
-@app.route('/cwr/validation/report/agreements', defaults={'page': 1}, methods=['GET'])
-@app.route('/cwr/validation/report/agreements/page/<int:page>', methods=['GET'])
-def cwr_validation_report_agreements(page):
-    cwr = f.cwr
+@app.route('/cwr/validation/report/group/<int:index>', defaults={'page': 1}, methods=['GET'])
+@app.route('/cwr/validation/report/group/<int:index>/page/<int:page>', methods=['GET'])
+def cwr_validation_report_transactions(index, page):
+    cwr = cwr_service.get_data(session['cwr_file_id'])
 
     if not cwr and page != 1:
         abort(404)
 
-    group = cwr.groups[0]
+    group = cwr.transmission.groups[index]
 
-    pos = (page-1)*PER_PAGE
-    transactions = group.transactions[pos:pos+PER_PAGE]
+    transactions = pagination_service.get_page_transactions(page, group)
+    pagination = pagination_service.get_transactions_paginator(page, group)
 
-    total_entries = len(group.transactions)
-
-    pagination = Paginator(page, PER_PAGE, total_entries)
-
-    return render_template('cwr/validation/agreements.html', paginator=pagination, group=group,
-                           transactions=transactions, current_tab='agreements_item')
-
-
-@app.route('/cwr/validation/report/new_regs', defaults={'page': 1}, methods=['GET'])
-@app.route('/cwr/validation/report/new_regs/page/<int:page>', methods=['GET'])
-def cwr_validation_report_new_registrations(page):
-    total_entries = 50
-
-    new_works = []
-
-    artists = []
-
-    artists.append({'first_name': 'John', 'last_name': 'Doe'})
-
-    publishers = []
-
-    publishers.append({'name': 'The Publisher', 'controlled': False, 'role': 'Original Publisher', 'ownership': 0.2})
-    publishers.append({'name': 'Another Publisher', 'controlled': True, 'role': 'Acquirer', 'ownership': 0.3})
-    publishers.append({'name': 'Third Publisher', 'controlled': False, 'role': 'Subpublisher', 'ownership': 0.5})
-
-    writers = []
-
-    writers.append({'first_name': 'John', 'last_name': 'Doe', 'controlled': False})
-    writers.append({'first_name': 'John', 'last_name': 'Smith', 'controlled': True})
-
-    new_works.append(
-        {'id': '146', 'title': 'The Musical Work', 'language': 'EN', 'publishers': publishers, 'writers': writers,
-         'artists': artists})
-    new_works.append(
-        {'id': '146', 'title': 'The Musical Work', 'language': 'EN', 'publishers': publishers, 'writers': writers,
-         'artists': artists})
-    new_works.append(
-        {'id': '146', 'title': 'The Musical Work', 'language': 'EN', 'publishers': publishers, 'writers': writers,
-         'artists': artists})
-    new_works.append(
-        {'id': '146', 'title': 'The Musical Work', 'language': 'EN', 'publishers': publishers, 'writers': writers,
-         'artists': artists})
-    new_works.append(
-        {'id': '146', 'title': 'The Musical Work', 'language': 'EN', 'publishers': publishers, 'writers': writers,
-         'artists': artists})
-    new_works.append(
-        {'id': '146', 'title': 'The Musical Work', 'language': 'EN', 'publishers': publishers, 'writers': writers,
-         'artists': artists})
-    new_works.append(
-        {'id': '146', 'title': 'The Musical Work', 'language': 'EN', 'publishers': publishers, 'writers': writers,
-         'artists': artists})
-    new_works.append(
-        {'id': '146', 'title': 'The Musical Work', 'language': 'EN', 'publishers': publishers, 'writers': writers,
-         'artists': artists})
-    new_works.append(
-        {'id': '146', 'title': 'The Musical Work', 'language': 'EN', 'publishers': publishers, 'writers': writers,
-         'artists': artists})
-    new_works.append(
-        {'id': '146', 'title': 'The Musical Work', 'language': 'EN', 'publishers': publishers, 'writers': writers,
-         'artists': artists})
-    new_works.append(
-        {'id': '146', 'title': 'The Musical Work', 'language': 'EN', 'publishers': publishers, 'writers': writers,
-         'artists': artists})
-
-    if not new_works and page != 1:
-        abort(404)
-
-    pagination = Paginator(page, PER_PAGE, total_entries)
-
-    return render_template('cwr/validation/works.html', works=new_works, total_entries=total_entries,
-                           paginator=pagination, current_tab='new_reg_item')
-
-
-@app.route('/cwr/validation/report/revisions', defaults={'page': 1}, methods=['GET'])
-@app.route('/cwr/validation/report/revisions/page/<int:page>', methods=['GET'])
-def cwr_validation_report_revisions(page):
-    total_entries = 0
-
-    revisions = []
-
-    if not revisions and page != 1:
-        abort(404)
-
-    pagination = Paginator(page, PER_PAGE, total_entries)
-
-    return render_template('cwr/validation/works.html', works=revisions, total_entries=total_entries,
-                           paginator=pagination, current_tab='revisions_item')
+    return render_template('cwr/report/transactions.html', paginator=pagination, groups=cwr.transmission.groups,
+                           group=group, transactions=transactions, current_tab='agreements_item')
 
 
 @app.route('/cwr/validation/report/download', methods=['GET'])
