@@ -1,124 +1,40 @@
 {% macro show_group_info(group) %}
-<div>
-    <p>Group Information</p>
-    <dl>
-        <dt>Group ID</dt>
-        <dd> {{ group.group_header.group_id }}</dd>
-        <dt>Version number</dt>
-        <dd> {{ group.group_header.version_number }}</dd>
-        <dt>Batch Request ID</dt>
-        <dd> {{ group.group_header.batch_request_id }}</dd>
-    </dl>
-    <p>Group Counts</p>
-    <dl>
-        <dt>Transaction Count</dt>
-        <dd> {{ group.group_trailer.transaction_count }}</dd>
-        <dt>Record Count</dt>
-        <dd> {{ group.group_trailer.record_count }}</dd>
-    </dl>
+<div class="infohead">
+    <div class="infotable">
+        <ul>
+            <li>
+                <p>Group Information</p>
+                <dl>
+                    <dt>Group ID</dt>
+                    <dd>{{ group.group_header.group_id }}</dd>
+                    <dt>Version number</dt>
+                    <dd>{{ group.group_header.version_number }}</dd>
+                    <dt>Batch Request ID</dt>
+                    <dd>{{ group.group_header.batch_request_id }}</dd>
+                </dl>
+            </li>
+            <li>
+                <p>Group Counts</p>
+                <dl>
+                    <dt>Transaction Count</dt>
+                    <dd>{{ group.group_trailer.transaction_count }}</dd>
+                    <dt>Record Count</dt>
+                    <dd>{{ group.group_trailer.record_count }}</dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
 </div>
 {% endmacro %}
 
-{% macro show_transaction_record(record) %}
-<dl>
-    {{ show_transaction_record_head(record) }}
-    {% if record.record_type == 'IPA' %}
-    {{ show_ipa(record) }}
-    {% endif %}
-    {% if record.record_type == 'AGR' %}
-    {{ show_agr_record(record) }}
-    {% endif %}
-    {% if record.record_type == 'TER' %}
-    {{ show_ter_record(record) }}
-    {% endif %}
-</dl>
-{% endmacro %}
-
-{% macro show_transaction_record_head(record) %}
-<dt>Record Type</dt>
-<dd> {{ record.record_type }}</dd>
-<dt>Transaction Sequence Number</dt>
-<dd> {{ record.transaction_sequence_n }}</dd>
-<dt>Record Sequence Number</dt>
-<dd> {{ record.record_sequence_n }}</dd>
-{% endmacro %}
-
-{% macro show_ipa(record) %}
-<dt>IP Number</dt>
-<dd> {{ record.ip_n }}</dd>
-<dt>Writer Name</dt>
-<dd> {{ record.ip_writer_first_name }}</dd>
-<dt>Last Name</dt>
-<dd> {{ record.ip_last_name }}</dd>
-<dt>Agreement Role Code</dt>
-<dd> {{ record.agreement_role_code }}</dd>
-<dt>IPI Name Number</dt>
-<dd> {{ record.ipi_name_n }}</dd>
-<dt>IPI Base Number</dt>
-<dd> {{ record.ipi_base_n }}</dd>
-<dt>PR Society</dt>
-<dd> {{ record.pr_society }}</dd>
-<dt>PR Shares</dt>
-<dd> {{ record.pr_share }}</dd>
-<dt>MR Society</dt>
-<dd> {{ record.mr_society }}</dd>
-<dt>MR Shares</dt>
-<dd> {{ record.mr_share }}</dd>
-<dt>SR Society</dt>
-<dd> {{ record.sr_society }}</dd>
-<dt>SR Shares</dt>
-<dd> {{ record.sr_share }}</dd>
-{% endmacro %}
-
-{% macro show_npa_record(record) %}
-<dt>IP Number</dt>
-<dd> {{ record.ip_n }}</dd>
-<dt>Writer Name</dt>
-<dd> {{ record.ip_writer_name }}</dd>
-<dt>Name</dt>
-<dd> {{ record.ip_name }}</dd>
-<dt>Language</dt>
-<dd> {{ record.language_code }}</dd>
-{% endmacro %}
-
-{% macro show_agr_record(record) %}
-<dt>Agreement Number</dt>
-<dd> {{ record.submitter_agreement_n }}</dd>
-<dt>Society Assigned Agreement Number</dt>
-<dd> {{ record.society_assigned_agreement_n }}</dd>
-<dt>International Standard Code</dt>
-<dd> {{ record.international_standard_code }}</dd>
-<dt>Agreement Type</dt>
-<dd> {{ record.agreement_type }}</dd>
-<dt>Start Date</dt>
-<dd> {{ record.agreement_start_date }}</dd>
-<dt>End Date</dt>
-<dd> {{ record.agreement_end_date }}</dd>
-<dt>Signature Date</dt>
-<dd> {{ record.date_of_signature }}</dd>
-<dt>Works Number</dt>
-<dd> {{ record.number_of_works }}</dd>
-<dt>Prior Royalty Status</dt>
-<dd> {{ record.prior_royalty_status }}</dd>
-<dt>Prior Royalty Start Date</dt>
-<dd> {{ record.prior_royalty_start_date }}</dd>
-<dt>Post-Term Collection Status</dt>
-<dd> {{ record.post_term_collection_status }}</dd>
-<dt>Post-Term Collection End Date</dt>
-<dd> {{ record.post_term_collection_end_date }}</dd>
-<dt>Retention End Date</dt>
-<dd> {{ record.retention_end_date }}</dd>
-<dt>Sales/Manufacture Clause</dt>
-<dd> {{ record.sales_manufacture_clause }}</dd>
-<dt>Shares Change</dt>
-<dd> {{ record.shares_change }}</dd>
-<dt>Advance Given</dt>
-<dd> {{ record.advance_given }}</dd>
-{% endmacro %}
-
-{% macro show_ter_record(record) %}
-<dt>TIS Code</dt>
-<dd> {{ record.tis_numeric_code }}</dd>
-<dt>Inclusion/Exclusion Indicator</dt>
-<dd> {{ record.inclusion_exclusion_indicator }}</dd>
+{% macro show_groups_list(groups) %}
+<div class="transactions-menu">
+    <ul>
+        <li><a href="{{ url_for('cwr_validation_report') }}">Summary</a></li>
+        {% for group in groups %}
+        <li><a href="{{ url_for('cwr_validation_report_transactions', index=loop.index0) }}">{{
+            group.group_header.transaction_type }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
 {% endmacro %}
