@@ -7,9 +7,9 @@
 
 {% macro print_active_icon(name, active) %}
 {% if active %}
-    <input type="checkbox" name={{name}} value={{name}} disabled="disabled" checked="checked">
+<input type="checkbox" name={{name}} value={{name}} disabled="disabled" checked="checked">
 {% else %}
-    <input type="checkbox" name={{name}} value={{name}} disabled="disabled">
+<input type="checkbox" name={{name}} value={{name}} disabled="disabled">
 {% endif %}
 {% endmacro %}
 
@@ -41,6 +41,21 @@
         {% endif %}
         {% if record.record_type == 'NWR' %}
         {{ print_nwr_record(record) }}
+        {% endif %}
+        {% if record.record_type == 'SPU' or record.record_type == 'SPO' %}
+        {{ print_publisher_record(record) }}
+        {% endif %}
+        {% if record.record_type == 'SPT' or record.record_type == 'SWT' %}
+        {{ print_publisher_territory_record(record) }}
+        {% endif %}
+        {% if record.record_type == 'SWR' or record.record_type == 'OWR' %}
+        {{ print_writer_record(record) }}
+        {% endif %}
+        {% if record.record_type == 'PWR' %}
+        {{ print_writer_publisher_record(record) }}
+        {% endif %}
+        {% if record.record_type == 'PER' %}
+        {{ print_performing_artist_record(record) }}
         {% endif %}
     </div>
 </div>
@@ -269,7 +284,8 @@
         <table>
             <tr>
                 <td>Included</td>
-                <td>{{print_active_icon('inclusion_exclusion_indicator',record.inclusion_exclusion_indicator == 'I')}}</td>
+                <td>{{print_active_icon('inclusion_exclusion_indicator',record.inclusion_exclusion_indicator == 'I')}}
+                </td>
             </tr>
         </table>
     </div>
@@ -341,74 +357,74 @@
         <p>Title <strong>{{ record.title }}</strong></p>
     </div>
     <div class="sheet">
-    <table>
-        {% if record.duration %}
-        <tr>
-            <td>Duration</td>
-            <td>{{ record.duration }}</td>
-        </tr>
-        {% endif %}
-        {% if record.language_code %}
-        <tr>
-            <td>Language</td>
-            <td>{{ record.language_code }}</td>
-        </tr>
-        {% endif %}
-        {% if record.copyright_date %}
-        <tr>
-            <td>Copyright Date</td>
-            <td>{{ record.copyright_date }}</td>
-        </tr>
-        {% endif %}
-        {% if record.composite_type %}
-        <tr>
-            <td>Composite Type</td>
-            <td>{{ record.composite_type }}</td>
-        </tr>
-        {% endif %}
-        {% if record.composite_component_count %}
-        <tr>
-            <td>Composite Component Count</td>
-            <td>{{ record.composite_component_count }}</td>
-        </tr>
-        {% endif %}
-        {% if record.recorded_indicator %}
-        <tr>
-            <td>Recorded Indicator</td>
-            <td>{{ record.recorded_indicator }}</td>
-        </tr>
-        {% endif %}
-        {% if record.priority_flag %}
-        <tr>
-            <td>Priority Flag</td>
-            <td>{{ record.priority_flag }}</td>
-        </tr>
-        {% endif %}
-        {% if record.exceptional_clause %}
-        <tr>
-            <td>Exceptional Clause</td>
-            <td>{{ record.exceptional_clause }}</td>
-        </tr>
-        {% endif %}
-        {% if record.grand_rights_indicator %}
-        <tr>
-            <td>Grand Rights Indicator</td>
-            <td>{{ record.grand_rights_indicator }}</td>
-        </tr>
-        {% endif %}
-        {% if record.grand_rights_indicator %}
-        <tr>
-            <td>Contact ID</td>
-            <td>{{ record.contact_id }}</td>
-        </tr>
-        {% endif %}
-        {% if record.contact_name %}
-        <tr>
-            <td>Contact Name</td>
-            <td>{{ record.contact_name }}</td>
-        </tr>
-        {% endif %}
-    </table>
+        <table>
+            {% if record.duration %}
+            <tr>
+                <td>Duration</td>
+                <td>{{ record.duration }}</td>
+            </tr>
+            {% endif %}
+            {% if record.language_code %}
+            <tr>
+                <td>Language</td>
+                <td>{{ record.language_code }}</td>
+            </tr>
+            {% endif %}
+            {% if record.copyright_date %}
+            <tr>
+                <td>Copyright Date</td>
+                <td>{{ record.copyright_date }}</td>
+            </tr>
+            {% endif %}
+            {% if record.composite_type %}
+            <tr>
+                <td>Composite Type</td>
+                <td>{{ record.composite_type }}</td>
+            </tr>
+            {% endif %}
+            {% if record.composite_component_count %}
+            <tr>
+                <td>Composite Component Count</td>
+                <td>{{ record.composite_component_count }}</td>
+            </tr>
+            {% endif %}
+            {% if record.recorded_indicator %}
+            <tr>
+                <td>Recorded Indicator</td>
+                <td>{{ record.recorded_indicator }}</td>
+            </tr>
+            {% endif %}
+            {% if record.priority_flag %}
+            <tr>
+                <td>Priority Flag</td>
+                <td>{{ record.priority_flag }}</td>
+            </tr>
+            {% endif %}
+            {% if record.exceptional_clause %}
+            <tr>
+                <td>Exceptional Clause</td>
+                <td>{{ record.exceptional_clause }}</td>
+            </tr>
+            {% endif %}
+            {% if record.grand_rights_indicator %}
+            <tr>
+                <td>Grand Rights Indicator</td>
+                <td>{{ record.grand_rights_indicator }}</td>
+            </tr>
+            {% endif %}
+            {% if record.grand_rights_indicator %}
+            <tr>
+                <td>Contact ID</td>
+                <td>{{ record.contact_id }}</td>
+            </tr>
+            {% endif %}
+            {% if record.contact_name %}
+            <tr>
+                <td>Contact Name</td>
+                <td>{{ record.contact_name }}</td>
+            </tr>
+            {% endif %}
+        </table>
     </div>
 </div>
 <div class="details">
@@ -420,20 +436,20 @@
             <th>Number</th>
         </tr>
         {% if record.submitter_work_n %}
-            <tr>
-                <td>Submitter</td>
-                <td>
-                    {{ record.submitter_work_n }}
-                </td>
-            </tr>
+        <tr>
+            <td>Submitter</td>
+            <td>
+                {{ record.submitter_work_n }}
+            </td>
+        </tr>
         {% endif %}
         {% if record.iswc %}
-            <tr>
-                <td>ISWC</td>
-                <td>
-                    {{ record.iswc }}
-                </td>
-            </tr>
+        <tr>
+            <td>ISWC</td>
+            <td>
+                {{ record.iswc }}
+            </td>
+        </tr>
         {% endif %}
     </table>
     {% endif %}
@@ -445,20 +461,20 @@
             <th>Number</th>
         </tr>
         {% if record.catalogue_number %}
-            <tr>
-                <td>Catalogue Number</td>
-                <td>
-                    {{ record.catalogue_number }}
-                </td>
-            </tr>
+        <tr>
+            <td>Catalogue Number</td>
+            <td>
+                {{ record.catalogue_number }}
+            </td>
+        </tr>
         {% endif %}
         {% if record.opus_number %}
-            <tr>
-                <td>Opus Number</td>
-                <td>
-                    {{ record.opus_number }}
-                </td>
-            </tr>
+        <tr>
+            <td>Opus Number</td>
+            <td>
+                {{ record.opus_number }}
+            </td>
+        </tr>
         {% endif %}
     </table>
     {% endif %}
@@ -471,62 +487,509 @@
             <th>Value</th>
         </tr>
         {% if record.work_type %}
-            <tr>
-                <td>CWR Work Type</td>
-                <td>
-                    {{ record.work_type }}
-                </td>
-            </tr>
+        <tr>
+            <td>CWR Work Type</td>
+            <td>
+                {{ record.work_type }}
+            </td>
+        </tr>
         {% endif %}
         {% if record.musical_work_distribution_category %}
-            <tr>
-                <td>Musical Distribution Category</td>
-                <td>
-                    {{ record.musical_work_distribution_category }}
-                </td>
-            </tr>
+        <tr>
+            <td>Musical Distribution Category</td>
+            <td>
+                {{ record.musical_work_distribution_category }}
+            </td>
+        </tr>
         {% endif %}
         {% if record.version_type %}
-            <tr>
-                <td>Version Type</td>
-                <td>
-                    {{ record.version_type }}
-                </td>
-            </tr>
+        <tr>
+            <td>Version Type</td>
+            <td>
+                {{ record.version_type }}
+            </td>
+        </tr>
         {% endif %}
         {% if record.text_music_relationship %}
-            <tr>
-                <td>Text-Music Relationship</td>
-                <td>
-                    {{ record.text_music_relationship }}
-                </td>
-            </tr>
+        <tr>
+            <td>Text-Music Relationship</td>
+            <td>
+                {{ record.text_music_relationship }}
+            </td>
+        </tr>
         {% endif %}
         {% if record.music_arrangement %}
-            <tr>
-                <td>Music Arrangement</td>
-                <td>
-                    {{ record.music_arrangement }}
-                </td>
-            </tr>
+        <tr>
+            <td>Music Arrangement</td>
+            <td>
+                {{ record.music_arrangement }}
+            </td>
+        </tr>
         {% endif %}
         {% if record.lyric_adaptation %}
-            <tr>
-                <td>Lyric Adaptation</td>
-                <td>
-                    {{ record.lyric_adaptation }}
-                </td>
-            </tr>
+        <tr>
+            <td>Lyric Adaptation</td>
+            <td>
+                {{ record.lyric_adaptation }}
+            </td>
+        </tr>
         {% endif %}
         {% if record.excerpt_type %}
-            <tr>
-                <td>Excerpt Type</td>
-                <td>
-                    {{ record.excerpt_type }}
-                </td>
-            </tr>
+        <tr>
+            <td>Excerpt Type</td>
+            <td>
+                {{ record.excerpt_type }}
+            </td>
+        </tr>
         {% endif %}
     </table>
     {% endif %}
+</div>
+{% endmacro %}
+
+{% macro print_publisher_record(record) %}
+<div class="info">
+    <div class="head">
+        <p>
+            {% if record.publisher.publisher_name %}
+            {{ record.publisher.publisher_name }}
+            {% endif %}
+            {% if record.publisher.ip_n %}
+            ({{ record.publisher.ip_n }})
+            {% endif %}
+        </p>
+
+        <p>
+            {% if record.publisher_unknown %}
+            Publisher unknown
+            {% endif %}
+        </p>
+    </div>
+    <div class="sheet">
+        <table>
+            {% if record.publisher.ipi_name_n %}
+            <tr>
+                <td>IPI Name Number</td>
+                <td>{{ record.publisher.ipi_name_n }}
+                </td>
+            </tr>
+            {% endif %}
+            {% if record.publisher.ipi_base_n %}
+            <tr>
+                <td>IPI Base Number</td>
+                <td>{{ record.publisher.ipi_base_n }}
+                </td>
+            </tr>
+            {% endif %}
+            {% if record.publisher.tax_id %}
+            <tr>
+                <td>Tax ID</td>
+                <td>{{ record.publisher.tax_id }}
+                </td>
+            </tr>
+            {% endif %}
+            {% if record.publisher_sequence_n %}
+            <tr>
+                <td>Sequence Number</td>
+                <td>{{ record.publisher_sequence_n }}
+                </td>
+            </tr>
+            {% endif %}
+            {% if record.publisher_type %}
+            <tr>
+                <td>Publisher Type</td>
+                <td>{{ record.publisher_type }}
+                </td>
+            </tr>
+            {% endif %}
+            {% if record.submitter_agreement_n %}
+            <tr>
+                <td>Agreement Number</td>
+                <td>{{ record.submitter_agreement_n }}
+                </td>
+            </tr>
+            {% endif %}
+            {% if record.society_assigned_agreement_n %}
+            <tr>
+                <td>Society Agreement Number</td>
+                <td>{{ record.society_assigned_agreement_n }}
+                </td>
+            </tr>
+            {% endif %}
+            {% if record.agreement_type %}
+            <tr>
+                <td>Agreement Type</td>
+                <td>{{ record.agreement_type }}
+                </td>
+            </tr>
+            {% endif %}
+            {% if record.international_standard_code %}
+            <tr>
+                <td>ISAC</td>
+                <td>{{ record.international_standard_code }}
+                </td>
+            </tr>
+            {% endif %}
+            {% if record.special_agreements %}
+            <tr>
+                <td>Special Agreements Indicator</td>
+                <td>{{ record.special_agreements }}
+                </td>
+            </tr>
+            {% endif %}
+            {% if record.first_recording_refusal %}
+            <tr>
+                <td>First Record Refusal Indicator</td>
+                <td>{{ record.first_recording_refusal }}
+                </td>
+            </tr>
+            {% endif %}
+            {% if record.usa_license %}
+            <tr>
+                <td>USA License</td>
+                <td>{{ record.usa_license }}
+                </td>
+            </tr>
+            {% endif %}
+        </table>
+    </div>
+</div>
+<div class="details">
+    <table>
+        {% if record.pr_society and record.pr_ownership_share > 0 %}
+        <tr>
+            <td>Performing Rights Society</td>
+            <td>{{ record.pr_society }}
+            </td>
+        </tr>
+        <tr>
+            <td>Performing Rights Shares</td>
+            <td>{{ record.pr_ownership_share }}%
+            </td>
+        </tr>
+        {% endif %}
+        {% if record.mr_society and record.mr_ownership_share > 0 %}
+        <tr>
+            <td>Mechanical Rights Society</td>
+            <td>{{ record.mr_society }}
+            </td>
+        </tr>
+        <tr>
+            <td>Mechanical Rights Shares</td>
+            <td>{{ record.mr_ownership_share }}%
+            </td>
+        </tr>
+        {% endif %}
+        {% if record.sr_society and record.sr_ownership_share > 0 %}
+        <tr>
+            <td>Synchronization Rights Society</td>
+            <td>{{ record.sr_society }}
+            </td>
+        </tr>
+        <tr>
+            <td>Synchronization Rights Shares</td>
+            <td>{{ record.sr_ownership_share }}%
+            </td>
+        </tr>
+        {% endif %}
+    </table>
+</div>
+{% endmacro %}
+
+{% macro print_publisher_territory_record(record) %}
+<div class="info">
+    <div class="head">
+        <p>
+            {% if record.ip_n %}
+            Interested Party Number:
+            {{ record.ip_n }}
+            {% endif %}
+        </p>
+    </div>
+    <div class="sheet">
+        <table>
+            {% if record.inclusion_exclusion_indicator %}
+            <tr>
+                <td>Inclusion/Exclusion Indicator</td>
+                <td>{{ record.inclusion_exclusion_indicator }}
+                </td>
+            </tr>
+            {% endif %}
+            {% if record.tis_numeric_code %}
+            <tr>
+                <td>TIS</td>
+                <td>{{ record.tis_numeric_code }}
+                </td>
+            </tr>
+            {% endif %}
+            {% if record.sequence_n %}
+            <tr>
+                <td>Sequence Number</td>
+                <td>{{ record.sequence_n }}
+                </td>
+            </tr>
+            {% endif %}
+            {% if record.shares_change %}
+            <tr>
+                <td>Shares Change</td>
+                <td>{{ record.shares_change }}
+                </td>
+            </tr>
+            {% endif %}
+        </table>
+    </div>
+</div>
+<div class="details">
+    <table>
+        {% if record.pr_society and record.pr_collection_share > 0 %}
+        <tr>
+            <td>Performing Rights Society</td>
+            <td>{{ record.pr_society }}
+            </td>
+        </tr>
+        <tr>
+            <td>Performing Rights Shares</td>
+            <td>{{ record.pr_collection_share }}%
+            </td>
+        </tr>
+        {% endif %}
+        {% if record.mr_society and record.mr_collection_share > 0 %}
+        <tr>
+            <td>Mechanical Rights Society</td>
+            <td>{{ record.mr_society }}
+            </td>
+        </tr>
+        <tr>
+            <td>Mechanical Rights Shares</td>
+            <td>{{ record.mr_collection_share }}%
+            </td>
+        </tr>
+        {% endif %}
+        {% if record.sr_society and record.sr_collection_share > 0 %}
+        <tr>
+            <td>Synchronization Rights Society</td>
+            <td>{{ record.sr_society }}
+            </td>
+        </tr>
+        <tr>
+            <td>Synchronization Rights Shares</td>
+            <td>{{ record.sr_collection_share }}%
+            </td>
+        </tr>
+        {% endif %}
+    </table>
+</div>
+{% endmacro %}
+
+{% macro print_writer_record(record) %}
+<div class="info">
+    <div class="head">
+        <p>
+            {% if record.writer.writer_first_name %}
+            {{ record.writer.writer_first_name }}
+            {% endif %}
+            {% if record.writer.writer_last_name %}
+            , {{ record.writer.writer_last_name }}
+            {% endif %}
+            {% if record.writer.ip_n %}
+            ({{ record.writer.ip_n }})
+            {% endif %}
+        </p>
+
+        <p>
+            {% if record.writer.personal_number %}
+            Personal number:
+            ({{ record.writer.personal_number }})
+            {% endif %}
+        </p>
+
+        <p>
+            {% if record.writer_unknown %}
+            Writer unknown
+            {% endif %}
+        </p>
+    </div>
+    <div class="sheet">
+        <table>
+            {% if record.writer.ipi_name_n %}
+            <tr>
+                <td>IPI Name Number</td>
+                <td>{{ record.writer.ipi_name_n }}
+                </td>
+            </tr>
+            {% endif %}
+            {% if record.writer.ipi_base_n %}
+            <tr>
+                <td>IPI Base Number</td>
+                <td>{{ record.writer.ipi_base_n }}
+                </td>
+            </tr>
+            {% endif %}
+            {% if record.writer.tax_id %}
+            <tr>
+                <td>Tax ID</td>
+                <td>{{ record.writer.tax_id }}
+                </td>
+            </tr>
+            {% endif %}
+            {% if record.writer_designation %}
+            <tr>
+                <td>Writer Designation Code</td>
+                <td>{{ record.writer_designation }}
+                </td>
+            </tr>
+            {% endif %}
+            {% if record.work_for_hire %}
+            <tr>
+                <td>Work For Hire Indicator</td>
+                <td>{{ record.work_for_hire }}
+                </td>
+            </tr>
+            {% endif %}
+            {% if record.reversionary %}
+            <tr>
+                <td>Reversionary Indicator</td>
+                <td>{{ record.reversionary }}
+                </td>
+            </tr>
+            {% endif %}
+            {% if record.first_recording_refusal %}
+            <tr>
+                <td>First Record Refusal Indicator</td>
+                <td>{{ record.first_recording_refusal }}
+                </td>
+            </tr>
+            {% endif %}
+            {% if record.usa_license %}
+            <tr>
+                <td>USA License</td>
+                <td>{{ record.usa_license }}
+                </td>
+            </tr>
+            {% endif %}
+        </table>
+    </div>
+</div>
+<div class="details">
+    <table>
+        {% if record.pr_society and record.pr_ownership_share > 0 %}
+        <tr>
+            <td>Performing Rights Society</td>
+            <td>{{ record.pr_society }}
+            </td>
+        </tr>
+        <tr>
+            <td>Performing Rights Shares</td>
+            <td>{{ record.pr_ownership_share }}%
+            </td>
+        </tr>
+        {% endif %}
+        {% if record.mr_society and record.mr_ownership_share > 0 %}
+        <tr>
+            <td>Mechanical Rights Society</td>
+            <td>{{ record.mr_society }}
+            </td>
+        </tr>
+        <tr>
+            <td>Mechanical Rights Shares</td>
+            <td>{{ record.mr_ownership_share }}%
+            </td>
+        </tr>
+        {% endif %}
+        {% if record.sr_society and record.sr_ownership_share > 0 %}
+        <tr>
+            <td>Synchronization Rights Society</td>
+            <td>{{ record.sr_society }}
+            </td>
+        </tr>
+        <tr>
+            <td>Synchronization Rights Shares</td>
+            <td>{{ record.sr_ownership_share }}%
+            </td>
+        </tr>
+        {% endif %}
+    </table>
+</div>
+{% endmacro %}
+
+{% macro print_writer_publisher_record(record) %}
+<div class="info">
+    <div class="head">
+        <p>
+            {% if record.publisher_ip_n %}
+            Publisher IP Number:
+            {{ record.publisher_ip_n }}
+            {% endif %}
+        </p>
+
+        <p>
+            {% if record.writer_ip_n %}
+            Writer IP Number:
+            {{ record.writer_ip_n }}
+            {% endif %}
+        </p>
+    </div>
+    <div class="sheet">
+        <table>
+            {% if record.inclusion_exclusion_indicator %}
+            <tr>
+                <td>Inclusion/Exclusion Indicator</td>
+                <td>{{ record.inclusion_exclusion_indicator }}
+                </td>
+            </tr>
+            {% endif %}
+        </table>
+    </div>
+</div>
+<div class="details">
+    <table>
+        {% if record.submitter_agreement_n %}
+        <tr>
+            <td>Submitter Agreement Number</td>
+            <td>{{ record.submitter_agreement_n }}
+            </td>
+        </tr>
+        {% endif %}
+        {% if record.society_assigned_agreement_n %}
+        <tr>
+            <td>Society-Assigned Agreement Number</td>
+            <td>{{ record.society_assigned_agreement_n }}
+            </td>
+        </tr>
+        {% endif %}
+    </table>
+</div>
+{% endmacro %}
+
+{% macro print_performing_artist_record(record) %}
+<div class="info">
+    <div class="head">
+        <p>
+            {% if record.performing_artist_first_name %}
+            {{ record.performing_artist_first_name }},
+            {% endif %}
+            {% if record.performing_artist_last_name %}
+            {{ record.performing_artist_last_name }}
+            {% endif %}
+        </p>
+    </div>
+    <div class="sheet">
+        <table>
+            {% if record.performing_artist_ipi_name_n %}
+            <tr>
+                <td>IPI Name</td>
+                <td>{{ record.performing_artist_ipi_name_n }}
+                </td>
+            </tr>
+            {% endif %}
+            {% if record.performing_artist_ipi_base_n %}
+            <tr>
+                <td>IPI Base</td>
+                <td>{{ record.performing_artist_ipi_base_n }}
+                </td>
+            </tr>
+            {% endif %}
+        </table>
+    </div>
 </div>
 {% endmacro %}
