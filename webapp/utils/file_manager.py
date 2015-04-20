@@ -3,12 +3,11 @@ import os
 import codecs
 
 from werkzeug.utils import secure_filename
+from cwr.parser.file import CWRFileDecoder
+import chardet
 
 from webapp.uploads import __uploads__
 
-from cwr.grammar import file as rule_file
-
-import chardet
 
 """
 Offers classes to handle the access to files in the project paths.
@@ -46,8 +45,9 @@ class FileManager(object):
 
     @staticmethod
     def read_cwr(filename):
+        decoder = CWRFileDecoder()
         file_path = os.path.join(__uploads__.path(), filename)
-        return rule_file.cwr_transmission.parseString(FileManager._read(file_path))[0]
+        return decoder.decode(file_path)
 
     @staticmethod
     def _read(path):
