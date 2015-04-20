@@ -1,6 +1,7 @@
-{% extends "cwr/validation/base.html" %}
+{% extends "cwr/report/base.html" %}
 {% import "macro/pagination.html" as pagination %}
 {% import "macro/cwr.html" as record_functions %}
+{% import "macro/cwr_record_print.html" as record_printer %}
 {% block head %}
 {{ super() }}
 <script type="text/javascript">
@@ -12,16 +13,10 @@
     //]]>
 </script>
 {% endblock %}
-{% block current_pane %}
+{% block report_data %}
 {{ record_functions.show_group_info(group) }}
 {{ pagination.render_pagination(paginator) }}
-{% for transaction in transactions %}
-<hr>
-<p>New transaction</p>
-{% for record in transaction %}
-{{ record_functions.show_transaction_record(record) }}
-{% endfor %}
-{% endfor %}
+{{ record_printer.print_transactions(transactions) }}
 {{ pagination.render_pagination(paginator) }}
 <hr>
 {% endblock %}

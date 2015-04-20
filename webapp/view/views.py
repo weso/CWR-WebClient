@@ -138,18 +138,19 @@ CWR validation routes.
 def cwr_validation_report():
     cwr = f.cwr
 
-    return render_template('cwr/validation/summary.html', cwr=cwr, current_tab='summary_item')
+    return render_template('cwr/report/summary.html', cwr=cwr, current_tab='summary_item',
+                           groups=cwr.transmission.groups)
 
 
-@app.route('/cwr/validation/report/agreements', defaults={'page': 1}, methods=['GET'])
-@app.route('/cwr/validation/report/agreements/page/<int:page>', methods=['GET'])
-def cwr_validation_report_agreements(page):
+@app.route('/cwr/validation/report/group/<int:index>', defaults={'page': 1}, methods=['GET'])
+@app.route('/cwr/validation/report/group/<int:index>/page/<int:page>', methods=['GET'])
+def cwr_validation_report_transactions(index, page):
     cwr = f.cwr
 
     if not cwr and page != 1:
         abort(404)
 
-    group = cwr.transmission.groups[0]
+    group = cwr.transmission.groups[index]
 
     pos = (page - 1) * PER_PAGE
     transactions = group.transactions[pos:pos + PER_PAGE]
@@ -158,89 +159,8 @@ def cwr_validation_report_agreements(page):
 
     pagination = Paginator(page, PER_PAGE, total_entries)
 
-    return render_template('cwr/validation/agreements.html', paginator=pagination, group=group,
-                           transactions=transactions, current_tab='agreements_item')
-
-
-@app.route('/cwr/validation/report/new_regs', defaults={'page': 1}, methods=['GET'])
-@app.route('/cwr/validation/report/new_regs/page/<int:page>', methods=['GET'])
-def cwr_validation_report_new_registrations(page):
-    total_entries = 50
-
-    new_works = []
-
-    artists = []
-
-    artists.append({'first_name': 'John', 'last_name': 'Doe'})
-
-    publishers = []
-
-    publishers.append({'name': 'The Publisher', 'controlled': False, 'role': 'Original Publisher', 'ownership': 0.2})
-    publishers.append({'name': 'Another Publisher', 'controlled': True, 'role': 'Acquirer', 'ownership': 0.3})
-    publishers.append({'name': 'Third Publisher', 'controlled': False, 'role': 'Subpublisher', 'ownership': 0.5})
-
-    writers = []
-
-    writers.append({'first_name': 'John', 'last_name': 'Doe', 'controlled': False})
-    writers.append({'first_name': 'John', 'last_name': 'Smith', 'controlled': True})
-
-    new_works.append(
-        {'id': '146', 'title': 'The Musical Work', 'language': 'EN', 'publishers': publishers, 'writers': writers,
-         'artists': artists})
-    new_works.append(
-        {'id': '146', 'title': 'The Musical Work', 'language': 'EN', 'publishers': publishers, 'writers': writers,
-         'artists': artists})
-    new_works.append(
-        {'id': '146', 'title': 'The Musical Work', 'language': 'EN', 'publishers': publishers, 'writers': writers,
-         'artists': artists})
-    new_works.append(
-        {'id': '146', 'title': 'The Musical Work', 'language': 'EN', 'publishers': publishers, 'writers': writers,
-         'artists': artists})
-    new_works.append(
-        {'id': '146', 'title': 'The Musical Work', 'language': 'EN', 'publishers': publishers, 'writers': writers,
-         'artists': artists})
-    new_works.append(
-        {'id': '146', 'title': 'The Musical Work', 'language': 'EN', 'publishers': publishers, 'writers': writers,
-         'artists': artists})
-    new_works.append(
-        {'id': '146', 'title': 'The Musical Work', 'language': 'EN', 'publishers': publishers, 'writers': writers,
-         'artists': artists})
-    new_works.append(
-        {'id': '146', 'title': 'The Musical Work', 'language': 'EN', 'publishers': publishers, 'writers': writers,
-         'artists': artists})
-    new_works.append(
-        {'id': '146', 'title': 'The Musical Work', 'language': 'EN', 'publishers': publishers, 'writers': writers,
-         'artists': artists})
-    new_works.append(
-        {'id': '146', 'title': 'The Musical Work', 'language': 'EN', 'publishers': publishers, 'writers': writers,
-         'artists': artists})
-    new_works.append(
-        {'id': '146', 'title': 'The Musical Work', 'language': 'EN', 'publishers': publishers, 'writers': writers,
-         'artists': artists})
-
-    if not new_works and page != 1:
-        abort(404)
-
-    pagination = Paginator(page, PER_PAGE, total_entries)
-
-    return render_template('cwr/validation/works.html', works=new_works, total_entries=total_entries,
-                           paginator=pagination, current_tab='new_reg_item')
-
-
-@app.route('/cwr/validation/report/revisions', defaults={'page': 1}, methods=['GET'])
-@app.route('/cwr/validation/report/revisions/page/<int:page>', methods=['GET'])
-def cwr_validation_report_revisions(page):
-    total_entries = 0
-
-    revisions = []
-
-    if not revisions and page != 1:
-        abort(404)
-
-    pagination = Paginator(page, PER_PAGE, total_entries)
-
-    return render_template('cwr/validation/works.html', works=revisions, total_entries=total_entries,
-                           paginator=pagination, current_tab='revisions_item')
+    return render_template('cwr/report/transactions.html', paginator=pagination, groups=cwr.transmission.groups,
+                           group=group, transactions=transactions, current_tab='agreements_item')
 
 
 @app.route('/cwr/validation/report/download', methods=['GET'])
