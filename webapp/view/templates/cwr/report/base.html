@@ -15,13 +15,13 @@
 {% endblock %}
 {% block content %}
 <div class="report">
-    <div class="report-sidebar">
+    <nav class="report-sidebar">
         {{ record_functions.show_groups_list(groups) }}
-    </div>
-    <div class="report-body">
-        {% block report_data %}
-        {% endblock %}
-    </div>
+</div>
+<div class="report-body">
+    {% block report_data %}
+    {% endblock %}
+</div>
 </div>
 <hr>
 <div>
