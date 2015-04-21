@@ -4,6 +4,37 @@
 {% block head %}
 {{ super() }}
 <script src="{{ url_for('static', filename='js/loader.js') }}"></script>
+<script type="text/javascript">
+    //<![CDATA[
+    window.onload = function () {
+        // Bind normal buttons
+        Ladda.bind('div:not(.progress-demo) button')
+        //Ladda.bind('div:not(.progress-demo) button', {timeout: 1500});
+        // Bind progress buttons and simulate loading progress
+        //Ladda.bind('.progress-demo button', {
+        //callback: function (instance) {
+        //var progress = 0;
+        //var interval = setInterval(function () {
+        //    progress = Math.min(progress + Math.random() * 0.1, 1);
+        //    instance.setProgress(progress);
+        //    if (progress === 1) {
+        //        instance.stop();
+        //        clearInterval(interval);
+        //    }
+        //}, 200);
+        //}
+        //});
+        // You can control loading explicitly using the JavaScript API
+        // as outlined below:
+        // var l = Ladda.create( document.querySelector( 'button' ) );
+        // l.start();
+        // l.stop();
+        // l.toggle();
+        // l.isLoading();
+        // l.setProgress( 0-1 );
+    };
+    //]]>
+</script>
 {% endblock %}
 {% block content %}
 <div class="jumbotron">
@@ -16,7 +47,7 @@
 
     <p>For finding more about the CWR standard visit <a href="http://www.cisac.org">CISAC's website</a>.</p>
 
-    <p>Note: Pick any file to proceed. No actual uploading will be done on the dummy application.</p>
+    <p>Note: Currently the parser is still under development. Not all CWR files will work.</p>
 </div>
 
 <form class="form-horizontal" role="form" action="{{ url_for('upload_cwr_handler') }}" method="post"
