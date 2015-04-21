@@ -1,5 +1,5 @@
 $('#sidebar').affix({
     offset: {
-        top: $('header').height()
+        top: 245
     }
-});	
+});

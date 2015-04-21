@@ -16,19 +16,23 @@
 </script>
 {% endblock %}
 {% block content %}
-<div class="report">
-    {{ record_functions.show_groups_navbar(groups) }}
-</div>
-<div class="report-body">
-    {% block report_data %}
-    {% endblock %}
-</div>
-<hr>
 <div>
-    <a id="button-download" class="btn btn-primary" role="button">Download report</a>
-    <a class="btn btn-primary" role="button" href="{{ url_for('cwr_acknowledgement_generation') }}">Generate
-        acknowledgement file</a>
-    <a class="btn btn-primary" role="button" href="{{ url_for('cwr_match') }}">Go to matches reconciliation</a>
+    <div class="row">
+        {{ record_functions.show_groups_navbar(groups) }}
+        <div class="report-container col-xs-10">
+            <div class="report-body">
+                {% block report_data %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div>
+        <a id="button-download" class="btn btn-primary" role="button">Download report</a>
+        <a class="btn btn-primary" role="button" href="{{ url_for('cwr_acknowledgement_generation') }}">Generate
+            acknowledgement file</a>
+        <a class="btn btn-primary" role="button" href="{{ url_for('cwr_match') }}">Go to matches reconciliation</a>
 
-    <p></p></div>
+        <p></p></div>
+</div>
 {% endblock %}
