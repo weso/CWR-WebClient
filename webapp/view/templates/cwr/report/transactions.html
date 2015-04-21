@@ -13,9 +13,17 @@
 </script>
 {% endblock %}
 {% block report_data %}
-{{ record_functions.show_group_info(group) }}
-{{ pagination.render_pagination(paginator) }}
-{{ record_printer.print_transactions(transactions) }}
-{{ pagination.render_pagination(paginator) }}
+<div>
+    {{ record_functions.show_group_info(group) }}
+</div>
+<div class="text-center">
+    {{ pagination.render_pagination(paginator) }}
+</div>
+<div>
+    {{ record_printer.print_transactions(transactions) }}
+</div>
+<div class="text-center">
+    {{ pagination.render_pagination(paginator) }}
+</div>
 <hr>
 {% endblock %}
