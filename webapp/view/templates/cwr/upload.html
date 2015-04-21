@@ -3,21 +3,35 @@
 {% block page_title %}CWR processing and matching{% endblock %}
 {% block head %}
 {{ super() }}
-<script src="{{ url_for('static', filename='js/progressbar.js') }}"></script>
+<script src="{{ url_for('static', filename='js/loader.js') }}"></script>
 <script type="text/javascript">
     //<![CDATA[
     window.onload = function () {
-        $('#progress-bar').css({opacity: 0});
-        $('#button-next').css({opacity: 0});
-
-        $('#button-progress').click(function () {
-            $('#button-progress').attr("disabled", "disabled");
-            $('#progress-bar').css({opacity: 1});
-
-            timedIncrease = setInterval(function () {
-                conditionedIncrease()
-            }, 250)
-        });
+        // Bind normal buttons
+        Ladda.bind('div:not(.progress-demo) button')
+        //Ladda.bind('div:not(.progress-demo) button', {timeout: 1500});
+        // Bind progress buttons and simulate loading progress
+        //Ladda.bind('.progress-demo button', {
+        //callback: function (instance) {
+        //var progress = 0;
+        //var interval = setInterval(function () {
+        //    progress = Math.min(progress + Math.random() * 0.1, 1);
+        //    instance.setProgress(progress);
+        //    if (progress === 1) {
+        //        instance.stop();
+        //        clearInterval(interval);
+        //    }
+        //}, 200);
+        //}
+        //});
+        // You can control loading explicitly using the JavaScript API
+        // as outlined below:
+        // var l = Ladda.create( document.querySelector( 'button' ) );
+        // l.start();
+        // l.stop();
+        // l.toggle();
+        // l.isLoading();
+        // l.setProgress( 0-1 );
     };
     //]]>
 </script>
@@ -33,43 +47,20 @@
 
     <p>For finding more about the CWR standard visit <a href="http://www.cisac.org">CISAC's website</a>.</p>
 
-    <p>Note: Pick any file to proceed. No actual uploading will be done on the dummy application.</p>
+    <p>Note: Currently the parser is still under development. Not all CWR files will work.</p>
 </div>
-
-<form id="form-progress" class="form-horizontal" role="form" method="get" enctype="multipart/form-data">
-    <div class="form-group">
-        <label for="exampleInputFile" class="col-sm-2 control-label">CWR file</label>
-
-        <div class="col-sm-10">
-            <input type="file" id="exampleInputFile" class="btn btn-default" name="file">
-        </div>
-    </div>
-    <a id="button-progress" class="btn btn-primary btn-lg" role="button">Submit file</a>
-</form>
-<p></p>
-<div id="progress-bar">
-    <p>Uploading</p>
-
-    <div class="progress progress-striped active">
-        <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-        </div>
-    </div>
-</div>
-<a id="button-next" class="btn btn-primary btn-lg" role="button" href="{{ url_for('cwr_validation_report') }}">Go to
-    validation
-    report</a>
-
 
 <form class="form-horizontal" role="form" action="{{ url_for('upload_cwr_handler') }}" method="post"
       enctype="multipart/form-data">
     <div class="form-group">
-        <label for="exampleInputFile" class="col-sm-2 control-label">File input</label>
+        <label for="cwr_file" class="col-sm-2 control-label">File input</label>
 
         <div class="col-sm-10">
-            <input type="file" id="exampleInputFile" class="btn btn-default" name="file">
+            <input type="file" id="cwr_file" class="btn btn-default" name="file">
         </div>
     </div>
-    <button type="submit" class="btn btn-primary pull-right">Submit</button>
+    <button type="submit" class="btn btn-primary pull-right ladda-button" data-style="expand-right"><span
+            class="ladda-label">Submit</span></button>
 </form>
 <p></p>
 {% endblock %}
