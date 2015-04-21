@@ -2,7 +2,7 @@
 <nav class="col-lg-2 sidebar-nav-fixed">
     <ul data-spy="affix">
         <div class="list-group" id="sidebar">
-            <a href="{{ url_for('cwr_validation_report') }}" class="list-group-item">Summary</a>
+            <a href="{{ url_for('cwr_validation_report') }}" class="list-group-item"><strong>Summary</strong></a>
             {% for group in groups %}
             <a href="{{ url_for('cwr_validation_report_transactions', index=loop.index0) }}" class="list-group-item">{{
                 group.group_header.transaction_type }}</a>
