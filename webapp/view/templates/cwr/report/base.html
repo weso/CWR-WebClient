@@ -1,8 +1,10 @@
 {% extends "base.html" %}
+{% import "macro/cwr.html" as record_functions %}
 {% block title %}Matching{% endblock %}
 {% block page_title %}CWR processing and matching{% endblock %}
 {% block head %}
 {{ super() }}
+<script src="{{ url_for('static', filename='js/sidebar.js') }}"></script>
 <script type="text/javascript">
     //<![CDATA[
     window.onload = function () {
@@ -15,13 +17,11 @@
 {% endblock %}
 {% block content %}
 <div class="report">
-    <nav class="report-sidebar">
-        {{ record_functions.show_groups_list(groups) }}
+    {{ record_functions.show_groups_navbar(groups) }}
 </div>
 <div class="report-body">
     {% block report_data %}
     {% endblock %}
-</div>
 </div>
 <hr>
 <div>
