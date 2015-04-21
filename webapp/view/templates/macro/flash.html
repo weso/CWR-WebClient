@@ -1,11 +1,15 @@
 {% macro show_flashes() %}
 {% with messages = get_flashed_messages() %}
 {% if messages %}
-<ul class=flashes>
+<div class="alerts">
     {% for message in messages %}
-    <li>{{ message | safe }}</li>
+    <div id="flash_{{loop.index}}" class="alert-message warning">
+        <a class="close" onclick="$('#flash_{{loop.index}}').toggle();">×</a>
+
+        <p>{{ message | safe }}</p>
+    </div>
     {% endfor %}
-</ul>
+</div>
 {% endif %}
 {% endwith %}
 {% endmacro %}
