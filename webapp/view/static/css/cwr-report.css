@@ -12,12 +12,6 @@
     list-style-type: none;
 }
 
-.transaction-info {
-    border-style: solid;
-    border-width: 1px;
-    padding: 1em 1em 1em 1em;
-}
-
 .record-info {
     border-style: solid;
     border-width: 1px;

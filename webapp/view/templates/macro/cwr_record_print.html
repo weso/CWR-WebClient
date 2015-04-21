@@ -1,8 +1,32 @@
 {% macro print_transactions(transactions) %}
-{% for transaction in transactions %}
-<hr>
-{{ print_transaction(transaction) }}
-{% endfor %}
+<div class="transaction-all-info" role="tablist" aria-multiselectable="true">
+    {% for transaction in transactions %}
+    <hr>
+    <div class="transaction-info">
+        <div class="panel panel-default">
+            {% if transaction|length > 0 %}
+            <div class="panel-heading" role="tab" id="transaction_heading_{{loop.index}}}">
+                <h2 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse_{{loop.index}}"
+                       aria-expanded="true"
+                       aria-controls="collapseOne">
+                        Transaction number {{ transaction[0].transaction_sequence_n }}
+                        of type {{ transaction[0].record_type }},
+                        with {{ transaction|length }} records (Click to expand)
+                    </a>
+                </h2>
+            </div>
+            {% endif %}
+            <div id="collapse_{{loop.index}}" class="panel-collapse collapse" role="tabpanel"
+                 aria-labelledby="headingOne">
+                <div class="panel-body">
+                    {{ print_transaction(transaction) }}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
 {% endmacro %}
 
 {% macro print_active_icon(name, active) %}
@@ -14,14 +38,12 @@
 {% endmacro %}
 
 {% macro print_transaction(transaction) %}
-<div class="transaction-info">
-    {% for record in transaction %}
-    {{ print_transaction_record(record) }}
-    {% if loop.revindex0 > 0%}
-    <hr>
-    {% endif %}
-    {% endfor %}
-</div>
+{% for record in transaction %}
+{{ print_transaction_record(record) }}
+{% if loop.revindex0 > 0%}
+<hr>
+{% endif %}
+{% endfor %}
 {% endmacro %}
 
 {% macro print_transaction_record(record) %}
