@@ -4,24 +4,28 @@
     <div class="infotable panel-body">
         <ul>
             <li>
-                <p>Group Information</p>
-                <dl>
-                    <dt>Group ID</dt>
-                    <dd>{{ group.group_header.group_id }}</dd>
-                    <dt>Version number</dt>
-                    <dd>{{ group.group_header.version_number }}</dd>
-                    <dt>Batch Request ID</dt>
-                    <dd>{{ group.group_header.batch_request_id }}</dd>
-                </dl>
+                <div class="panel panel-default">
+                    <div class="panel-heading">Group Information</div>
+                    <dl>
+                        <dt>Group ID</dt>
+                        <dd>{{ group.group_header.group_id }}</dd>
+                        <dt>Version number</dt>
+                        <dd>{{ group.group_header.version_number }}</dd>
+                        <dt>Batch Request ID</dt>
+                        <dd>{{ group.group_header.batch_request_id }}</dd>
+                    </dl>
+                </div>
             </li>
             <li>
-                <p>Group Counts</p>
-                <dl>
-                    <dt>Transaction Count</dt>
-                    <dd>{{ group.group_trailer.transaction_count }}</dd>
-                    <dt>Record Count</dt>
-                    <dd>{{ group.group_trailer.record_count }}</dd>
-                </dl>
+                <div class="panel panel-default">
+                    <div class="panel-heading">Group Counts</div>
+                    <dl>
+                        <dt>Transaction Count</dt>
+                        <dd>{{ group.group_trailer.transaction_count }}</dd>
+                        <dt>Record Count</dt>
+                        <dd>{{ group.group_trailer.record_count }}</dd>
+                    </dl>
+                </div>
             </li>
         </ul>
     </div>
