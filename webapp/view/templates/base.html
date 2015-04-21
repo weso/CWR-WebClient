@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+{% import "macro/flash.html" as flash_functions %}
 <head>
     {% block head %}
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -35,7 +36,9 @@
         </div>
     </div>
     <div id="content">
-        {% block content %}{% endblock %}
+        {{ flash_functions.show_flashes() }}
+        {% block content %}
+        {% endblock %}
     </div>
 </div>
 </body>

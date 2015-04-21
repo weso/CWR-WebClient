@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-from flask import render_template, redirect, url_for, abort, request, session
+from flask import render_template, redirect, url_for, abort, request, session, flash
 
 from webapp.view import app
 from webapp.config import app_conf, view_conf
@@ -50,6 +50,7 @@ def upload_cwr_handler():
 
         return redirect(url_for('cwr_validation_report'))
     else:
+        flash('No file selected')
         return redirect(url_for('upload_cwr'))
 
 

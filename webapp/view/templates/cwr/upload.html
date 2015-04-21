@@ -3,24 +3,7 @@
 {% block page_title %}CWR processing and matching{% endblock %}
 {% block head %}
 {{ super() }}
-<script src="{{ url_for('static', filename='js/progressbar.js') }}"></script>
-<script type="text/javascript">
-    //<![CDATA[
-    window.onload = function () {
-        $('#progress-bar').css({opacity: 0});
-        $('#button-next').css({opacity: 0});
-
-        $('#button-progress').click(function () {
-            $('#button-progress').attr("disabled", "disabled");
-            $('#progress-bar').css({opacity: 1});
-
-            timedIncrease = setInterval(function () {
-                conditionedIncrease()
-            }, 250)
-        });
-    };
-    //]]>
-</script>
+<script src="{{ url_for('static', filename='js/loader.js') }}"></script>
 {% endblock %}
 {% block content %}
 <div class="jumbotron">
@@ -36,40 +19,17 @@
     <p>Note: Pick any file to proceed. No actual uploading will be done on the dummy application.</p>
 </div>
 
-<form id="form-progress" class="form-horizontal" role="form" method="get" enctype="multipart/form-data">
-    <div class="form-group">
-        <label for="exampleInputFile" class="col-sm-2 control-label">CWR file</label>
-
-        <div class="col-sm-10">
-            <input type="file" id="exampleInputFile" class="btn btn-default" name="file">
-        </div>
-    </div>
-    <a id="button-progress" class="btn btn-primary btn-lg" role="button">Submit file</a>
-</form>
-<p></p>
-<div id="progress-bar">
-    <p>Uploading</p>
-
-    <div class="progress progress-striped active">
-        <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-        </div>
-    </div>
-</div>
-<a id="button-next" class="btn btn-primary btn-lg" role="button" href="{{ url_for('cwr_validation_report') }}">Go to
-    validation
-    report</a>
-
-
 <form class="form-horizontal" role="form" action="{{ url_for('upload_cwr_handler') }}" method="post"
       enctype="multipart/form-data">
     <div class="form-group">
-        <label for="exampleInputFile" class="col-sm-2 control-label">File input</label>
+        <label for="cwr_file" class="col-sm-2 control-label">File input</label>
 
         <div class="col-sm-10">
-            <input type="file" id="exampleInputFile" class="btn btn-default" name="file">
+            <input type="file" id="cwr_file" class="btn btn-default" name="file">
         </div>
     </div>
-    <button type="submit" class="btn btn-primary pull-right">Submit</button>
+    <button type="submit" class="btn btn-primary pull-right ladda-button" data-style="expand-right"><span
+            class="ladda-label">Submit</span></button>
 </form>
 <p></p>
 {% endblock %}
