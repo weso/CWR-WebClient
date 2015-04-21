@@ -1,12 +1,6 @@
-/* bootstrap 3 helpers */
-#sidebar.affix-top {
-    position: static;
-    margin-top: 30px;
-    width: 228px;
-}
-
-#sidebar.affix {
+.sidebar.affix {
+    left: 0;
+    margin: 0 13% 0 40%;
     position: fixed;
-    top: 70px;
-    width: 228px;
+    right: 0;
 }
