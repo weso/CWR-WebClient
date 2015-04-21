@@ -1,5 +1,4 @@
 {% extends "cwr/report/base.html" %}
-{% import "macro/cwr.html" as record_functions %}
 {% block head %}
 {{ super() }}
 <script type="text/javascript">
@@ -12,43 +11,50 @@
 </script>
 {% endblock %}
 {% block report_data %}
-<div class="infohead">
-    <div class="infotable">
-        <ul>
+<div class="panel panel-default">
+    <div class="panel-heading">CWR file summary</div>
+    <div class="panel-body">
+        <ul class="list-inline">
             <li>
-                <p>Sender information</p>
-                <dl>
-                    <dt>Sender ID</dt>
-                    <dd> {{ cwr.transmission.header.sender_id }}</dd>
-                    <dt>Sender Name</dt>
-                    <dd>{{ cwr.transmission.header.sender_name }}</dd>
-                    <dt>Sender Type</dt>
-                    <dd>{{ cwr.transmission.header.sender_type }}</dd>
-                </dl>
+                <div class="panel panel-default">
+                    <div class="panel-heading">Sender information</div>
+                    <dl class="dl-horizontal">
+                        <dt>Sender ID</dt>
+                        <dd>{{ cwr.transmission.header.sender_id }}</dd>
+                        <dt>Sender Name</dt>
+                        <dd>{{ cwr.transmission.header.sender_name }}</dd>
+                        <dt>Sender Type</dt>
+                        <dd>{{ cwr.transmission.header.sender_type }}</dd>
+                    </dl>
+                </div>
             </li>
             <li>
-                <p>File information</p>
-                <dl>
-                    <dt>Created on</dt>
-                    <dd> {{ cwr.transmission.header.creation_date_time }}</dd>
-                    <dt>Sent on</dt>
-                    <dd> {{ cwr.transmission.header.transmission_date }}</dd>
-                    <dt>EDI Standard</dt>
-                    <dd> {{ cwr.transmission.header.edi_standard }}</dd>
-                    <dt>Character Set</dt>
-                    <dd> {{ cwr.transmission.header.character_set }}</dd>
-                </dl>
+                <div class="panel panel-default">
+                    <div class="panel-heading">File information</div>
+                    <dl class="dl-horizontal">
+                        <dt>Created on</dt>
+                        <dd>{{ cwr.transmission.header.creation_date_time }}</dd>
+                        <dt>Sent on</dt>
+                        <dd>{{ cwr.transmission.header.transmission_date }}</dd>
+                        <dt>EDI Standard</dt>
+                        <dd>{{ cwr.transmission.header.edi_standard }}</dd>
+                        <dt>Character Set</dt>
+                        <dd>{{ cwr.transmission.header.character_set }}</dd>
+                    </dl>
+                </div>
             </li>
             <li>
-                <p>Contents counts</p>
-                <dl>
-                    <dt>Group count</dt>
-                    <dd> {{ cwr.transmission.trailer.group_count }}</dd>
-                    <dt>Transaction Count</dt>
-                    <dd> {{ cwr.transmission.trailer.transaction_count }}</dd>
-                    <dt>Record Count</dt>
-                    <dd> {{ cwr.transmission.trailer.record_count }}</dd>
-                </dl>
+                <div class="panel panel-default">
+                    <div class="panel-heading">Contents counts</div>
+                    <dl class="dl-horizontal">
+                        <dt>Group count</dt>
+                        <dd>{{ cwr.transmission.trailer.group_count }}</dd>
+                        <dt>Transaction Count</dt>
+                        <dd>{{ cwr.transmission.trailer.transaction_count }}</dd>
+                        <dt>Record Count</dt>
+                        <dd>{{ cwr.transmission.trailer.record_count }}</dd>
+                    </dl>
+                </div>
             </li>
         </ul>
     </div>
