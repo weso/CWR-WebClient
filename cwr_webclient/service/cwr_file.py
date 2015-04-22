@@ -1,8 +1,9 @@
 # -*- encoding: utf-8 -*-
 
+import os
 from abc import ABCMeta, abstractmethod
 
-from cwr_webclient.utils.file_manager import FileManager
+from cwr.parser.file import CWRFileDecoder
 
 
 """
@@ -21,21 +22,25 @@ class CWRFileService(object):
         pass
 
     @abstractmethod
-    def get_data(self, id):
+    def get_data(self, id, path):
         raise NotImplementedError('The get_data method must be implemented')
 
 
 class LocalCWRFileService(CWRFileService):
     def __init__(self):
         super(LocalCWRFileService, self).__init__()
-        self._fileManager = FileManager
         self._files_data = {}
 
-    def get_data(self, id):
+    def get_data(self, id, path):
         if id in self._files_data:
             data = self._files_data[id]
         else:
-            data = self._fileManager.read_cwr(id)
+            data = self._read_cwr(id, path)
             self._files_data[id] = data
 
         return data
+
+    def _read_cwr(self, filename, path):
+        decoder = CWRFileDecoder()
+        file_path = os.path.join(path, filename)
+        return decoder.decode(file_path)

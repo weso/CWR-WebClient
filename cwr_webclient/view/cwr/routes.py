@@ -2,7 +2,7 @@
 from flask import render_template, redirect, url_for, abort, request, session, flash, Blueprint, current_app
 
 from cwr_webclient.config import view_conf
-from cwr_webclient.service.cwr import LocalCWRFileService
+from cwr_webclient.service.cwr_file import LocalCWRFileService
 from cwr_webclient.service.file import LocalFileService
 from cwr_webclient.service.match import LocalMatchingService
 from cwr_webclient.service.pagination import DefaultPaginationService
@@ -100,7 +100,7 @@ CWR validation routes.
 
 @cwr_blueprint.route('/validation/report', methods=['GET'])
 def validation_report():
-    cwr = cwr_service.get_data(session['cwr_file_id'])
+    cwr = cwr_service.get_data(session['cwr_file_id'], current_app.config['UPLOAD_FOLDER'])
 
     return render_template('report/summary.html', cwr=cwr, current_tab='summary_item',
                            groups=cwr.transmission.groups)
@@ -109,7 +109,7 @@ def validation_report():
 @cwr_blueprint.route('/validation/report/group/<int:index>', defaults={'page': 1}, methods=['GET'])
 @cwr_blueprint.route('/validation/report/group/<int:index>/page/<int:page>', methods=['GET'])
 def validation_report_transactions(index, page):
-    cwr = cwr_service.get_data(session['cwr_file_id'])
+    cwr = cwr_service.get_data(session['cwr_file_id'], current_app.config['UPLOAD_FOLDER'])
 
     if not cwr and page != 1:
         abort(404)

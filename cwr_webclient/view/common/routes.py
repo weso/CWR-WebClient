@@ -2,7 +2,7 @@
 from flask import render_template, Blueprint
 
 from cwr_webclient.config import app_conf, view_conf
-from cwr_webclient.service.cwr import LocalCWRFileService
+from cwr_webclient.service.cwr_file import LocalCWRFileService
 from cwr_webclient.service.match import LocalMatchingService
 from cwr_webclient.service.pagination import DefaultPaginationService
 
