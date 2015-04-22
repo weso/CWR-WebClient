@@ -6,12 +6,13 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock %} - CWR processing and matching</title>
-    <link rel=stylesheet type=text/css href="{{ url_for('.static', filename='bootstrap/css/bootstrap.min.css') }}">
-    <link rel=stylesheet type=text/css href="{{ url_for('.static', filename='css/style.css') }}">
-    <script src="{{ url_for('.static', filename='js/cwr.js') }}"></script>
+    <link rel=stylesheet type=text/css
+          href="{{ url_for('common_views.static', filename='bootstrap/css/bootstrap.min.css') }}">
+    <link rel=stylesheet type=text/css href="{{ url_for('common_views.static', filename='css/style.css') }}">
+    <script src="{{ url_for('common_views.static', filename='js/cwr.js') }}"></script>
     <script
             src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="{{ url_for('.static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('common_views.static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
     {% endblock %}
 </head>
 <body>

@@ -24,8 +24,8 @@ if __name__ == '__main__':
 
     app = Flask(__name__)
     app.register_blueprint(common_views)
-    app.register_blueprint(cwr_views)
-    app.register_blueprint(uso_views)
+    app.register_blueprint(cwr_views, url_prefix='/cwr')
+    app.register_blueprint(uso_views, url_prefix='/uso')
 
     app.wsgi_app = ProxyFix(app.wsgi_app)
 
