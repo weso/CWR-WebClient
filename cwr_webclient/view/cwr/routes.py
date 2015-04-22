@@ -1,8 +1,9 @@
 # -*- encoding: utf-8 -*-
-from flask import render_template, redirect, url_for, abort, request, session, flash, Blueprint
+from flask import render_template, redirect, url_for, abort, request, session, flash, Blueprint, current_app
 
 from cwr_webclient.config import view_conf
 from cwr_webclient.service.cwr import LocalCWRFileService
+from cwr_webclient.service.file import LocalFileService
 from cwr_webclient.service.match import LocalMatchingService
 from cwr_webclient.service.pagination import DefaultPaginationService
 
@@ -18,6 +19,7 @@ cwr_blueprint = Blueprint('cwr', __name__,
 PER_PAGE = view_conf.per_page
 
 cwr_service = LocalCWRFileService()
+file_service = LocalFileService()
 match_service = LocalMatchingService()
 pagination_service = DefaultPaginationService()
 
@@ -37,7 +39,7 @@ def upload_handler():
     sent_file = request.files['file']
 
     if sent_file:
-        file_id = cwr_service.save_file(sent_file)
+        file_id = file_service.save_file(sent_file, current_app.config['UPLOAD_FOLDER'])
 
         session['cwr_file_id'] = file_id
 
@@ -45,6 +47,14 @@ def upload_handler():
     else:
         flash('No file selected')
         return redirect(url_for('.upload'))
+
+
+REJECTED_EXTENSIONS = set(['html', 'htm', 'php'])
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] not in REJECTED_EXTENSIONS
 
 
 """

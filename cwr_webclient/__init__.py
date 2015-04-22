@@ -17,13 +17,16 @@ def _url_for_other_page(page):
     args['page'] = page
     return url_for(request.endpoint, **args)
 
+
 def create_app():
     import os
     import logging
 
     from flask import Flask
     from werkzeug.contrib.fixers import ProxyFix
-    from cwr_webclient.view import common_blueprint,cwr_blueprint,uso_blueprint
+    from cwr_webclient.view import common_blueprint, cwr_blueprint, uso_blueprint
+
+    from cwr_webclient.uploads import __uploads__
 
     debug = bool(os.environ.get('DEBUG', True))
     secret = os.environ.get('SECRET_KEY', 'development_key')
@@ -37,6 +40,8 @@ def create_app():
 
     app.config['DEBUG'] = debug
     app.config['SECRET_KEY'] = secret
+
+    app.config['UPLOAD_FOLDER'] = __uploads__.path()
 
     if debug:
         logging.basicConfig(level=logging.INFO)

@@ -24,10 +24,6 @@ class CWRFileService(object):
     def get_data(self, id):
         raise NotImplementedError('The get_data method must be implemented')
 
-    @abstractmethod
-    def save_file(self, file):
-        raise NotImplementedError('The save_file method must be implemented')
-
 
 class LocalCWRFileService(CWRFileService):
     def __init__(self):
@@ -43,8 +39,3 @@ class LocalCWRFileService(CWRFileService):
             self._files_data[id] = data
 
         return data
-
-    def save_file(self, file):
-        self._fileManager.save_file_cwr(file)
-
-        return file.filename
