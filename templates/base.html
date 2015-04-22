@@ -29,9 +29,9 @@
                     <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span>
                     <span class="icon-bar"></span> <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{{ url_for('.index') }}">Home</a>
-                <a class="navbar-brand" href="{{ url_for('.upload_cwr') }}">CWR files uploading</a>
-                <a class="navbar-brand" href="{{ url_for('.upload_uso') }}">USO files uploading</a>
+                <a class="navbar-brand" href="{{ url_for('common_views.index') }}">Home</a>
+                <a class="navbar-brand" href="{{ url_for('cwr.upload_cwr') }}">CWR files uploading</a>
+                <a class="navbar-brand" href="{{ url_for('uso.upload_uso') }}">USO files uploading</a>
             </div>
         </div>
     </div>
