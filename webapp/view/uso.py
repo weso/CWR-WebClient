@@ -14,6 +14,6 @@ Upload routes.
 """
 
 
-@uso_views.route('/uso/upload', methods=['GET'])
+@uso_views.route('/upload', methods=['GET'])
 def upload():
     return render_template('uso/upload.html')

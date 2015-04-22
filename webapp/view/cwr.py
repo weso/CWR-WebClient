@@ -25,7 +25,7 @@ Upload routes.
 """
 
 
-@cwr_views.route('/cwr/upload', methods=['GET'])
+@cwr_views.route('/upload', methods=['GET'])
 def upload():
     return render_template('cwr/upload.html')
 
@@ -51,13 +51,13 @@ CWR matching routes.
 """
 
 
-@cwr_views.route('/cwr/match', methods=['GET'])
+@cwr_views.route('/match', methods=['GET'])
 def match():
     sources = match_service.get_sources()
     return render_template('cwr/match.html', sources=sources)
 
 
-@cwr_views.route('/cwr/match/report', methods=['GET'])
+@cwr_views.route('/match/report', methods=['GET'])
 def match_report():
     result = {}
 
@@ -66,12 +66,12 @@ def match_report():
     return render_template('cwr/match_result.html', result=result)
 
 
-@cwr_views.route('/cwr/match/report/download', methods=['GET'])
+@cwr_views.route('/match/report/download', methods=['GET'])
 def match_report_download():
     return redirect(url_for('.match_report'))
 
 
-@cwr_views.route('/cwr/match/edit', methods=['GET'])
+@cwr_views.route('/match/edit', methods=['GET'])
 def match_edit():
     result = {}
 
@@ -87,7 +87,7 @@ CWR validation routes.
 """
 
 
-@cwr_views.route('/cwr/validation/report', methods=['GET'])
+@cwr_views.route('/validation/report', methods=['GET'])
 def validation_report():
     cwr = cwr_service.get_data(session['cwr_file_id'])
 
@@ -95,8 +95,8 @@ def validation_report():
                            groups=cwr.transmission.groups)
 
 
-@cwr_views.route('/cwr/validation/report/group/<int:index>', defaults={'page': 1}, methods=['GET'])
-@cwr_views.route('/cwr/validation/report/group/<int:index>/page/<int:page>', methods=['GET'])
+@cwr_views.route('/validation/report/group/<int:index>', defaults={'page': 1}, methods=['GET'])
+@cwr_views.route('/validation/report/group/<int:index>/page/<int:page>', methods=['GET'])
 def validation_report_transactions(index, page):
     cwr = cwr_service.get_data(session['cwr_file_id'])
 
@@ -112,7 +112,7 @@ def validation_report_transactions(index, page):
                            group=group, transactions=transactions, current_tab='agreements_item')
 
 
-@cwr_views.route('/cwr/validation/report/download', methods=['GET'])
+@cwr_views.route('/validation/report/download', methods=['GET'])
 def validation_report_download():
     return redirect(url_for('.validation_report'))
 
@@ -122,6 +122,6 @@ CWR acknowledgement routes.
 """
 
 
-@cwr_views.route('/cwr/acknowledgement', methods=['GET'])
+@cwr_views.route('/acknowledgement', methods=['GET'])
 def acknowledgement_generation():
     return render_template('cwr/acknowledgement.html')
