@@ -3,7 +3,7 @@
 from abc import ABCMeta, abstractmethod
 
 from webapp.config import view_conf
-from webapp.model.pagination import Paginator
+from webapp.utils.pagination import Paginator
 
 
 """
@@ -23,11 +23,11 @@ class PaginationService(object):
 
     @abstractmethod
     def get_transactions_paginator(self, page, group):
-        pass
+        raise NotImplementedError('The get_transactions_paginator method must be implemented')
 
     @abstractmethod
     def get_page_transactions(self, page, group):
-        pass
+        raise NotImplementedError('The get_page_transactions method must be implemented')
 
 
 class DefaultPaginationService(object):

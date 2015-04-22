@@ -22,11 +22,11 @@ class CWRFileService(object):
 
     @abstractmethod
     def get_data(self, id):
-        pass
+        raise NotImplementedError('The get_data method must be implemented')
 
     @abstractmethod
     def save_file(self, file):
-        pass
+        raise NotImplementedError('The save_file method must be implemented')
 
 
 class LocalCWRFileService(CWRFileService):
