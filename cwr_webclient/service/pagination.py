@@ -2,8 +2,8 @@
 
 from abc import ABCMeta, abstractmethod
 
-from webapp.config import view_conf
-from webapp.utils.pagination import Paginator
+from cwr_webclient.config import view_conf
+from cwr_webclient.utils.pagination import Paginator
 
 
 """

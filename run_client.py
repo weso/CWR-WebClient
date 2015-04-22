@@ -4,7 +4,7 @@ import logging
 
 from flask import url_for, request, Flask
 from werkzeug.contrib.fixers import ProxyFix
-from webapp.view import common_blueprint,cwr_blueprint,uso_blueprint
+from cwr_webclient.view import common_blueprint,cwr_blueprint,uso_blueprint
 
 __author__ = 'Bernardo Martínez Garrido'
 __license__ = 'MIT'

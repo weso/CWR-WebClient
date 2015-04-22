@@ -1,10 +1,10 @@
 # -*- encoding: utf-8 -*-
 from flask import render_template, Blueprint
 
-from webapp.config import app_conf, view_conf
-from webapp.service.cwr import LocalCWRFileService
-from webapp.service.match import LocalMatchingService
-from webapp.service.pagination import DefaultPaginationService
+from cwr_webclient.config import app_conf, view_conf
+from cwr_webclient.service.cwr import LocalCWRFileService
+from cwr_webclient.service.match import LocalMatchingService
+from cwr_webclient.service.pagination import DefaultPaginationService
 
 
 __author__ = 'Bernardo Martínez Garrido'
