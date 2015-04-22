@@ -3,7 +3,6 @@
 {% block page_title %}CWR processing and matching{% endblock %}
 {% block head %}
 {{ super() }}
-<script src="{{ url_for('.static', filename='js/progressbar.js') }}"></script>
 <script type="text/javascript">
     //<![CDATA[
     window.onload = function () {
@@ -86,7 +85,7 @@
         </div>
     </div>
 </div>
-<a id="button-next" class="btn btn-primary btn-lg" role="button" href="{{ url_for('.match_report') }}">Go to
+<a id="button-next" class="btn btn-primary btn-lg" role="button" href="{{ url_for('.report') }}">Go to
     matching reports</a>
 <p></p>
 {% endblock %}

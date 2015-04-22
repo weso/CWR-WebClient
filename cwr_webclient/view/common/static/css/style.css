@@ -1,6 +1,6 @@
 @import url('common.css');
 @import url('file-report.css');
-@import url('../../../cwr/static/css/cwr-report.css');
+@import url('../../../cwr/validation/static/css/cwr-report.css');
 @import url('loader.css');
 @import url('flash.css');
 @import url('sidebar.css');

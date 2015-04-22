@@ -29,9 +29,10 @@
     <hr>
     <div>
         <a id="button-download" class="btn btn-primary" role="button">Download report</a>
-        <a class="btn btn-primary" role="button" href="{{ url_for('.acknowledgement_generation') }}">Generate
+        <a class="btn btn-primary" role="button" href="{{ url_for('cwr_acknowledgement.report') }}">Generate
             acknowledgement file</a>
-        <a class="btn btn-primary" role="button" href="{{ url_for('.match') }}">Go to matches reconciliation</a>
+        <a class="btn btn-primary" role="button" href="{{ url_for('cwr_match.match') }}">Go to matches
+            reconciliation</a>
 
         <p></p></div>
 </div>
