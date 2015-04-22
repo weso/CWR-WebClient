@@ -2,7 +2,7 @@
 
 from abc import ABCMeta, abstractmethod
 
-from webapp.utils.file_manager import FileManager
+from cwr_webclient.utils.file_manager import FileManager
 
 
 """
