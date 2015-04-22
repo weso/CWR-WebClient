@@ -3,7 +3,7 @@
 {% block page_title %}CWR processing and matching{% endblock %}
 {% block head %}
 {{ super() }}
-<script src="{{ url_for('.static', filename='js/progressbar.js') }}"></script>
+<script src="{{ url_for('common_views.static', filename='js/progressbar.js') }}"></script>
 <script type="text/javascript">
     //<![CDATA[
     window.onload = function () {
