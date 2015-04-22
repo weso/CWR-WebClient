@@ -6,8 +6,7 @@ __license__ = 'MIT'
 __status__ = 'Development'
 
 uso_blueprint = Blueprint('uso', __name__,
-                          template_folder='templates',
-                          static_folder='static')
+                          template_folder='templates')
 
 """
 Upload routes.
