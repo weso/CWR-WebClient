@@ -28,22 +28,6 @@ class FileManager(object):
     """
 
     @staticmethod
-    def save_file_cwr(sent_file):
-        FileManager._save_file(sent_file, __uploads__.path())
-
-    @staticmethod
-    def _save_file(sent_file, path):
-
-        if sent_file:
-            # Make the filename safe, remove unsupported chars
-            filename = secure_filename(sent_file.filename)
-
-            file_path = os.path.join(path, filename)
-            # Move the file from the temporal folder to
-            # the upload folder we setup
-            sent_file.save(file_path)
-
-    @staticmethod
     def read_cwr(filename):
         decoder = CWRFileDecoder()
         file_path = os.path.join(__uploads__.path(), filename)
