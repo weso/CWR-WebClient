@@ -16,4 +16,4 @@ Upload routes.
 
 @uso_blueprint.route('/upload', methods=['GET'])
 def upload():
-    return render_template('upload.html')
+    return render_template('upload_uso.html')
