@@ -1,11 +1,7 @@
 # -*- encoding: utf-8 -*-
 from flask import render_template, redirect, url_for, request, session, flash, Blueprint, current_app
 
-from cwr_webclient.config import view_conf
-from cwr_webclient.service.cwr_file import LocalCWRFileService
 from cwr_webclient.service.file import LocalFileService
-from cwr_webclient.service.match import LocalMatchingService
-from cwr_webclient.service.pagination import DefaultPaginationService
 
 __author__ = 'Bernardo Martínez Garrido'
 __license__ = 'MIT'
@@ -15,12 +11,7 @@ cwr_upload_blueprint = Blueprint('cwr_upload', __name__,
                                  template_folder='templates',
                                  static_folder='static')
 
-PER_PAGE = view_conf.per_page
-
-cwr_service = LocalCWRFileService()
 file_service = LocalFileService()
-match_service = LocalMatchingService()
-pagination_service = DefaultPaginationService()
 
 """
 Upload routes.

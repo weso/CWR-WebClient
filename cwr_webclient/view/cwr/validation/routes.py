@@ -3,8 +3,6 @@ from flask import render_template, redirect, url_for, abort, session, Blueprint,
 
 from cwr_webclient.config import view_conf
 from cwr_webclient.service.cwr_file import LocalCWRFileService
-from cwr_webclient.service.file import LocalFileService
-from cwr_webclient.service.match import LocalMatchingService
 from cwr_webclient.service.pagination import DefaultPaginationService
 
 __author__ = 'Bernardo Martínez Garrido'
@@ -19,8 +17,6 @@ cwr_validation_blueprint = Blueprint('cwr_validation', __name__,
 PER_PAGE = view_conf.per_page
 
 cwr_service = LocalCWRFileService()
-file_service = LocalFileService()
-match_service = LocalMatchingService()
 pagination_service = DefaultPaginationService()
 
 """
