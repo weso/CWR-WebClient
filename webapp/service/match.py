@@ -19,15 +19,15 @@ class MatchingService(object):
 
     @abstractmethod
     def get_sources(self):
-        pass
+        raise NotImplementedError('The get_sources method must be implemented')
 
     @abstractmethod
     def get_match_pairs(self):
-        pass
+        raise NotImplementedError('The get_match_pairs method must be implemented')
 
     @abstractmethod
     def get_match_options(self):
-        pass
+        raise NotImplementedError('The get_match_options method must be implemented')
 
 
 class LocalMatchingService(object):
