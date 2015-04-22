@@ -11,9 +11,9 @@ __author__ = 'Bernardo Martínez Garrido'
 __license__ = 'MIT'
 __status__ = 'Development'
 
-common_views = Blueprint('common_views', __name__,
-                         template_folder='templates',
-                         static_folder='static')
+common_blueprint = Blueprint('common_views', __name__,
+                             template_folder='templates',
+                             static_folder='static')
 
 PER_PAGE = view_conf.per_page
 
@@ -26,7 +26,7 @@ Basic routes.
 """
 
 
-@common_views.route('/', methods=['GET'])
+@common_blueprint.route('/', methods=['GET'])
 def index():
     return render_template('index.html', app_title=app_conf.title)
 
