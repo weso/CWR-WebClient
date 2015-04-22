@@ -30,7 +30,7 @@ def upload():
     return render_template('upload_cwr.html')
 
 
-@cwr_blueprint.route('/upload/cwr', methods=['POST'])
+@cwr_blueprint.route('/upload', methods=['POST'])
 def upload_handler():
     # Get the name of the uploaded file
     sent_file = request.files['file']
@@ -43,7 +43,7 @@ def upload_handler():
         return redirect(url_for('.validation_report'))
     else:
         flash('No file selected')
-        return redirect(url_for('.upload_cwr'))
+        return redirect(url_for('.upload'))
 
 
 """
