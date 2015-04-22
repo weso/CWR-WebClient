@@ -26,12 +26,12 @@ Upload routes.
 
 
 @cwr_views.route('/cwr/upload', methods=['GET'])
-def upload_cwr():
+def upload():
     return render_template('cwr/upload.html')
 
 
 @cwr_views.route('/upload/cwr', methods=['POST'])
-def upload_cwr_handler():
+def upload_handler():
     # Get the name of the uploaded file
     sent_file = request.files['file']
 
@@ -40,7 +40,7 @@ def upload_cwr_handler():
 
         session['cwr_file_id'] = file_id
 
-        return redirect(url_for('.cwr_validation_report'))
+        return redirect(url_for('.validation_report'))
     else:
         flash('No file selected')
         return redirect(url_for('.upload_cwr'))
@@ -52,13 +52,13 @@ CWR matching routes.
 
 
 @cwr_views.route('/cwr/match', methods=['GET'])
-def cwr_match():
+def match():
     sources = match_service.get_sources()
     return render_template('cwr/match.html', sources=sources)
 
 
 @cwr_views.route('/cwr/match/report', methods=['GET'])
-def cwr_match_report():
+def match_report():
     result = {}
 
     result['pairs'] = match_service.get_match_pairs()
@@ -67,12 +67,12 @@ def cwr_match_report():
 
 
 @cwr_views.route('/cwr/match/report/download', methods=['GET'])
-def cwr_match_report_download():
+def match_report_download():
     return redirect(url_for('.match_report'))
 
 
 @cwr_views.route('/cwr/match/edit', methods=['GET'])
-def cwr_match_edit():
+def match_edit():
     result = {}
 
     result['pairs'] = match_service.get_match_pairs()
@@ -88,7 +88,7 @@ CWR validation routes.
 
 
 @cwr_views.route('/cwr/validation/report', methods=['GET'])
-def cwr_validation_report():
+def validation_report():
     cwr = cwr_service.get_data(session['cwr_file_id'])
 
     return render_template('cwr/report/summary.html', cwr=cwr, current_tab='summary_item',
@@ -97,7 +97,7 @@ def cwr_validation_report():
 
 @cwr_views.route('/cwr/validation/report/group/<int:index>', defaults={'page': 1}, methods=['GET'])
 @cwr_views.route('/cwr/validation/report/group/<int:index>/page/<int:page>', methods=['GET'])
-def cwr_validation_report_transactions(index, page):
+def validation_report_transactions(index, page):
     cwr = cwr_service.get_data(session['cwr_file_id'])
 
     if not cwr and page != 1:
@@ -113,7 +113,7 @@ def cwr_validation_report_transactions(index, page):
 
 
 @cwr_views.route('/cwr/validation/report/download', methods=['GET'])
-def cwr_validation_report_download():
+def validation_report_download():
     return redirect(url_for('.validation_report'))
 
 
@@ -123,5 +123,5 @@ CWR acknowledgement routes.
 
 
 @cwr_views.route('/cwr/acknowledgement', methods=['GET'])
-def cwr_acknowledgement_generation():
+def acknowledgement_generation():
     return render_template('cwr/acknowledgement.html')
