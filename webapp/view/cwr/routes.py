@@ -27,7 +27,7 @@ Upload routes.
 
 @cwr_blueprint.route('/upload', methods=['GET'])
 def upload():
-    return render_template('upload.html')
+    return render_template('upload_cwr.html')
 
 
 @cwr_blueprint.route('/upload/cwr', methods=['POST'])
