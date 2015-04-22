@@ -4,7 +4,7 @@ import logging
 
 from flask import url_for, request, Flask
 from werkzeug.contrib.fixers import ProxyFix
-from webapp.view import common_views,cwr_views,uso_views
+from webapp.view import common_blueprint,cwr_blueprint,uso_blueprint
 
 __author__ = 'Bernardo Martínez Garrido'
 __license__ = 'MIT'
@@ -23,9 +23,9 @@ if __name__ == '__main__':
     secret = os.environ.get('SECRET_KEY', 'development_key')
 
     app = Flask(__name__)
-    app.register_blueprint(common_views)
-    app.register_blueprint(cwr_views, url_prefix='/cwr')
-    app.register_blueprint(uso_views, url_prefix='/uso')
+    app.register_blueprint(common_blueprint)
+    app.register_blueprint(cwr_blueprint, url_prefix='/cwr')
+    app.register_blueprint(uso_blueprint, url_prefix='/uso')
 
     app.wsgi_app = ProxyFix(app.wsgi_app)
 
