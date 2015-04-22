@@ -1,10 +1,9 @@
 import os
 import logging
 
-from flask import url_for, request
+from flask import url_for, request, Flask
 from werkzeug.contrib.fixers import ProxyFix
-
-from webapp.view import app
+from webapp.view import views
 
 
 def url_for_other_page(page):
@@ -18,6 +17,9 @@ if __name__ == '__main__':
     host = os.environ.get('HOST', '0.0.0.0')
     debug = bool(os.environ.get('DEBUG', True))
     secret = os.environ.get('SECRET_KEY', 'development_key')
+
+    app = Flask(__name__)
+    app.register_blueprint(views.common_views)
 
     app.wsgi_app = ProxyFix(app.wsgi_app)
 
