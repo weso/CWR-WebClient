@@ -1,10 +1,14 @@
+# -*- encoding: utf-8 -*-
 import os
 import logging
 
 from flask import url_for, request, Flask
 from werkzeug.contrib.fixers import ProxyFix
-from webapp.view import views
+from webapp.view import common_views,cwr_views,uso_views
 
+__author__ = 'Bernardo Martínez Garrido'
+__license__ = 'MIT'
+__status__ = 'Development'
 
 def url_for_other_page(page):
     args = request.view_args.copy()
@@ -19,7 +23,9 @@ if __name__ == '__main__':
     secret = os.environ.get('SECRET_KEY', 'development_key')
 
     app = Flask(__name__)
-    app.register_blueprint(views.common_views)
+    app.register_blueprint(common_views)
+    app.register_blueprint(cwr_views)
+    app.register_blueprint(uso_views)
 
     app.wsgi_app = ProxyFix(app.wsgi_app)
 
