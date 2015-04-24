@@ -59,6 +59,7 @@ setup(
         'gunicorn',
         'whitenoise',
         'CWR-API',
+        'enum34',
     ],
     tests_require=_tests_require,
     extras_require={'test': _tests_require},
