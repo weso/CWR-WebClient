@@ -1,10 +1,20 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends "base.html" %}
+{% block title %}Workload Info{% endblock %}
+{% block page_title %}Workload information{% endblock %}
+{% block content %}
+<div class="jumbotron">
+    <h2>{{ load.file }}</h2>
+    <p>
+        {% if load.status.name == 'done' %}
+        The file has been processed.
+        {% elif load.status.name == 'waiting' %}
+        The file is currently waiting on queue to be processed.
+        {% elif load.status.name == 'processing' %}
+        The file is currently being processed.
+        {% endif %}
+    </p>
+    {% if load.status.name == 'done' %}
+    <a href="{{ url_for('cwr_match.match') }}">Begin matching</a>
+    {% endif %}
+</div>
+{% endblock %}

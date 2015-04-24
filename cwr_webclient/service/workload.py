@@ -21,6 +21,10 @@ class CWRWorkloadService(object):
         pass
 
     @abstractmethod
+    def get_workload(self, number):
+        raise NotImplementedError('The get_workload method must be implemented')
+
+    @abstractmethod
     def get_workload_list(self):
         raise NotImplementedError('The get_workload_list method must be implemented')
 
@@ -30,10 +34,16 @@ class LocalCWRWorkloadService(CWRWorkloadService):
         super(LocalCWRWorkloadService, self).__init__()
         self._workload = []
 
-        self._workload.append(WorkloadInfo('file1', WorkloadStatus.processing))
-        self._workload.append(WorkloadInfo('file2', WorkloadStatus.waiting))
-        self._workload.append(WorkloadInfo('file3', WorkloadStatus.waiting))
-        self._workload.append(WorkloadInfo('file4', WorkloadStatus.done))
+        self._workload.append(WorkloadInfo(1, 'file1', WorkloadStatus.processing))
+        self._workload.append(WorkloadInfo(2, 'file2', WorkloadStatus.waiting))
+        self._workload.append(WorkloadInfo(3, 'file3', WorkloadStatus.waiting))
+        self._workload.append(WorkloadInfo(4, 'file4', WorkloadStatus.done))
+
+    def get_workload(self, number):
+        workload = None
+        matches = (w for w in self._workload if w.number == number)
+
+        return next(matches, None)
 
     def get_workload_list(self):
         return self._workload
