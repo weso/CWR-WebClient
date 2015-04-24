@@ -23,7 +23,7 @@
                 Processing
                 {% endif %}
             </td>
-            <td><a href="#">Info</a></td>
+            <td><a href="{{ url_for('.workload_info', number=load.number)}}">Info</a></td>
         </tr>
         {% endfor %}
         </thead>

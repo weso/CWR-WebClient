@@ -23,3 +23,10 @@ def workload():
     workload_list = workload_service.get_workload_list()
 
     return render_template('cwr_workload.html', workload=workload_list)
+
+
+@cwr_workload_blueprint.route('/<int:number>', methods=['GET'])
+def workload_info(number):
+    load = workload_service.get_workload(number)
+
+    return render_template('cwr_workload_info.html', load=load)
