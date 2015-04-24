@@ -20,7 +20,7 @@ Upload routes.
 
 @cwr_upload_blueprint.route('/upload', methods=['GET'])
 def upload():
-    return render_template('upload_cwr.html')
+    return render_template('cwr_upload.html')
 
 
 @cwr_upload_blueprint.route('/upload', methods=['POST'])
