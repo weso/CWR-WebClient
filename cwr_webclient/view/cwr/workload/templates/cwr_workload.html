@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Acknowledgement{% endblock %}
+{% block page_title %}CWR processing and matching{% endblock %}
+{% block content %}
+<div class="jumbotron">
+    <h2>CWR files workload</h2>
+    <table data-toggle="table" data="workload" data-cache="false" data-height="299">
+        <thead>
+        <tr>
+            <th data-field="file">File</th>
+            <th data-field="status">Status</th>
+            <th data-field="status">Check</th>
+        </tr>
+        {% for load in workload %}
+        <tr>
+            <td>{{ load.file }}</td>
+            <td>
+                {% if load.status.name == 'done' %}
+                Done
+                {% elif load.status.name == 'waiting' %}
+                Waiting
+                {% elif load.status.name == 'processing' %}
+                Processing
+                {% endif %}
+            </td>
+            <td><a href="#">Info</a></td>
+        </tr>
+        {% endfor %}
+        </thead>
+    </table>
+</div>
+{% endblock %}
