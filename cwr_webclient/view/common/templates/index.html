@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Index{% endblock %}
-{% block page_title %}CWR processing and matching{% endblock %}
+{% block page_title %}CWR frontend{% endblock %}
 {% block content %}
 <div class="jumbotron">
     <h2>Welcome!</h2>
@@ -20,8 +20,6 @@
 
     <p><a class="btn btn-primary btn-lg" role="button" href="{{ url_for('cwr_upload.upload') }}">Upload CWR files</a>
     </p>
-
-    <p><a class="btn btn-primary btn-lg" role="button" href="{{ url_for('uso.upload') }}">Upload USO files</a></p>
 
     <p></p>
 </div>
