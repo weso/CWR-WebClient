@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Upload{% endblock %}
-{% block page_title %}CWR processing and matching{% endblock %}
+{% block page_title %}CWR file upload{% endblock %}
 {% block head %}
 {{ super() }}
 <script src="{{ url_for('common_views.static', filename='js/loader.js') }}"></script>
@@ -8,7 +8,7 @@
     //<![CDATA[
     window.onload = function () {
         // Bind normal buttons
-        Ladda.bind('div:not(.progress-demo) button')
+        Ladda.bind('div:not(.progress-demo) button');
         //Ladda.bind('div:not(.progress-demo) button', {timeout: 1500});
         // Bind progress buttons and simulate loading progress
         //Ladda.bind('.progress-demo button', {
