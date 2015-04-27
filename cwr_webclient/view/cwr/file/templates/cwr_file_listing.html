@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}File Listing{% endblock %}
+{% block page_title %}CWR file listing{% endblock %}
+{% block content %}
+<h2>CWR files</h2>
+
+<p>Here are shown the CWR files on the server.</p>
+<table class="table">
+    <tr>
+        <th>File</th>
+        <th>Date</th>
+        <th>Status</th>
+    </tr>
+    {% for file in files %}
+    <tr>
+        <td>{{file.name}}</td>
+        <td>{{file.date.date()}}</td>
+        <td>{{file.status.name}}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
