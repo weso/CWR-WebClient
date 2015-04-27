@@ -37,20 +37,18 @@
 </script>
 {% endblock %}
 {% block content %}
-<div class="jumbotron">
-    <h2>CWR file uploading</h2>
+<h2>CWR file uploading</h2>
 
-    <p>Upload a CWR to start the validation process.</p>
+<p>Upload a CWR to start the validation process.</p>
 
-    <p>Pay attention this should be a valid CWR file. While the file name does not need to follow the standard
-        naming pattern, the file's content should stick to it.</p>
+<p>Pay attention this should be a valid CWR file. While the file name does not need to follow the standard
+    naming pattern, the file's content should stick to it.</p>
 
-    <p>For finding more about the CWR standard visit <a href="http://www.cisac.org">CISAC's website</a>.</p>
+<p>For finding more about the CWR standard visit <a href="http://www.cisac.org">CISAC's website</a>.</p>
 
-    <p>Note: Currently the parser is still under development. Not all CWR files will work.</p>
-</div>
+<p>Note: Currently the parser is still under development. Not all CWR files will work.</p>
 
-<form class="form-horizontal" role="form" method="post" enctype="multipart/form-data"
+<form role="form" method="post" enctype="multipart/form-data"
       action="{{ url_for('.upload_handler') }}">
     <div class="form-group">
         <label for="cwr_file" class="col-sm-2 control-label">File input</label>
@@ -59,8 +57,7 @@
             <input type="file" id="cwr_file" class="btn btn-default" name="file">
         </div>
     </div>
-    <button type="submit" class="btn btn-primary pull-right ladda-button" data-style="expand-right"><span
+    <button type="submit" class="btn btn-primary ladda-button" data-style="expand-right"><span
             class="ladda-label">Submit</span></button>
 </form>
-<p></p>
 {% endblock %}

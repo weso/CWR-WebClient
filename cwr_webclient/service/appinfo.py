@@ -40,6 +40,7 @@ class ApplicationInfoService(object):
 class WESOApplicationInfoService(ApplicationInfoService):
     def __init__(self):
         super(WESOApplicationInfoService, self).__init__()
+        # TODO: Change this, the data should be read from somewhere
         self._company = CompanyInfo('WESO', 'http://www.weso.es')
 
 
