@@ -25,7 +25,7 @@ def create_app():
     from flask import Flask
     from werkzeug.contrib.fixers import ProxyFix
     from cwr_webclient.view import common_blueprint, cwr_file_blueprint, cwr_validation_blueprint, \
-        cwr_acknowledgement_blueprint, cwr_workload_blueprint, cwr_match_blueprint, cwr_database_blueprint
+        cwr_acknowledgement_blueprint, cwr_match_blueprint, cwr_database_blueprint
 
     from cwr_webclient.uploads import __uploads__
 
@@ -42,7 +42,6 @@ def create_app():
     app.register_blueprint(cwr_acknowledgement_blueprint, url_prefix='/cwr/acknowledgement')
     app.register_blueprint(cwr_file_blueprint, url_prefix='/cwr')
     app.register_blueprint(cwr_match_blueprint, url_prefix='/cwr/match')
-    app.register_blueprint(cwr_workload_blueprint, url_prefix='/cwr/works')
     app.register_blueprint(cwr_database_blueprint, url_prefix='/cwr/db')
 
     app.wsgi_app = ProxyFix(app.wsgi_app)
