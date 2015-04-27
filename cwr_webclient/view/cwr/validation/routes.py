@@ -22,8 +22,8 @@ CWR validation routes.
 
 @cwr_validation_blueprint.route('/report', methods=['GET'])
 def report():
-    cwr_service = current_app.config['CWR_FILE_SERVICE']
-    cwr = cwr_service.get_data(session['cwr_file_id'], current_app.config['UPLOAD_FOLDER'])
+    cwr_service = current_app.config['FILE_SERVICE']
+    cwr = cwr_service.get_file(session['cwr_file_id'])
 
     return render_template('summary.html', cwr=cwr, current_tab='summary_item',
                            groups=cwr.transmission.groups)
@@ -32,8 +32,8 @@ def report():
 @cwr_validation_blueprint.route('/report/group/<int:index>', defaults={'page': 1}, methods=['GET'])
 @cwr_validation_blueprint.route('/report/group/<int:index>/page/<int:page>', methods=['GET'])
 def report_transactions(index, page):
-    cwr_service = current_app.config['CWR_FILE_SERVICE']
-    cwr = cwr_service.get_data(session['cwr_file_id'], current_app.config['UPLOAD_FOLDER'])
+    cwr_service = current_app.config['FILE_SERVICE']
+    cwr = cwr_service.get_file(session['cwr_file_id'])
 
     if not cwr and page != 1:
         abort(404)
