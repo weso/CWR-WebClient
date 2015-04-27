@@ -6,34 +6,42 @@
 <head>
     {% block head %}
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}{% endblock %} - CWR processing and matching</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="CWR validation and processing web application.">
+    <meta name="keywords" content="CWR, commonworks, validation, file">
+    <meta name="author" content="WESO, Bernardo Martínez Garrido">
+    <title>{% block title %}{% endblock %} - CWR Web Application</title>
     <link rel=stylesheet type=text/css
-          href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+          href="{{ url_for('common_views.static', filename='css/bootstrap.min.css') }}">
     <link rel=stylesheet type=text/css href="{{ url_for('common_views.static', filename='css/style.css') }}">
-    <script src="{{ url_for('common_views.static', filename='js/cwr.js') }}"></script>
-    <script
-            src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-    <script src="{{ url_for('common_views.static', filename='js/progressbar.js') }}"></script>
-    <script src="{{ url_for('common_views.static', filename='js/checklist.js') }}"></script>
     {% endblock %}
 </head>
 <body>
-{{ navbar_functions.render_main_navbar() }}
-<div class="jumbotron">
-    <div class="container">
-        <div class="page-header">
-            <h1>{% block page_title %}{% endblock %}</h1>
+{{ navbar_functions.render_navbar() }}
+<div class="container-fluid">
+    <div class="row">
+        {% block sidebar %}
+        {{ navbar_functions.render_sidebar() }}
+        {% endblock %}
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <h1 class="page-header">{% block page_title %}{% endblock %}</h1>
+
+            <div class="row placeholders">
+                {{ flash_functions.show_flashes() }}
+                {% block content %}
+                {% endblock %}
+                <hr>
+                {{ footer_functions.render_footer(company.name, company.url) }}
+            </div>
         </div>
     </div>
 </div>
-<div class="container">
-    {{ flash_functions.show_flashes() }}
-    {% block content %}
-    {% endblock %}
-    <hr>
-    {{ footer_functions.render_footer(company.name, company.url) }}
-</div>
+{% block scripts %}
+<script
+        src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="{{ url_for('common_views.static', filename='js/bootstrap.min.js') }}"></script>
+<script src="{{ url_for('common_views.static', filename='js/progressbar.js') }}"></script>
+<script src="{{ url_for('common_views.static', filename='js/checklist.js') }}"></script>
+{% endblock %}
 </body>
 </html>
