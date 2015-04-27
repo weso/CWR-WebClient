@@ -2,8 +2,7 @@
 from flask import render_template, redirect, url_for, abort, session, Blueprint, current_app
 
 from cwr_webclient.config import view_conf
-from cwr_webclient.service.cwr_file import LocalCWRFileService
-from cwr_webclient.service.pagination import DefaultPaginationService
+
 
 __author__ = 'Bernardo Martínez Garrido'
 __license__ = 'MIT'
@@ -16,9 +15,6 @@ cwr_validation_blueprint = Blueprint('cwr_validation', __name__,
 
 PER_PAGE = view_conf.per_page
 
-cwr_service = LocalCWRFileService()
-pagination_service = DefaultPaginationService()
-
 """
 CWR validation routes.
 """
@@ -26,7 +22,8 @@ CWR validation routes.
 
 @cwr_validation_blueprint.route('/report', methods=['GET'])
 def report():
-    cwr = cwr_service.get_data(session['cwr_file_id'], current_app.config['UPLOAD_FOLDER'])
+    cwr_service = current_app.config['FILE_SERVICE']
+    cwr = cwr_service.get_file(session['cwr_file_id'])
 
     return render_template('summary.html', cwr=cwr, current_tab='summary_item',
                            groups=cwr.transmission.groups)
@@ -35,12 +32,15 @@ def report():
 @cwr_validation_blueprint.route('/report/group/<int:index>', defaults={'page': 1}, methods=['GET'])
 @cwr_validation_blueprint.route('/report/group/<int:index>/page/<int:page>', methods=['GET'])
 def report_transactions(index, page):
-    cwr = cwr_service.get_data(session['cwr_file_id'], current_app.config['UPLOAD_FOLDER'])
+    cwr_service = current_app.config['FILE_SERVICE']
+    cwr = cwr_service.get_file(session['cwr_file_id'])
 
     if not cwr and page != 1:
         abort(404)
 
     group = cwr.transmission.groups[index]
+
+    pagination_service = current_app.config['PAGINATION_SERVICE']
 
     transactions = pagination_service.get_page_transactions(page, group)
     pagination = pagination_service.get_transactions_paginator(page, group)
