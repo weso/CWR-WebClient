@@ -15,7 +15,13 @@
     <tr>
         <td>{{file.name}}</td>
         <td>{{file.date.date()}}</td>
-        <td>{{file.status.name}}</td>
+        {% if file.status.name == 'done' %}
+        <td><span class="label label-success">{{file.status.name}}</span></td>
+        {% elif file.status.name == 'processing' %}
+        <td><span class="label label-warning">{{file.status.name}}</span></td>
+        {% elif file.status.name == 'rejected' %}
+        <td><span class="label label-danger">{{file.status.name}}</span></td>
+        {% endif %}
     </tr>
     {% endfor %}
 </table>
