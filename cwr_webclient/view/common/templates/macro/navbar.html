@@ -1,29 +1,52 @@
-{% macro render_main_navbar() %}
-<div id="header_menu">
-    <div class="navbar navbar-inverse" role="navigation">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse"
-                        data-target="#collapse_main">
-                    <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span>
-                    <span class="icon-bar"></span> <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="{{ url_for('common_views.index') }}">Home</a>
-            </div>
-            <div class="collapse navbar-collapse" id="collapse_main">
-                <ul class="nav navbar-nav">
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">CWR
-                            <span class="caret"></span></a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="{{ url_for('cwr_upload.upload') }}">Upload</a></li>
-                            <li><a href="{{ url_for('cwr_workload.workload') }}">Workload</a></li>
-                            <li><a href="{{ url_for('cwr_database.list') }}">Database info</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
+{% macro main_menu() %}
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Home</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <form class="navbar-form navbar-right">
+                <div class="form-group">
+                    <input type="text" placeholder="Email" class="form-control">
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="Password" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-success">Sign in</button>
+            </form>
         </div>
     </div>
+</nav>
+{% endmacro %}
+
+{% macro side_menu() %}
+<div class="col-sm-3 col-md-2 sidebar">
+    <ul class="nav nav-stacked">
+        <strong>CWR</strong>
+        <hr>
+        <li class="nav-header"><a href="#" data-toggle="collapse" data-target="#cwrFileMenu">Files<i
+                class="glyphicon glyphicon-chevron-right"></i></a>
+            <ul class="nav nav-stacked collapse" id="cwrFileMenu">
+                <li><a href="{{ url_for('cwr_file.list') }}">Files list</a></li>
+                <li><a href="{{ url_for('cwr_file.search') }}">Search</a></li>
+                <li><a href="{{ url_for('cwr_file.upload') }}">Upload</a></li>
+            </ul>
+        </li>
+        <hr>
+        <strong>Links</strong>
+        <hr>
+        <ul class="nav nav-pills nav-stacked">
+            <li class="nav-header"></li>
+            <li><a href="http://www.cisac.org/"><i class="glyphicon glyphicon-link"></i>CISAC</a></li>
+            <li><a href="http://www.weso.org/"><i class="glyphicon glyphicon-link"></i>WESO</a></li>
+        </ul>
+    </ul>
 </div>
 {% endmacro %}

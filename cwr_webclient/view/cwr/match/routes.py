@@ -1,7 +1,6 @@
 # -*- encoding: utf-8 -*-
-from flask import render_template, redirect, url_for, Blueprint
+from flask import render_template, redirect, url_for, Blueprint, current_app
 
-from cwr_webclient.service.match import LocalMatchingService
 
 __author__ = 'Bernardo Martínez Garrido'
 __license__ = 'MIT'
@@ -10,8 +9,6 @@ __status__ = 'Development'
 cwr_match_blueprint = Blueprint('cwr_match', __name__,
                                 template_folder='templates')
 
-match_service = LocalMatchingService()
-
 """
 CWR matching routes.
 """
@@ -19,6 +16,7 @@ CWR matching routes.
 
 @cwr_match_blueprint.route('/', methods=['GET'])
 def match():
+    match_service = current_app.config['MATCH_SERVICE']
     sources = match_service.get_sources()
     return render_template('match.html', sources=sources)
 
@@ -27,6 +25,7 @@ def match():
 def report():
     result = {}
 
+    match_service = current_app.config['MATCH_SERVICE']
     result['pairs'] = match_service.get_match_pairs()
 
     return render_template('match_result.html', result=result)
@@ -40,6 +39,8 @@ def report_download():
 @cwr_match_blueprint.route('/edit', methods=['GET'])
 def edit():
     result = {}
+
+    match_service = current_app.config['MATCH_SERVICE']
 
     result['pairs'] = match_service.get_match_pairs()
 
