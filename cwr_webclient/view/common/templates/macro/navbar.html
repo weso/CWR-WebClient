@@ -35,10 +35,11 @@
                 class="glyphicon glyphicon-chevron-right"></i></a>
             <ul class="nav nav-stacked collapse" id="cwrFileMenu">
                 <li><a href="{{ url_for('cwr_file.list') }}">Files list</a></li>
+                <li><a href="{{ url_for('cwr_file.search') }}">Search</a></li>
                 <li><a href="{{ url_for('cwr_file.upload') }}">Upload</a></li>
             </ul>
         </li>
-        <li class="nav-header"><a href="#" data-toggle="collapse" data-target="#cwrJobMenu">Jobs<i
+        <li class="nav-header"><a href="#" data-toggle="collapse" data-target="#cwrJobMenu">Other<i
                 class="glyphicon glyphicon-chevron-right"></i></a>
             <ul class="nav nav-stacked collapse" id="cwrJobMenu">
                 <li><a href="{{ url_for('cwr_database.list') }}">Database info</a></li>

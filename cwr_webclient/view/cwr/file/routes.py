@@ -49,6 +49,11 @@ def list():
     return render_template('cwr_file_listing.html', files=files)
 
 
+@cwr_file_blueprint.route('/file/search', methods=['GET'])
+def search():
+    return render_template('cwr_search.html')
+
+
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1] not in REJECTED_EXTENSIONS
