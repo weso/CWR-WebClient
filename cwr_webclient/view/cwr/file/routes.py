@@ -7,23 +7,25 @@ __author__ = 'Bernardo Martínez Garrido'
 __license__ = 'MIT'
 __status__ = 'Development'
 
-cwr_upload_blueprint = Blueprint('cwr_upload', __name__,
-                                 template_folder='templates',
-                                 static_folder='static')
+cwr_file_blueprint = Blueprint('cwr_file', __name__,
+                               template_folder='templates',
+                               static_folder='static')
 
 file_service = LocalFileService()
+
+REJECTED_EXTENSIONS = set(['html', 'htm', 'php'])
 
 """
 Upload routes.
 """
 
 
-@cwr_upload_blueprint.route('/upload', methods=['GET'])
+@cwr_file_blueprint.route('/upload', methods=['GET'])
 def upload():
     return render_template('cwr_upload.html')
 
 
-@cwr_upload_blueprint.route('/upload', methods=['POST'])
+@cwr_file_blueprint.route('/upload', methods=['POST'])
 def upload_handler():
     # Get the name of the uploaded file
     sent_file = request.files['file']
@@ -39,7 +41,11 @@ def upload_handler():
         return redirect(url_for('.upload'))
 
 
-REJECTED_EXTENSIONS = set(['html', 'htm', 'php'])
+@cwr_file_blueprint.route('/file', methods=['GET'])
+def list():
+    files = file_service.get_files()
+
+    return render_template('cwr_file_listing.html', files=files)
 
 
 def allowed_file(filename):
