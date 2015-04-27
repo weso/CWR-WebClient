@@ -1,9 +1,9 @@
 {% extends "base.html" %}
+{% import "macro/form.html" as form_functions %}
 {% block title %}Upload{% endblock %}
 {% block page_title %}CWR file upload{% endblock %}
 {% block head %}
 {{ super() }}
-<script src="{{ url_for('common_views.static', filename='js/loader.js') }}"></script>
 <script type="text/javascript">
     //<![CDATA[
     window.onload = function () {
@@ -47,17 +47,5 @@
 <p>For finding more about the CWR standard visit <a href="http://www.cisac.org">CISAC's website</a>.</p>
 
 <p>Note: Currently the parser is still under development. Not all CWR files will work.</p>
-
-<form role="form" method="post" enctype="multipart/form-data"
-      action="{{ url_for('.upload_handler') }}">
-    <div class="form-group">
-        <label for="cwr_file" class="col-sm-2 control-label">File input</label>
-
-        <div class="col-sm-10">
-            <input type="file" id="cwr_file" class="btn btn-default" name="file">
-        </div>
-    </div>
-    <button type="submit" class="btn btn-primary ladda-button" data-style="expand-right"><span
-            class="ladda-label">Submit</span></button>
-</form>
+{{ form_functions.file_upload(url_for('.upload_handler')) }}
 {% endblock %}
