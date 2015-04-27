@@ -53,6 +53,7 @@ def create_app():
     app.config['UPLOAD_FOLDER'] = __uploads__.path()
 
     app.jinja_env.globals['company'] = appinfo_service.get_company()
+    app.jinja_env.globals['application'] = appinfo_service.get_application()
 
     if debug:
         logging.basicConfig(level=logging.INFO)
