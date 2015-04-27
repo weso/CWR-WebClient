@@ -29,6 +29,10 @@ def create_app():
 
     from cwr_webclient.uploads import __uploads__
 
+    from cwr_webclient.service.appinfo import WESOApplicationInfoService
+
+    appinfo_service = WESOApplicationInfoService()
+
     debug = bool(os.environ.get('DEBUG', True))
     secret = os.environ.get('SECRET_KEY', 'development_key')
 
@@ -47,6 +51,8 @@ def create_app():
     app.config['SECRET_KEY'] = secret
 
     app.config['UPLOAD_FOLDER'] = __uploads__.path()
+
+    app.jinja_env.globals['company'] = appinfo_service.get_company()
 
     if debug:
         logging.basicConfig(level=logging.INFO)
