@@ -28,18 +28,31 @@
 
 {% macro side_menu() %}
 <div class="col-sm-3 col-md-2 sidebar">
-    <ul class="nav nav-sidebar">
-        <li><a href="/">Home</a></li>
-    </ul>
-    <hr>
     <ul class="nav nav-stacked">
-        <li class="nav-header"><a href="#" data-toggle="collapse" data-target="#cwrMenu">CWR<i
+        <strong>CWR</strong>
+        <hr>
+        <li class="nav-header"><a href="#" data-toggle="collapse" data-target="#cwrFileMenu">Files<i
                 class="glyphicon glyphicon-chevron-right"></i></a>
-            <ul class="nav nav-stacked collapse" id="cwrMenu">
+            <ul class="nav nav-stacked collapse" id="cwrFileMenu">
+                <li><a href="#">Files list</a></li>
                 <li><a href="{{ url_for('cwr_upload.upload') }}">Upload</a></li>
+            </ul>
+        </li>
+        <li class="nav-header"><a href="#" data-toggle="collapse" data-target="#cwrJobMenu">Jobs<i
+                class="glyphicon glyphicon-chevron-right"></i></a>
+            <ul class="nav nav-stacked collapse" id="cwrJobMenu">
                 <li><a href="{{ url_for('cwr_workload.workload') }}">Workload</a></li>
                 <li><a href="{{ url_for('cwr_database.list') }}">Database info</a></li>
             </ul>
+        </li>
+        <hr>
+        <strong>Links</strong>
+        <hr>
+        <ul class="nav nav-pills nav-stacked">
+            <li class="nav-header"></li>
+            <li><a href="http://www.cisac.org/"><i class="glyphicon glyphicon-link"></i>CISAC</a></li>
+            <li><a href="http://www.weso.org/"><i class="glyphicon glyphicon-link"></i>WESO</a></li>
+        </ul>
     </ul>
 </div>
 {% endmacro %}
