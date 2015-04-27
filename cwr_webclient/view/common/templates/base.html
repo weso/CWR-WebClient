@@ -2,34 +2,48 @@
 <html lang="en">
 {% import "macro/flash.html" as flash_functions %}
 {% import "macro/navbar.html" as navbar_functions %}
+{% import "macro/footer.html" as footer_functions %}
 <head>
     {% block head %}
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}{% endblock %} - CWR processing and matching</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="CWR validation and processing web application.">
+    <meta name="keywords" content="CWR, commonworks, validation, file">
+    <meta name="author" content="WESO, Bernardo Martínez Garrido">
+    <title>{% block title %}{% endblock %} - CWR Web Application</title>
     <link rel=stylesheet type=text/css
-          href="{{ url_for('common_views.static', filename='bootstrap/css/bootstrap.min.css') }}">
+          href="{{ url_for('common_views.static', filename='css/bootstrap.min.css') }}">
     <link rel=stylesheet type=text/css href="{{ url_for('common_views.static', filename='css/style.css') }}">
-    <script src="{{ url_for('common_views.static', filename='js/cwr.js') }}"></script>
-    <script
-            src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="{{ url_for('common_views.static', filename='bootstrap/js/bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('common_views.static', filename='js/progressbar.js') }}"></script>
     {% endblock %}
 </head>
 <body>
-<div id="wrapper" class="container">
-    <div id="header">
-        <div class="page-header">
-            <h1>{% block page_title %}{% endblock %}</h1>
+{{ navbar_functions.main_menu() }}
+<div class="container-fluid">
+    <div class="row">
+        {% block sidebar %}
+        {{ navbar_functions.side_menu() }}
+        {% endblock %}
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <h1 class="page-header">{% block page_title %}{% endblock %}</h1>
+
+            <div class="row placeholders">
+                {{ flash_functions.message_flasher() }}
+                {% block content %}
+                {% endblock %}
+                {{ footer_functions.footer() }}
+            </div>
         </div>
     </div>
-    {{ navbar_functions.render_main_navbar() }}
-    <div id="content">
-        {{ flash_functions.show_flashes() }}
-        {% block content %}
-        {% endblock %}
-    </div>
 </div>
+{% block scripts %}
+<script
+        src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="{{ url_for('common_views.static', filename='js/bootstrap.min.js') }}"></script>
+<script src="{{ url_for('common_views.static', filename='js/progressbar.js') }}"></script>
+<script src="{{ url_for('common_views.static', filename='js/checklist.js') }}"></script>
+<script src="{{ url_for('common_views.static', filename='js/loader.js') }}"></script>
+<script src="{{ url_for('common_views.static', filename='js/navbar.js') }}"></script>
+<script src="{{ url_for('common_views.static', filename='js/bootstrap-filestyle.min.js') }}"></script>
+{% endblock %}
 </body>
 </html>

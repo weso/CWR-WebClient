@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% import "macro/form.html" as form_functions %}
+{% block title %}Upload{% endblock %}
+{% block page_title %}CWR file upload{% endblock %}
+{% block head %}
+{{ super() }}
+<script type="text/javascript">
+    //<![CDATA[
+    window.onload = function () {
+        // Bind normal buttons
+        Ladda.bind('div:not(.progress-demo) button');
+        //Ladda.bind('div:not(.progress-demo) button', {timeout: 1500});
+        // Bind progress buttons and simulate loading progress
+        //Ladda.bind('.progress-demo button', {
+        //callback: function (instance) {
+        //var progress = 0;
+        //var interval = setInterval(function () {
+        //    progress = Math.min(progress + Math.random() * 0.1, 1);
+        //    instance.setProgress(progress);
+        //    if (progress === 1) {
+        //        instance.stop();
+        //        clearInterval(interval);
+        //    }
+        //}, 200);
+        //}
+        //});
+        // You can control loading explicitly using the JavaScript API
+        // as outlined below:
+        // var l = Ladda.create( document.querySelector( 'button' ) );
+        // l.start();
+        // l.stop();
+        // l.toggle();
+        // l.isLoading();
+        // l.setProgress( 0-1 );
+    };
+    //]]>
+</script>
+{% endblock %}
+{% block content %}
+<h2>CWR file uploading</h2>
+
+<p>Upload a CWR to start the validation process.</p>
+
+<p>Pay attention this should be a valid CWR file. While the file name does not need to follow the standard
+    naming pattern, the file's content should stick to it.</p>
+
+<p>For finding more about the CWR standard visit <a href="http://www.cisac.org">CISAC's website</a>.</p>
+
+<p>Note: Currently the parser is still under development. Not all CWR files will work.</p>
+{{ form_functions.file_upload(url_for('.upload_handler')) }}
+{% endblock %}
