@@ -2,6 +2,7 @@
 <html lang="en">
 {% import "macro/flash.html" as flash_functions %}
 {% import "macro/navbar.html" as navbar_functions %}
+{% import "macro/footer.html" as footer_functions %}
 <head>
     {% block head %}
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -19,18 +20,20 @@
     {% endblock %}
 </head>
 <body>
-<div id="wrapper" class="container">
-    <div id="header">
+{{ navbar_functions.render_main_navbar() }}
+<div class="jumbotron">
+    <div class="container">
         <div class="page-header">
             <h1>{% block page_title %}{% endblock %}</h1>
         </div>
     </div>
-    {{ navbar_functions.render_main_navbar() }}
-    <div id="content">
-        {{ flash_functions.show_flashes() }}
-        {% block content %}
-        {% endblock %}
-    </div>
+</div>
+<div class="container">
+    {{ flash_functions.show_flashes() }}
+    {% block content %}
+    {% endblock %}
+    <hr>
+    {{ footer_functions.render_footer(company.name, company.url) }}
 </div>
 </body>
 </html>
