@@ -32,11 +32,14 @@
         <li><a href="/">Home</a></li>
     </ul>
     <hr>
-    <h3>CWR</h3>
-    <ul class="nav nav-sidebar">
-        <li><a href="{{ url_for('cwr_upload.upload') }}">Upload</a></li>
-        <li><a href="{{ url_for('cwr_workload.workload') }}">Workload</a></li>
-        <li><a href="{{ url_for('cwr_database.list') }}">Database info</a></li>
+    <ul class="nav nav-stacked">
+        <li class="nav-header"><a href="#" data-toggle="collapse" data-target="#cwrMenu">CWR<i
+                class="glyphicon glyphicon-chevron-right"></i></a>
+            <ul class="nav nav-stacked collapse" id="cwrMenu">
+                <li><a href="{{ url_for('cwr_upload.upload') }}">Upload</a></li>
+                <li><a href="{{ url_for('cwr_workload.workload') }}">Workload</a></li>
+                <li><a href="{{ url_for('cwr_database.list') }}">Database info</a></li>
+            </ul>
     </ul>
 </div>
 {% endmacro %}
