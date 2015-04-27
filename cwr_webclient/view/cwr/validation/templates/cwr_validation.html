@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% import "macro/cwr.html" as record_functions %}
-{% block title %}Matching{% endblock %}
-{% block page_title %}CWR processing and matching{% endblock %}
+{% block title %}CWR Validation{% endblock %}
+{% block page_title %}CWR processing and validation{% endblock %}
 {% block head %}
 {{ super() }}
-<script src="{{ url_for('.static', filename='js/sidebar.js') }}"></script>
+<link rel=stylesheet type=text/css href="{{ url_for('common_views.static', filename='css/cwr-report.css') }}">
 <script type="text/javascript">
     //<![CDATA[
     window.onload = function () {
@@ -16,24 +16,19 @@
 </script>
 {% endblock %}
 {% block content %}
-<div>
-    <div class="row">
-        {{ record_functions.show_groups_navbar(groups) }}
-        <div class="report-container col-md-10">
-            <div class="report-body">
-                {% block report_data %}
-                {% endblock %}
-            </div>
+<div class="row">
+    {{ record_functions.show_groups_navbar(groups) }}
+    <div class="report-container col-md-10">
+        <div class="report-body">
+            {% block report_data %}
+            {% endblock %}
         </div>
     </div>
-    <hr>
-    <div>
-        <a id="button-download" class="btn btn-primary" role="button">Download report</a>
-        <a class="btn btn-primary" role="button" href="{{ url_for('cwr_acknowledgement.report') }}">Generate
-            acknowledgement file</a>
-        <a class="btn btn-primary" role="button" href="{{ url_for('cwr_match.match') }}">Go to matches
-            reconciliation</a>
-
-        <p></p></div>
+</div>
+<hr>
+<div>
+    <a id="button-download" class="btn btn-primary" role="button">Download report</a>
+    <a class="btn btn-primary" role="button" href="{{ url_for('cwr_acknowledgement.report') }}">Generate
+        acknowledgement file</a>
 </div>
 {% endblock %}

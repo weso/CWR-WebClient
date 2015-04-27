@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block title %}Matching{% endblock %}
-{% block page_title %}CWR processing and matching{% endblock %}
+{% block page_title %}CWR matching information{% endblock %}
 {% block head %}
 {{ super() }}
 <script type="text/javascript">
@@ -32,46 +32,34 @@
     <p>As this is a mock, these sources won't really be used.</p>
 
     <form action="">
-        <table>
-            <tr>
-                <th>USO file</th>
-                <th>Has matches?</th>
-                <th>Use?</th>
-            </tr>
-            {% for source in sources.uso %}
-            <tr>
-                <td>{{ source.name }}</td>
-                <td>
-                    {% if source.matched %}
-                    Yes
-                    {% else %}
-                    No
-                    {% endif %}
-                </td>
-                <td>
-                    <input type="checkbox" name="source" value={{ source.id }} checked><br>
-                </td>
-            </tr>
-            {% endfor %}
-        </table>
-    </form>
-    <p></p>
-
-    <form action="">
-        <table>
-            <tr>
-                <th>CWR file</th>
-                <th>Use?</th>
-            </tr>
+        <div class="well">
+            <h3>CWR files to use as sources:</h3>
             {% for source in sources.cwr %}
-            <tr>
-                <td>{{ source.name }}</td>
-                <td>
-                    <input type="checkbox" name="source" value={{ source.id }} checked><br>
-                </td>
-            </tr>
+            <div class="checkbox">
+                <label><input type="checkbox" value={{ source.id }}>{{ source.name }}</label>
+            </div>
             {% endfor %}
-        </table>
+        </div>
+        <div class="well">
+            <h3>USO files with matches to use as sources:</h3>
+            {% for source in sources.uso %}
+            {% if source.matched %}
+            <div class="checkbox">
+                <label><input type="checkbox" value={{ source.id }}>{{ source.name }}</label>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+        <div class="well">
+            <h3>USO files with no matches to use as sources:</h3>
+            {% for source in sources.uso %}
+            {% if not source.matched %}
+            <div class="checkbox">
+                <label><input type="checkbox" value={{ source.id }}>{{ source.name }}</label>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
     </form>
 
 

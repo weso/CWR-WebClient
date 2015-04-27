@@ -1,34 +1,35 @@
 # -*- encoding: utf-8 -*-
 from flask import render_template, redirect, url_for, request, session, flash, Blueprint, current_app
 
-from cwr_webclient.service.file import LocalFileService
 
 __author__ = 'Bernardo Martínez Garrido'
 __license__ = 'MIT'
 __status__ = 'Development'
 
-cwr_upload_blueprint = Blueprint('cwr_upload', __name__,
-                                 template_folder='templates',
-                                 static_folder='static')
+cwr_file_blueprint = Blueprint('cwr_file', __name__,
+                               template_folder='templates',
+                               static_folder='static')
 
-file_service = LocalFileService()
+REJECTED_EXTENSIONS = set(['html', 'htm', 'php'])
 
 """
 Upload routes.
 """
 
 
-@cwr_upload_blueprint.route('/upload', methods=['GET'])
+@cwr_file_blueprint.route('/upload', methods=['GET'])
 def upload():
-    return render_template('upload_cwr.html')
+    return render_template('cwr_upload.html')
 
 
-@cwr_upload_blueprint.route('/upload', methods=['POST'])
+@cwr_file_blueprint.route('/upload', methods=['POST'])
 def upload_handler():
     # Get the name of the uploaded file
     sent_file = request.files['file']
 
     if sent_file:
+        file_service = current_app.config['FILE_SERVICE']
+
         file_id = file_service.save_file(sent_file, current_app.config['UPLOAD_FOLDER'])
 
         session['cwr_file_id'] = file_id
@@ -39,7 +40,18 @@ def upload_handler():
         return redirect(url_for('.upload'))
 
 
-REJECTED_EXTENSIONS = set(['html', 'htm', 'php'])
+@cwr_file_blueprint.route('/file', methods=['GET'])
+def list():
+    file_service = current_app.config['FILE_SERVICE']
+
+    files = file_service.get_files()
+
+    return render_template('cwr_file_listing.html', files=files)
+
+
+@cwr_file_blueprint.route('/file/search', methods=['GET'])
+def search():
+    return render_template('cwr_search.html')
 
 
 def allowed_file(filename):
