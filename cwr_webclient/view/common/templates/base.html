@@ -17,21 +17,20 @@
     {% endblock %}
 </head>
 <body>
-{{ navbar_functions.render_navbar() }}
+{{ navbar_functions.main_menu() }}
 <div class="container-fluid">
     <div class="row">
         {% block sidebar %}
-        {{ navbar_functions.render_sidebar() }}
+        {{ navbar_functions.side_menu() }}
         {% endblock %}
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <h1 class="page-header">{% block page_title %}{% endblock %}</h1>
 
             <div class="row placeholders">
-                {{ flash_functions.show_flashes() }}
+                {{ flash_functions.message_flasher() }}
                 {% block content %}
                 {% endblock %}
-                <hr>
-                {{ footer_functions.render_footer() }}
+                {{ footer_functions.footer() }}
             </div>
         </div>
     </div>
@@ -42,6 +41,8 @@
 <script src="{{ url_for('common_views.static', filename='js/bootstrap.min.js') }}"></script>
 <script src="{{ url_for('common_views.static', filename='js/progressbar.js') }}"></script>
 <script src="{{ url_for('common_views.static', filename='js/checklist.js') }}"></script>
+<script src="{{ url_for('common_views.static', filename='js/loader.js') }}"></script>
+<script src="{{ url_for('common_views.static', filename='js/bootstrap-filestyle.min.js') }}"></script>
 {% endblock %}
 </body>
 </html>
