@@ -26,6 +26,25 @@ class CompanyInfo(object):
         return self._url
 
 
+class ApplicationInfo(object):
+    def __init__(self, year, cms_url, cms_name):
+        self._year = year
+        self._cms_url = cms_url
+        self._cms_name = cms_name
+
+    @property
+    def year(self):
+        return self._year
+
+    @property
+    def cms_name(self):
+        return self._cms_name
+
+    @property
+    def cms_url(self):
+        return self._cms_url
+
+
 class ApplicationInfoService(object):
     __metaclass__ = ABCMeta
 
@@ -42,7 +61,10 @@ class WESOApplicationInfoService(ApplicationInfoService):
         super(WESOApplicationInfoService, self).__init__()
         # TODO: Change this, the data should be read from somewhere
         self._company = CompanyInfo('WESO', 'http://www.weso.es')
-
+        self._application = ApplicationInfo(2015, 'https://github.com/weso/CWR-WebClient', 'GitHub')
 
     def get_company(self):
         return self._company
+
+    def get_application(self):
+        return self._application
