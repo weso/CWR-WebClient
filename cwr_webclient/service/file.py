@@ -40,7 +40,8 @@ class LocalFileService(FileService):
         super(FileService, self).__init__()
         self._files = [CWRFileData('File1', datetime.datetime.now(), WorkloadStatus.done),
                        CWRFileData('File2', datetime.datetime.now(), WorkloadStatus.done),
-                       CWRFileData('File3', datetime.datetime.now(), WorkloadStatus.processing)]
+                       CWRFileData('File3', datetime.datetime.now(), WorkloadStatus.processing),
+                       CWRFileData('File4', datetime.datetime.now(), WorkloadStatus.rejected)]
         self._files_data = {}
         self._path = path
         self._decoder = CWRFileDecoder()
