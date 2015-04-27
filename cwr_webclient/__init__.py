@@ -30,6 +30,11 @@ def create_app():
     from cwr_webclient.uploads import __uploads__
 
     from cwr_webclient.service.appinfo import WESOApplicationInfoService
+    from cwr_webclient.service.file import LocalFileService
+    from cwr_webclient.service.database import LocalCWRDatabaseService
+    from cwr_webclient.service.match import LocalMatchingService
+    from cwr_webclient.service.cwr_file import LocalCWRFileService
+    from cwr_webclient.service.pagination import DefaultPaginationService
 
     appinfo_service = WESOApplicationInfoService()
 
@@ -50,6 +55,12 @@ def create_app():
     app.config['SECRET_KEY'] = secret
 
     app.config['UPLOAD_FOLDER'] = __uploads__.path()
+
+    app.config['FILE_SERVICE'] = LocalFileService()
+    app.config['DATABASE_SERVICE'] = LocalCWRDatabaseService()
+    app.config['MATCH_SERVICE'] = LocalMatchingService()
+    app.config['CWR_FILE_SERVICE'] = LocalCWRFileService()
+    app.config['PAGINATION_SERVICE'] = DefaultPaginationService()
 
     app.jinja_env.globals['company'] = appinfo_service.get_company()
     app.jinja_env.globals['application'] = appinfo_service.get_application()
