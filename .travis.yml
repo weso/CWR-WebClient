@@ -6,7 +6,7 @@ python:
 
 before_script:
   # Making executable the deployment script
-  - chmod +x ./.scripts/deploy.sh
+  - chmod +x ./.scripts/deploy_heroku.sh
 install:
   - pip install tox
 script:
