@@ -10,7 +10,6 @@
         <a class="navbar-brand" rel="summary" href="{{ url_for('cwr_contents.summary') }}">Summary</a>
     </div>
 
-
     <div class="collapse navbar-collapse">
 
         <ul class="nav navbar-nav">
@@ -23,6 +22,9 @@
                     {% endfor %}
                 </ul>
             </li>
+            <li><a id="button-download-cwr-report" href="#">Download report</a></li>
+            <li><a href="{{ url_for('cwr_acknowledgement.report') }}">Generate
+                acknowledgement file</a></li>
         </ul>
     </div>
 </nav>
