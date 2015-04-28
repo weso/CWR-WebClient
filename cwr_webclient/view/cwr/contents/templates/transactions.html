@@ -1,0 +1,14 @@
+{% extends "cwr_contents_base.html" %}
+{% import "macro/pagination.html" as pagination %}
+{% import "macro/cwr_record_print.html" as record_printer %}
+{% block cwr_contents %}
+<div>
+    {{ record_functions.show_group_info(group) }}
+</div>
+<div>
+    {{ record_printer.print_transactions(transactions) }}
+</div>
+<div class="text-center">
+    {{ pagination.render_pagination(paginator) }}
+</div>
+{% endblock %}
