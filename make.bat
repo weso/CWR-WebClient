@@ -1,23 +1,26 @@
 @ECHO OFF
 
 REM Makefile-like batch file for the Python project.
-REM It supports creating distribution files, and sending them to Pypi and Pypitest
-
+REM It supports creating distribution files, and deploying them to Pypi and Pypitest
+REM
 REM A Python interpreter is required, and it should be accessible from the command line.
 REM This file should be run from the project's root folder.
-
+REM
 REM To deploy or register to Pypi or Pypitest a valid .pypirc file should be accessible on the default location.
 
+REM Sets the variables
 REM Sets the Python executable.
 REM It will be the executable for the interpreter set up for the command line.
 if "%PYTHON%" == "" (
 	set PYTHON=python
 )
+
 REM Sets the distribution folder.
 REM It will be the 'dist' folder.
 if "%DISTDIR%" == "" (
 	set DISTDIR=dist
 )
+
 REM Sets the .egg file path.
 REM The file will be located at the project's root.
 if "%EGGDIR%" == "" (
@@ -42,7 +45,7 @@ if "%1" == "help" (
 )
 
 REM Clean option
-REM Removed the distribution folder and the .egg file
+REM Removes the distribution folder and the .egg file
 if "%1" == "clean" (
 	if exist %DISTDIR% (
 		rd /S /Q %DISTDIR%
