@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% import "macro/cwr.html" as record_functions %}
+{% block title %}CWR Contents{% endblock %}
+{% block page_title %}Contents of a CWR file{% endblock %}
+{% block head %}
+{{ super() }}
+<link rel=stylesheet type=text/css href="{{ url_for('.static', filename='css/cwr-contents.css') }}">
+{% endblock %}
+{% block content %}
+{{ record_functions.show_groups_navbar(groups, file_id) }}
+<div>
+    {% block cwr_contents %}
+    {% endblock %}
+</div>
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+<script type="text/javascript">
+    //<![CDATA[
+    window.onload = function () {
+        $('#button-download-cwr-report').click(function () {
+            alert('This would start a download dialog for the report file')
+        });
+    };
+    //]]>
+</script>
+{% endblock %}
