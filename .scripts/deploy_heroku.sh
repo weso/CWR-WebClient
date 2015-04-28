@@ -4,10 +4,12 @@
 #
 # The script is prepared for Python, change the TRAVIS_PYTHON_VERSION and DEPLOY_PYTHON_VERSION for your language.
 #
-# Note that the following environmental variables are required:
-# - TRAVIS_PULL_REQUEST: this exists by default, used to ignore pulls
-# - TRAVIS_BRANCH: this exists by default, used to deploy only from the master branch
+# Note that it makes use of the following environmental variables from Travis:
+# - TRAVIS_PULL_REQUEST: used to ignore pulls
+# - TRAVIS_BRANCH: used to deploy only from the master branch
 # - TRAVIS_PYTHON_VERSION: change this for the correct one for the language you are using
+#
+# And requires the following custom environmental variables:
 # - DEPLOY_PYTHON_VERSION: custom variable, used to indicate the version which will be used for deployment
 
 if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_PYTHON_VERSION" == "$DEPLOY_PYTHON_VERSION" ] && [ "$TRAVIS_BRANCH" == "master" ]; then
