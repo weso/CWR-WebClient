@@ -2,6 +2,10 @@
 {% import "macro/cwr.html" as record_functions %}
 {% block title %}CWR Contents{% endblock %}
 {% block page_title %}Contents of a CWR file{% endblock %}
+{% block head %}
+{{ super() }}
+    <link rel=stylesheet type=text/css href="{{ url_for('.static', filename='css/cwr-contents.css') }}">
+{% endblock %}
 {% block content %}
 {{ record_functions.show_groups_navbar(groups) }}
 <div>
