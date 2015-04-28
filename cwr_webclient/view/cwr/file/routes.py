@@ -27,6 +27,8 @@ def upload_handler():
     # Get the name of the uploaded file
     sent_file = request.files['file']
 
+    session['cwr_file_id'] = None
+
     if sent_file:
         file_service = current_app.config['FILE_SERVICE']
 
@@ -40,7 +42,7 @@ def upload_handler():
         return redirect(url_for('.upload'))
 
 
-@cwr_file_blueprint.route('/file', methods=['GET'])
+@cwr_file_blueprint.route('/list', methods=['GET'])
 def list():
     file_service = current_app.config['FILE_SERVICE']
 
@@ -49,7 +51,7 @@ def list():
     return render_template('cwr_file_listing.html', files=files)
 
 
-@cwr_file_blueprint.route('/file/search', methods=['GET'])
+@cwr_file_blueprint.route('/search', methods=['GET'])
 def search():
     return render_template('cwr_search.html')
 

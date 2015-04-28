@@ -22,31 +22,37 @@ CWR validation routes.
 
 @cwr_contents_blueprint.route('/', methods=['GET'])
 def summary():
-    cwr_service = current_app.config['FILE_SERVICE']
-    cwr = cwr_service.get_file(session['cwr_file_id'])
+    file = session['cwr_file_id']
 
-    return render_template('summary.html', cwr=cwr, current_tab='summary_item',
-                           groups=cwr.transmission.groups)
+    if file:
+        cwr_service = current_app.config['FILE_SERVICE']
+        cwr = cwr_service.get_file(session['cwr_file_id'])
+
+        return render_template('summary.html', cwr=cwr, current_tab='summary_item',
+                               groups=cwr.transmission.groups)
 
 
 @cwr_contents_blueprint.route('/group/<int:index>', defaults={'page': 1}, methods=['GET'])
 @cwr_contents_blueprint.route('/group/<int:index>/page/<int:page>', methods=['GET'])
 def transactions(index, page):
-    cwr_service = current_app.config['FILE_SERVICE']
-    cwr = cwr_service.get_file(session['cwr_file_id'])
+    file = session['cwr_file_id']
 
-    if not cwr and page != 1:
-        abort(404)
+    if file:
+        cwr_service = current_app.config['FILE_SERVICE']
+        cwr = cwr_service.get_file(file)
 
-    group = cwr.transmission.groups[index]
+        if not cwr and page != 1:
+            abort(404)
 
-    pagination_service = current_app.config['PAGINATION_SERVICE']
+        group = cwr.transmission.groups[index]
 
-    transactions = pagination_service.get_page_transactions(page, group)
-    pagination = pagination_service.get_transactions_paginator(page, group)
+        pagination_service = current_app.config['PAGINATION_SERVICE']
 
-    return render_template('transactions.html', paginator=pagination, groups=cwr.transmission.groups,
-                           group=group, transactions=transactions, current_tab='agreements_item')
+        transactions = pagination_service.get_page_transactions(page, group)
+        pagination = pagination_service.get_transactions_paginator(page, group)
+
+        return render_template('transactions.html', paginator=pagination, groups=cwr.transmission.groups,
+                               group=group, transactions=transactions, current_tab='agreements_item')
 
 
 @cwr_contents_blueprint.route('/download', methods=['GET'])

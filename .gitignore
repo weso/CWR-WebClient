@@ -59,3 +59,6 @@ target/
 .idea/
 .idea_modules/
 out/
+
+# Test files
+cwr_webclient/uploads/*.V21
