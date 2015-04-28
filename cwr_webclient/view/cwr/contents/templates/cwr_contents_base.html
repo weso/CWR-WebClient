@@ -8,20 +8,13 @@
     {% block cwr_contents %}
     {% endblock %}
 </div>
-<hr>
-<div>
-    <a id="button-download" class="btn btn-primary" role="button">Download report</a>
-    <a class="btn btn-primary" role="button" href="{{ url_for('cwr_acknowledgement.report') }}">Generate
-        acknowledgement file</a>
-</div>
 {% endblock %}
 {% block scripts %}
 {{ super() }}
-<link rel=stylesheet type=text/css href="{{ url_for('common_views.static', filename='css/cwr-report.css') }}">
 <script type="text/javascript">
     //<![CDATA[
     window.onload = function () {
-        $('#button-download').click(function () {
+        $('#button-download-cwr-report').click(function () {
             alert('This would start a download dialog for the report file')
         });
     };
