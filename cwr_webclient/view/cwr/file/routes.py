@@ -34,7 +34,7 @@ def upload_handler():
 
         session['cwr_file_id'] = file_id
 
-        return redirect(url_for('cwr_validation.report'))
+        return redirect(url_for('cwr_contents.summary'))
     else:
         flash('No file selected')
         return redirect(url_for('.upload'))

@@ -8,10 +8,10 @@ __author__ = 'Bernardo Martínez Garrido'
 __license__ = 'MIT'
 __status__ = 'Development'
 
-cwr_validation_blueprint = Blueprint('cwr_validation', __name__,
-                                     template_folder='templates',
-                                     static_folder='static',
-                                     static_url_path='/static/cwr')
+cwr_contents_blueprint = Blueprint('cwr_contents', __name__,
+                                   template_folder='templates',
+                                   static_folder='static',
+                                   static_url_path='/static/cwr')
 
 PER_PAGE = view_conf.per_page
 
@@ -20,8 +20,8 @@ CWR validation routes.
 """
 
 
-@cwr_validation_blueprint.route('/report', methods=['GET'])
-def report():
+@cwr_contents_blueprint.route('/', methods=['GET'])
+def summary():
     cwr_service = current_app.config['FILE_SERVICE']
     cwr = cwr_service.get_file(session['cwr_file_id'])
 
@@ -29,9 +29,9 @@ def report():
                            groups=cwr.transmission.groups)
 
 
-@cwr_validation_blueprint.route('/report/group/<int:index>', defaults={'page': 1}, methods=['GET'])
-@cwr_validation_blueprint.route('/report/group/<int:index>/page/<int:page>', methods=['GET'])
-def report_transactions(index, page):
+@cwr_contents_blueprint.route('/group/<int:index>', defaults={'page': 1}, methods=['GET'])
+@cwr_contents_blueprint.route('/group/<int:index>/page/<int:page>', methods=['GET'])
+def transactions(index, page):
     cwr_service = current_app.config['FILE_SERVICE']
     cwr = cwr_service.get_file(session['cwr_file_id'])
 
@@ -49,6 +49,6 @@ def report_transactions(index, page):
                            group=group, transactions=transactions, current_tab='agreements_item')
 
 
-@cwr_validation_blueprint.route('/download', methods=['GET'])
+@cwr_contents_blueprint.route('/download', methods=['GET'])
 def report_download():
-    return redirect(url_for('.report'))
+    return redirect(url_for('.summary'))
