@@ -2,9 +2,6 @@
 # This script deploys the application using the POM cofiguration
 # It is triggered only commits to the master or develop branches. Pulls are ignored
 
-  echo "$TRAVIS_PYTHON_VERSION"
-  echo "$TRAVIS_BRANCH"
-  echo "$TRAVIS_PULL_REQUEST"
 if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_PYTHON_VERSION" == "$DEPLOY_PYTHON_VERSION" ] && [ "$TRAVIS_BRANCH" == "master" ]; then
 
   echo "Deploying site"
