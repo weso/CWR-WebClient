@@ -22,8 +22,6 @@ def create_app():
     import os
     import logging
 
-    from datetime import timedelta
-
     from flask import Flask
     from werkzeug.contrib.fixers import ProxyFix
     from cwr_webclient.view import common_blueprint, cwr_file_blueprint, cwr_contents_blueprint, \
@@ -63,7 +61,7 @@ def create_app():
     app.jinja_env.globals['company'] = appinfo_service.get_company()
     app.jinja_env.globals['application'] = appinfo_service.get_application()
 
-    app.permanent_session_lifetime = timedelta(seconds=30)
+    # app.permanent_session_lifetime = timedelta(seconds=30)
 
     if debug:
         logging.basicConfig(level=logging.INFO)
