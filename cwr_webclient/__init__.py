@@ -61,8 +61,6 @@ def create_app():
     app.jinja_env.globals['company'] = appinfo_service.get_company()
     app.jinja_env.globals['application'] = appinfo_service.get_application()
 
-    # app.permanent_session_lifetime = timedelta(seconds=30)
-
     if debug:
         logging.basicConfig(level=logging.INFO)
     else:
