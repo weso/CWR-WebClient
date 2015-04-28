@@ -46,12 +46,13 @@ class LocalFileService(FileService):
         self._path = path
         self._decoder = CWRFileDecoder()
 
-    def get_file(self, id):
-        if id in self._files_data:
-            data = self._files_data[id]
+    def get_file(self, file_id):
+        file_id = int(file_id)
+
+        if file_id in self._files_data:
+            data = self._files_data[file_id]
         else:
-            data = self._read_cwr(id, self._path)
-            self._files_data[id] = data
+            data = None
 
         return data
 
@@ -62,7 +63,11 @@ class LocalFileService(FileService):
         filename = secure_filename(file.filename)
         file.save(os.path.join(path, filename))
 
-        return file.filename
+        data = self._read_cwr(filename, self._path)
+        index = len(self._files_data)
+        self._files_data[index] = data
+
+        return index
 
     def _read_cwr(self, filename, path):
         file_path = os.path.join(path, filename)
