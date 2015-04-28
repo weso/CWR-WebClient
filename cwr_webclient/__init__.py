@@ -24,8 +24,8 @@ def create_app():
 
     from flask import Flask
     from werkzeug.contrib.fixers import ProxyFix
-    from cwr_webclient.view import common_blueprint, cwr_file_blueprint, cwr_validation_blueprint, \
-        cwr_acknowledgement_blueprint, cwr_match_blueprint
+    from cwr_webclient.view import common_blueprint, cwr_file_blueprint, cwr_contents_blueprint, \
+        cwr_acknowledgement_blueprint, cwr_match_blueprint, cwr_upload_blueprint
 
     from cwr_webclient.uploads import __uploads__
 
@@ -37,13 +37,14 @@ def create_app():
     appinfo_service = WESOApplicationInfoService()
 
     debug = bool(os.environ.get('DEBUG', True))
-    secret = os.environ.get('SECRET_KEY', 'development_key')
+    secret = os.environ.get('SECRET_KEY', os.urandom(24))
 
     app = Flask(__name__)
     app.register_blueprint(common_blueprint)
-    app.register_blueprint(cwr_validation_blueprint, url_prefix='/cwr/validation')
+    app.register_blueprint(cwr_contents_blueprint, url_prefix='/cwr/contents')
     app.register_blueprint(cwr_acknowledgement_blueprint, url_prefix='/cwr/acknowledgement')
-    app.register_blueprint(cwr_file_blueprint, url_prefix='/cwr')
+    app.register_blueprint(cwr_file_blueprint, url_prefix='/cwr/file')
+    app.register_blueprint(cwr_upload_blueprint, url_prefix='/cwr/upload')
     app.register_blueprint(cwr_match_blueprint, url_prefix='/cwr/match')
 
     app.wsgi_app = ProxyFix(app.wsgi_app)
