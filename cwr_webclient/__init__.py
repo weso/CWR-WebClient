@@ -22,6 +22,8 @@ def create_app():
     import os
     import logging
 
+    from datetime import timedelta
+
     from flask import Flask
     from werkzeug.contrib.fixers import ProxyFix
     from cwr_webclient.view import common_blueprint, cwr_file_blueprint, cwr_contents_blueprint, \
@@ -37,13 +39,13 @@ def create_app():
     appinfo_service = WESOApplicationInfoService()
 
     debug = bool(os.environ.get('DEBUG', True))
-    secret = os.environ.get('SECRET_KEY', 'development_key')
+    secret = os.environ.get('SECRET_KEY', os.urandom(24))
 
     app = Flask(__name__)
     app.register_blueprint(common_blueprint)
-    app.register_blueprint(cwr_contents_blueprint, url_prefix='/cwr/file')
+    app.register_blueprint(cwr_contents_blueprint, url_prefix='/cwr/contents')
     app.register_blueprint(cwr_acknowledgement_blueprint, url_prefix='/cwr/acknowledgement')
-    app.register_blueprint(cwr_file_blueprint, url_prefix='/cwr')
+    app.register_blueprint(cwr_file_blueprint, url_prefix='/cwr/file')
     app.register_blueprint(cwr_match_blueprint, url_prefix='/cwr/match')
 
     app.wsgi_app = ProxyFix(app.wsgi_app)
@@ -59,6 +61,8 @@ def create_app():
 
     app.jinja_env.globals['company'] = appinfo_service.get_company()
     app.jinja_env.globals['application'] = appinfo_service.get_application()
+
+    app.permanent_session_lifetime = timedelta(seconds=30)
 
     if debug:
         logging.basicConfig(level=logging.INFO)
