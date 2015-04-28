@@ -17,7 +17,7 @@ if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_PYTHON_VERSION" == "$DEPL
   heroku keys:clear
 
   yes | heroku keys:add
-  yes | git push heroku master
+  yes | git push heroku master -f
 
 else
 
