@@ -32,7 +32,7 @@ def upload_handler():
 
         file_id = file_service.save_file(sent_file, current_app.config['UPLOAD_FOLDER'])
 
-        return redirect(url_for('cwr_contents.summary', file_id=file_id))
+        return redirect(url_for('cwr_file.list'))
     else:
         flash('No file selected')
         return redirect(url_for('.upload'))

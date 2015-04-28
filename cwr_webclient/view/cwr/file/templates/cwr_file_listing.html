@@ -10,6 +10,7 @@
         <th>File</th>
         <th>Date</th>
         <th>Status</th>
+        <th>Contents</th>
     </tr>
     {% for file in files %}
     <tr>
@@ -21,6 +22,11 @@
         <td><span class="label label-warning">{{file.status.name}}</span></td>
         {% elif file.status.name == 'rejected' %}
         <td><span class="label label-danger">{{file.status.name}}</span></td>
+        {% endif %}
+        {% if file.status.name == 'done' %}
+        <td><a href="{{ url_for('cwr_contents.summary', file_id=file.file_id) }}">File contents</a></td>
+        {% else %}
+        <td>Unavailable</td>
         {% endif %}
     </tr>
     {% endfor %}
