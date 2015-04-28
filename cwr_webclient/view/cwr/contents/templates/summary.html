@@ -1,19 +1,8 @@
-{% extends "cwr_validation.html" %}
-{% block head %}
-{{ super() }}
-<script type="text/javascript">
-    //<![CDATA[
-    window.onload = function () {
-        current = document.getElementById("{{ current_tab }}");
-        current.setAttribute("class", "active")
-    };
-    //]]>
-</script>
-{% endblock %}
-{% block report_data %}
-<div class="panel panel-default">
+{% extends "cwr_contents_base.html" %}
+{% block cwr_contents %}
+<div class="infohead panel panel-default">
     <div class="panel-heading">CWR file summary</div>
-    <div class="panel-body">
+    <div class="infotable panel-body">
         <ul class="list-inline">
             <li>
                 <div class="panel panel-default">
