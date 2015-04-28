@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-from flask import render_template, redirect, url_for, abort, session, Blueprint, current_app
+from flask import render_template, redirect, url_for, abort, Blueprint, current_app
 
 from cwr_webclient.config import view_conf
 
@@ -20,39 +20,33 @@ CWR validation routes.
 """
 
 
-@cwr_contents_blueprint.route('/', methods=['GET'])
-def summary():
-    file = session['cwr_file_id']
+@cwr_contents_blueprint.route('/<string:file_id>', methods=['GET'])
+def summary(file_id):
+    cwr_service = current_app.config['FILE_SERVICE']
+    cwr = cwr_service.get_file(file_id)
 
-    if file:
-        cwr_service = current_app.config['FILE_SERVICE']
-        cwr = cwr_service.get_file(session['cwr_file_id'])
-
-        return render_template('summary.html', cwr=cwr, current_tab='summary_item',
-                               groups=cwr.transmission.groups)
+    return render_template('summary.html', cwr=cwr, current_tab='summary_item',
+                           groups=cwr.transmission.groups, file_id=file_id)
 
 
-@cwr_contents_blueprint.route('/group/<int:index>', defaults={'page': 1}, methods=['GET'])
-@cwr_contents_blueprint.route('/group/<int:index>/page/<int:page>', methods=['GET'])
-def transactions(index, page):
-    file = session['cwr_file_id']
+@cwr_contents_blueprint.route('/<string:file_id>/group/<int:index>', defaults={'page': 1}, methods=['GET'])
+@cwr_contents_blueprint.route('/<string:file_id>/group/<int:index>/page/<int:page>', methods=['GET'])
+def transactions(index, page, file_id):
+    cwr_service = current_app.config['FILE_SERVICE']
+    cwr = cwr_service.get_file(file_id)
 
-    if file:
-        cwr_service = current_app.config['FILE_SERVICE']
-        cwr = cwr_service.get_file(file)
+    if not cwr and page != 1:
+        abort(404)
 
-        if not cwr and page != 1:
-            abort(404)
+    group = cwr.transmission.groups[index]
 
-        group = cwr.transmission.groups[index]
+    pagination_service = current_app.config['PAGINATION_SERVICE']
 
-        pagination_service = current_app.config['PAGINATION_SERVICE']
+    transactions = pagination_service.get_page_transactions(page, group)
+    pagination = pagination_service.get_transactions_paginator(page, group)
 
-        transactions = pagination_service.get_page_transactions(page, group)
-        pagination = pagination_service.get_transactions_paginator(page, group)
-
-        return render_template('transactions.html', paginator=pagination, groups=cwr.transmission.groups,
-                               group=group, transactions=transactions, current_tab='agreements_item')
+    return render_template('transactions.html', paginator=pagination, groups=cwr.transmission.groups,
+                           group=group, transactions=transactions, current_tab='agreements_item', file_id=file_id)
 
 
 @cwr_contents_blueprint.route('/download', methods=['GET'])
