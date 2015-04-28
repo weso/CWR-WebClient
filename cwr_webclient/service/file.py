@@ -38,10 +38,6 @@ class FileService(object):
 class LocalFileService(FileService):
     def __init__(self, path):
         super(FileService, self).__init__()
-        self._files = [CWRFileData('File1', datetime.datetime.now(), WorkloadStatus.done),
-                       CWRFileData('File2', datetime.datetime.now(), WorkloadStatus.done),
-                       CWRFileData('File3', datetime.datetime.now(), WorkloadStatus.processing),
-                       CWRFileData('File4', datetime.datetime.now(), WorkloadStatus.rejected)]
         self._files_data = {}
         self._path = path
         self._decoder = CWRFileDecoder()
@@ -57,7 +53,12 @@ class LocalFileService(FileService):
         return data
 
     def get_files(self):
-        return self._files
+        files = []
+
+        for value in self._files_data.itervalues():
+            files.append(value)
+
+        return files
 
     def save_file(self, file, path):
         filename = secure_filename(file.filename)
@@ -65,7 +66,7 @@ class LocalFileService(FileService):
 
         data = self._read_cwr(filename, self._path)
         index = len(self._files_data)
-        self._files_data[index] = data
+        self._files_data[index] = CWRFileData(index, filename, data, datetime.datetime.now(), WorkloadStatus.done)
 
         return index
 
