@@ -29,8 +29,8 @@ def summary(file_id):
                            groups=cwr.transmission.groups, file_id=file_id)
 
 
-@cwr_contents_blueprint.route('/<string:file_id>/group/<int:index>', defaults={'page': 1}, methods=['GET'])
-@cwr_contents_blueprint.route('/<string:file_id>/group/<int:index>/page/<int:page>', methods=['GET'])
+@cwr_contents_blueprint.route('/<int:file_id>/group/<int:index>', defaults={'page': 1}, methods=['GET'])
+@cwr_contents_blueprint.route('/<int:file_id>/group/<int:index>/page/<int:page>', methods=['GET'])
 def transactions(index, page, file_id):
     cwr_service = current_app.config['FILE_SERVICE']
     cwr = cwr_service.get_file(file_id)
