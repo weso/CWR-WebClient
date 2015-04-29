@@ -20,7 +20,7 @@ CWR validation routes.
 """
 
 
-@cwr_contents_blueprint.route('/<string:file_id>', methods=['GET'])
+@cwr_contents_blueprint.route('/<int:file_id>', methods=['GET'])
 def summary(file_id):
     cwr_service = current_app.config['FILE_SERVICE']
     cwr = cwr_service.get_file(file_id).contents
