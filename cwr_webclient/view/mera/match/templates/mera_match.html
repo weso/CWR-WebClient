@@ -3,4 +3,95 @@
 {% block page_title %}MERA matching results{% endblock %}
 {% block content %}
 <p>Results of matching against MERA.</p>
+<p>Queries done:</p>
+{% for match in matches %}
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <p>{{match.query}} <span class="badge">{{match.type_of_query}}</span></p>
+    </div>
+    <div class="panel-body">
+        <div class="container">
+            <div class="row-fluid">
+                {% if match.refinements|length > 0 %}
+                <div class="col-md-6">
+                    <p>Refinements applied:</p>
+                    <ul class="list-group">
+                        {% for refinement in match.refinements %}
+                        <li class="list-group-item">
+                            <span class="badge">{{refinement.type}}</span>
+                            {{refinement.content}}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+                <div class="col-md-5">
+                    <p>Results summary</p>
+
+                    <p>Results: {{match.results|length}}</p>
+                </div>
+            </div>
+        </div>
+        {% if match.results|length > 0 %}
+        <div>
+            <p>Results:</p>
+            <ul class="list-group">
+                {% for result in match.results %}
+                <li class="list-group-item">
+                    <p>{{result.entity}}</p>
+
+                    <p>Raw score of {{result.raw_score}}, and refined score of {{result.refined_score}}</p>
+
+                    <div class="container">
+                        <div class="row-fluid">
+                            <div class="col-md-6">
+                                {% if result.matched_forms|length > 0 %}
+                                <p>Matched forms</p>
+                                <table class="table">
+                                    {% for key, value in result.matched_forms.iteritems() %}
+                                    <tr>
+                                        <td>{{key}}</td>
+                                        <td>{{value}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </table>
+                                {% endif %}
+                            </div>
+                            <div class="col-md-4">
+                                {% if result.refinements|length > 0 %}
+                                <p>Refinements applied:</p>
+                                <ul class="list-group">
+                                    {% for refinement in result.refinements %}
+                                    <li class="list-group-item">
+                                        <p>{{refinement.content}}<span class="badge">{{refinement.type}}</span></p>
+
+                                        <p>Score {{refinement.score}}</p>
+
+                                        <p>Relevance {{refinement.relevance}}</p>
+                                        {% if refinement.matched_forms|length > 0 %}
+                                        <p>Matched forms</p>
+                                        <table class="table">
+                                            {% for key, value in refinement.matched_forms.iteritems() %}
+                                            <tr>
+                                                <td>{{key}}</td>
+                                                <td>{{value}}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </table>
+                                        {% endif %}
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endfor %}
 {% endblock %}
