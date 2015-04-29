@@ -34,11 +34,14 @@
         </div>
         {% if match.results|length > 0 %}
         <div>
-            <p>Results:</p>
-            <ul class="list-group">
+            <p>Results for each entity:</p>
+
+            <div class="panel panel-info">
                 {% for result in match.results %}
-                <li class="list-group-item">
+                <div class="panel-heading">
                     <p>{{result.entity}}</p>
+                </div>
+                <div class="panel-body">
 
                     <p>Raw score of {{result.raw_score}}, and refined score of {{result.refined_score}}</p>
 
@@ -86,9 +89,9 @@
                             </div>
                         </div>
                     </div>
-                </li>
+                </div>
                 {% endfor %}
-            </ul>
+            </div>
         </div>
         {% endif %}
     </div>
