@@ -1,96 +1,9 @@
 {% extends "base.html" %}
+{% import "macro/mera_match.html" as match_record %}
 {% block title %}MERA matching{% endblock %}
 {% block page_title %}MERA matching results{% endblock %}
 {% block content %}
 <p>Results of matching against MERA.</p>
 <p>Queries done:</p>
-{% for match in matches %}
-<div class="panel panel-info">
-    <div class="panel-heading">
-        <p>{{match.query}} <span class="badge">{{match.type_of_query}}</span></p>
-    </div>
-    <div class="panel-body">
-        <div class="container">
-            <div class="row-fluid">
-                {% if match.refinements|length > 0 %}
-                <div class="col-md-6">
-                    <p>Refinements applied:</p>
-                    <ul class="list-group">
-                        {% for refinement in match.refinements %}
-                        <li class="list-group-item">
-                            <span class="badge">{{refinement.type}}</span>
-                            {{refinement.content}}
-                        </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                {% endif %}
-                <div class="col-md-5">
-                    <p>Results summary</p>
-
-                    <p>Results: {{match.results|length}}</p>
-                </div>
-            </div>
-        </div>
-        {% if match.results|length > 0 %}
-        <div>
-            <p>Results for each entity:</p>
-
-            <div class="panel panel-info">
-                {% for result in match.results %}
-                <div class="panel-heading">
-                    <p>{{result.entity}}</p>
-                </div>
-                <div class="panel-body">
-
-                    <p>Raw score of {{result.raw_score}}, and refined score of {{result.refined_score}}</p>
-
-                    <div class="container">
-                        <div class="row-fluid">
-                            <div class="col-md-6">
-                                {% if result.matched_forms|length > 0 %}
-                                <p>Matched forms</p>
-                                <ul class="list-group">
-                                    {% for key, value in result.matched_forms.iteritems() %}
-                                    <li class="list-group-item">{{key}}
-                                        <span class="badge">{{value}}</span></li>
-                                    {% endfor %}
-                                </ul>
-                                {% endif %}
-                            </div>
-                            <div class="col-md-4">
-                                {% if result.refinements|length > 0 %}
-                                <p>Refinements applied:</p>
-                                <ul class="list-group">
-                                    {% for refinement in result.refinements %}
-                                    <li class="list-group-item">
-                                        <p>{{refinement.content}}<span class="badge">{{refinement.type}}</span></p>
-
-                                        <p>Score {{refinement.score}}</p>
-
-                                        <p>Relevance {{refinement.relevance}}</p>
-                                        {% if refinement.matched_forms|length > 0 %}
-                                        <p>Matched forms</p>
-                                        <ul class="list-group">
-                                            {% for key, value in refinement.matched_forms.iteritems() %}
-                                            <li class="list-group-item">{{key}}
-                                                <span class="badge">{{value}}</span></li>
-                                            {% endfor %}
-                                        </ul>
-                                        {% endif %}
-                                    </li>
-                                    {% endfor %}
-                                </ul>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-            </div>
-        </div>
-        {% endif %}
-    </div>
-</div>
-{% endfor %}
+{{match_record.show_results_list(matches)}}
 {% endblock %}
