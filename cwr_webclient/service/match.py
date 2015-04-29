@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 
 from abc import ABCMeta, abstractmethod
+import json
 
 """
 Offers services for CWR files.
@@ -18,60 +19,17 @@ class MatchingService(object):
         pass
 
     @abstractmethod
-    def get_sources(self):
-        raise NotImplementedError('The get_sources method must be implemented')
-
-    @abstractmethod
-    def get_match_pairs(self):
-        raise NotImplementedError('The get_match_pairs method must be implemented')
-
-    @abstractmethod
-    def get_match_options(self):
-        raise NotImplementedError('The get_match_options method must be implemented')
+    def match(self, cwr_json):
+        raise NotImplementedError('The get_data method must be implemented')
 
 
 class LocalMatchingService(object):
     def __init__(self):
         super(LocalMatchingService, self).__init__()
 
-    def get_sources(self):
-        uso = (
-            {'id': 'USO_1', 'name': 'USO_1', 'matched': True},
-            {'id': 'USO_2', 'name': 'USO_2', 'matched': False},
-            {'id': 'USO_3', 'name': 'USO_3', 'matched': True},
-            {'id': 'USO_4', 'name': 'USO_4', 'matched': True},
-        )
-        cwr = (
-            {'id': 'CWR_1', 'name': 'CWR_1', 'matched': True},
-            {'id': 'CWR_2', 'name': 'CWR_2', 'matched': False},
-            {'id': 'CWR_3', 'name': 'CWR_3', 'matched': True},
-            {'id': 'CWR_4', 'name': 'CWR_4', 'matched': True},
-        )
+        json_data = '[ { "query" : "Shakira I. Mebarack", "type_of_query" : "artist", "refinements" : [ { "type": "song", "content" : "Waka Waka" }, { "type" : "song", "content" : "La Tortura" } ], "results" : [ { "entity" : "http://example.org/Shakira", "raw_score" : 0.95, "matched_forms" : { "Shakira Isabel Mebarack" : 0.75, "Shakira Mebarack" : 0.95 }, "refined_score" : 2.95, "refinements": [ { "type" : "song", "score" : 1, "relevance" : 1, "content" : "Waka Waka", "matched_forms" : { "Waka_Waka" : 1, "Waka Waka feat" : 0.85 } }, { "type" : "song", "score" : 1, "relevance" : 1, "content" : "La Tortura", "matched_forms" : { "La Tortura" : 1 } } ] }, { "entity" : "http://example.org/Schakira", "raw_score" : 0.4, "matched_forms" : { "Schakira" : 0.4 }, "refined_score" : 0.4, "refinements": [] } ] } ]'
 
-        sources = {'uso': uso, 'cwr': cwr}
+        self._json = json.loads(json_data)
 
-        return sources
-
-    def get_match_pairs(self):
-        pairs = (
-            {'cwr': 'The Beatles', 'match': 'The Beatels', 'source': 'Music Database'},
-            {'cwr': 'The Beatles', 'match': 'Los Bitels', 'source': 'Music Database'},
-            {'cwr': 'The Beatles', 'match': 'The Beatel', 'source': 'Music Database'},
-            {'cwr': 'The Beatles', 'match': 'Beatles Lennon', 'source': 'Music Database'},
-            {'cwr': 'Shakira', 'match': 'Shikira', 'source': 'Music Database'},
-            {'cwr': 'Shakira', 'match': 'Shaquira', 'source': 'Music Database'},
-        )
-
-        return pairs
-
-    def get_match_options(self):
-        options = (
-            {'value': 'The Beatels', 'name': 'The Beatels'},
-            {'value': 'Los Bitels', 'name': 'Los Bitels'},
-            {'value': 'The Beatel', 'name': 'The Beatel'},
-            {'value': 'Beatles Lennon', 'name': 'Beatles Lennon'},
-            {'value': 'Shikira', 'name': 'Shikira'},
-            {'value': 'Shaquira', 'name': 'Shaquira'},
-        )
-
-        return options
+    def match(self, cwr_json):
+        return self._json
