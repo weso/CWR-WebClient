@@ -6,6 +6,7 @@ import datetime
 
 from werkzeug.utils import secure_filename
 from cwr.parser.file import CWRFileDecoder
+from cwr.parser.cwrjson import JSONEncoder
 
 from cwr_webclient.model.file import CWRFileData
 from cwr_webclient.model.workload import WorkloadStatus
@@ -34,6 +35,10 @@ class FileService(object):
     def save_file(self, file, path):
         raise NotImplementedError('The save_file method must be implemented')
 
+    @abstractmethod
+    def generate_json(self, data):
+        raise NotImplementedError('The generate_json method must be implemented')
+
 
 class LocalFileService(FileService):
     def __init__(self, path):
@@ -41,6 +46,7 @@ class LocalFileService(FileService):
         self._files_data = {}
         self._path = path
         self._decoder = CWRFileDecoder()
+        self._encoder_json = JSONEncoder()
 
     def get_file(self, file_id):
         file_id = int(file_id)
@@ -73,3 +79,6 @@ class LocalFileService(FileService):
     def _read_cwr(self, filename, path):
         file_path = os.path.join(path, filename)
         return self._decoder.decode(file_path)
+
+    def generate_json(self, data):
+        return self._encoder_json.encode(data)
