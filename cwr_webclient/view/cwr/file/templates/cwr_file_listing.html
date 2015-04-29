@@ -9,6 +9,7 @@
         <th>Date</th>
         <th>Status</th>
         <th>Contents</th>
+        <th>Matching</th>
     </tr>
     {% for file in files %}
     <tr>
@@ -23,6 +24,11 @@
         {% endif %}
         {% if file.status.name == 'done' %}
         <td><a href="{{ url_for('cwr_contents.summary', file_id=file.file_id) }}">File contents</a></td>
+        {% else %}
+        <td>Unavailable</td>
+        {% endif %}
+        {% if file.status.name == 'done' %}
+        <td><a href="{{ url_for('mera_match.result', file_id=file.file_id) }}">Match</a></td>
         {% else %}
         <td>Unavailable</td>
         {% endif %}
