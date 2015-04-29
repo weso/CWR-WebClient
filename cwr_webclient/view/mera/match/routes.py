@@ -19,7 +19,10 @@ Upload routes.
 @mera_match_blueprint.route('/<int:file_id>', methods=['GET'])
 def result(file_id):
     match_service = current_app.config['MATCH_SERVICE']
+    file_service = current_app.config['FILE_SERVICE']
 
-    data = match_service.get_data(file_id)
+    data = file_service.get_file(file_id).contents
+    data = file_service.generate_json(data)
+    data = match_service.match(data)
 
     return render_template('mera_match.html', file_id=file_id, matches=data)
