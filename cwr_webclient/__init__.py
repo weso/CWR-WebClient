@@ -67,8 +67,6 @@ def create_app():
     else:
         logging.basicConfig(filename='cwr_webclient.log', level=logging.INFO, maxBytes=10000, backupCount=1)
 
-    logging.info('Debug mode is set to %r' % debug)
-
     app.jinja_env.globals['url_for_other_page'] = _url_for_other_page
 
     return app
