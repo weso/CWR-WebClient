@@ -3,6 +3,7 @@
 import unittest
 
 from cwr_webclient import create_app
+from tests.utils.web import assert_flashes
 
 
 __author__ = 'Bernardo Martínez Garrido'
@@ -21,14 +22,10 @@ class TestUpload(unittest.TestCase):
 
     def test_post_no_file(self):
         with self._app.app_context():
-            self._client.post('/cwr/upload/', data=dict(file=None))
-            self.assert_flashes('No file selected')
+            self._client.post('/cwr/upload/')
+            assert_flashes(self._client, 'No file selected')
 
-    def assert_flashes(self, expected_message, expected_category='message'):
-        with self._client.session_transaction() as session:
-            try:
-                category, message = session['_flashes'][0]
-            except KeyError:
-                raise AssertionError('nothing flashed')
-            assert expected_message in message
-            assert expected_category == category
+    def test_post_file_none(self):
+        with self._app.app_context():
+            self._client.post('/cwr/upload/', data=dict(file=None))
+            assert_flashes(self._client, 'No file selected')
