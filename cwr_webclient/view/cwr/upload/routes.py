@@ -25,7 +25,11 @@ def upload():
 @cwr_upload_blueprint.route('/', methods=['POST'])
 def upload_handler():
     # Get the name of the uploaded file
-    sent_file = request.files['file']
+    if 'file' in request.files:
+        sent_file = request.files['file']
+    else:
+        flash('No file selected')
+        return redirect(url_for('.upload'))
 
     if sent_file:
         file_service = current_app.config['FILE_SERVICE']
