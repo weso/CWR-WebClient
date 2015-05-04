@@ -37,8 +37,9 @@ def create_app():
 
     appinfo_service = WESOApplicationInfoService()
 
-    debug = bool(os.environ.get('DEBUG', True))
-    secret = os.environ.get('SECRET_KEY', os.urandom(24))
+    debug = bool(os.environ.get('CWR_WEBCLIENT_DEBUG', True))
+    secret = os.environ.get('CWR_WEBCLIENT_SECRET_KEY', os.urandom(24))
+    upload = os.environ.get('CWR_WEBCLIENT_UPLOAD_FOLDER', __uploads__.path())
 
     app = Flask(__name__)
     app.register_blueprint(common_blueprint)
@@ -52,8 +53,7 @@ def create_app():
 
     app.config['DEBUG'] = debug
     app.config['SECRET_KEY'] = secret
-
-    app.config['UPLOAD_FOLDER'] = __uploads__.path()
+    app.config['UPLOAD_FOLDER'] = upload
 
     app.config['FILE_SERVICE'] = LocalFileService(app.config['UPLOAD_FOLDER'])
     app.config['MATCH_SERVICE'] = LocalMatchingService()
@@ -65,7 +65,7 @@ def create_app():
     if debug:
         logging.basicConfig(level=logging.INFO)
     else:
-        logging.basicConfig(filename='cwr.log', level=logging.INFO, maxBytes=10000, backupCount=1)
+        logging.basicConfig(filename='cwr_webclient.log', level=logging.INFO, maxBytes=10000, backupCount=1)
 
     logging.info('Debug mode is set to %r' % debug)
 
