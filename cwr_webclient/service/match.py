@@ -2,6 +2,7 @@
 
 from abc import ABCMeta, abstractmethod
 import json
+import logging
 
 import requests
 
@@ -52,9 +53,14 @@ class WSMatchingService(object):
         super(WSMatchingService, self).__init__()
         self._url = url
 
-    def match(self, cwr_json, file_id):
-        headers = {'Content-Type': 'application/json'}
+        self._logger = logging.getLogger(__name__)
 
+    def match(self, cwr_json, file_id):
+        self._logger.info("Matching file with id %s" % file_id)
+
+        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
+
+        self._logger.info("Posting file's data to %s" % self._url)
         requests.post(self._url, data=cwr_json, headers=headers)
 
     def get_match_result(self, file_id):
