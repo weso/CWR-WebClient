@@ -5,6 +5,8 @@ import json
 
 import requests
 
+from cwr_webclient.service.file import FileProcessor
+
 
 """
 Offers services for CWR files.
@@ -22,8 +24,12 @@ class MatchingService(object):
         pass
 
     @abstractmethod
-    def match(self, cwr_json):
-        raise NotImplementedError('The get_data method must be implemented')
+    def match(self, cwr_json, file_id):
+        raise NotImplementedError('The match method must be implemented')
+
+    @abstractmethod
+    def get_match_result(self, file_id):
+        raise NotImplementedError('The get_match_result method must be implemented')
 
 
 class TestMatchingService(object):
@@ -34,7 +40,10 @@ class TestMatchingService(object):
 
         self._json = json.loads(json_data)
 
-    def match(self, cwr_json):
+    def match(self, cwr_json, file_id):
+        pass
+
+    def get_match_result(self, file_id):
         return self._json
 
 
@@ -43,7 +52,19 @@ class WSMatchingService(object):
         super(WSMatchingService, self).__init__()
         self._url = url
 
-    def match(self, cwr_json):
+    def match(self, cwr_json, file_id):
         headers = {'Content-Type': 'application/json'}
 
-        r = requests.post(self._url, data=cwr_json, headers=headers)
+        requests.post(self._url, data=cwr_json, headers=headers)
+
+    def get_match_result(self, file_id):
+        return None
+
+
+class MatchingFileProcessor(FileProcessor):
+    def __init__(self, service):
+        super(MatchingFileProcessor, self).__init__()
+        self._service = service
+
+    def process(self, data, file_id):
+        self._service.match(data, file_id)

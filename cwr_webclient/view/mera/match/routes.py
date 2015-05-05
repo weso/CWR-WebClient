@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-from flask import render_template, Blueprint, current_app
+from flask import render_template, Blueprint, current_app, abort
 
 
 __author__ = 'Bernardo Martínez Garrido'
@@ -19,10 +19,13 @@ Upload routes.
 @mera_match_blueprint.route('/<int:file_id>', methods=['GET'])
 def result(file_id):
     match_service = current_app.config['MATCH_SERVICE']
-    file_service = current_app.config['FILE_SERVICE']
 
-    data = file_service.get_file(file_id).contents
-    data = file_service.generate_json(data)
-    data = match_service.match(data)
+    data = match_service.get_match_result(file_id)
+
+    if not data:
+        abort(404)
+
+    if not data:
+        abort(404)
 
     return render_template('mera_match.html', file_id=file_id, matches=data)

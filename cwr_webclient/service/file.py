@@ -40,17 +40,38 @@ class FileService(object):
         raise NotImplementedError('The generate_json method must be implemented')
 
 
+class FileProcessor(object):
+    __metaclass__ = ABCMeta
+
+    def __init__(self):
+        pass
+
+    @abstractmethod
+    def process(self, data, file_id):
+        raise NotImplementedError('The process method must be implemented')
+
+
 class LocalFileService(FileService):
-    def __init__(self, path):
+    def __init__(self, path, processors=None):
         super(FileService, self).__init__()
         self._files_data = {}
         self._path = path
         self._decoder = CWRFileDecoder()
         self._encoder_json = JSONEncoder()
 
-    def get_file(self, file_id):
-        file_id = int(file_id)
+        if not processors:
+            self._processors = []
+        else:
+            self._processors = processors
 
+    def _read_cwr(self, filename, path):
+        file_path = os.path.join(path, filename)
+        return self._decoder.decode(file_path)
+
+    def generate_json(self, data):
+        return self._encoder_json.encode(data)
+
+    def get_file(self, file_id):
         if file_id in self._files_data:
             data = self._files_data[file_id]
         else:
@@ -66,19 +87,19 @@ class LocalFileService(FileService):
 
         return files
 
+    def register_processor(self, processor):
+        self._processors.append(processor)
+
     def save_file(self, file, path):
         filename = secure_filename(file.filename)
         file.save(os.path.join(path, filename))
 
         data = self._read_cwr(filename, self._path)
         index = len(self._files_data)
+
         self._files_data[index] = CWRFileData(index, filename, data, datetime.datetime.now(), WorkloadStatus.done)
 
+        for processor in self._processors:
+            processor.process(data, index)
+
         return index
-
-    def _read_cwr(self, filename, path):
-        file_path = os.path.join(path, filename)
-        return self._decoder.decode(file_path)
-
-    def generate_json(self, data):
-        return self._encoder_json.encode(data)
