@@ -49,6 +49,7 @@ setup(
                  'Intended Audience :: End Users/Desktop', 'Operating System :: OS Independent',
                  'Programming Language :: Python', 'Programming Language :: Python :: 2',
                  'Programming Language :: Python :: 2.6', 'Programming Language :: Python :: 2.7',
+                 'Programming Language :: Python :: Implementation :: PyPy'
                  'Topic :: Software Development :: Libraries :: Python Modules'],
     long_description=long_description,
     install_requires=[
