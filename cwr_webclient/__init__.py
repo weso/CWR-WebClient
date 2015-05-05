@@ -41,7 +41,7 @@ def create_app():
     secret = os.environ.get('CWR_WEBCLIENT_SECRET_KEY', os.urandom(24))
     upload = os.environ.get('CWR_WEBCLIENT_UPLOAD_FOLDER', __uploads__.path())
 
-    match_ws = os.environ.get('CWR_WEBCLIENT_MATCH_WS', 'http://127.0.0.1:33567/')
+    match_ws = os.environ.get('CWR_WEBCLIENT_MATCH_WS', 'http://127.0.0.1:33567/cwr/')
 
     app = Flask(__name__)
     app.register_blueprint(common_blueprint)
@@ -69,10 +69,9 @@ def create_app():
 
     app.config['FILE_SERVICE'].register_processor(MatchingFileProcessor(app.config['MATCH_SERVICE']))
 
-    if not debug:
+    if debug:
         logging.basicConfig(level=logging.INFO)
-    else:
-        logging.basicConfig(filename='cwr_webclient.log', level=logging.DEBUG, maxBytes=10000, backupCount=1)
+        # logging.basicConfig(filename='cwr_webclient.log', level=logging.DEBUG, maxBytes=10000, backupCount=1)
 
     app.jinja_env.globals['url_for_other_page'] = _url_for_other_page
 

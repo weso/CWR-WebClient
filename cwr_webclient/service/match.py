@@ -61,7 +61,7 @@ class WSMatchingService(object):
         headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
 
         self._logger.info("Posting file's data to %s" % self._url)
-        requests.post(self._url, data=cwr_json, headers=headers)
+        requests.post(self._url, data=cwr_json, headers=headers, verify=False)
 
     def get_match_result(self, file_id):
         return None
