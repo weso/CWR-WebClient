@@ -41,7 +41,7 @@ def create_app():
     secret = os.environ.get('CWR_WEBCLIENT_SECRET_KEY', os.urandom(24))
     upload = os.environ.get('CWR_WEBCLIENT_UPLOAD_FOLDER', __uploads__.path())
 
-    match_ws = os.environ.get('CWR_WEBCLIENT_MATCH_WS', 'http://somewhere.org/cwr')
+    match_ws = os.environ.get('CWR_WEBCLIENT_MATCH_WS', 'http://127.0.0.1:33567/')
 
     app = Flask(__name__)
     app.register_blueprint(common_blueprint)
@@ -57,11 +57,11 @@ def create_app():
     app.config['SECRET_KEY'] = secret
     app.config['UPLOAD_FOLDER'] = upload
 
-    app.config['MATCH_WS'] = DefaultPaginationService()
+    app.config['MATCH_WS'] = match_ws
 
     app.config['FILE_SERVICE'] = LocalFileService(app.config['UPLOAD_FOLDER'])
-    # app.config['MATCH_SERVICE'] = WSMatchingService(app.config['MATCH_WS'])
-    app.config['MATCH_SERVICE'] = TestMatchingService()
+    app.config['MATCH_SERVICE'] = WSMatchingService(app.config['MATCH_WS'])
+    # app.config['MATCH_SERVICE'] = TestMatchingService()
     app.config['PAGINATION_SERVICE'] = DefaultPaginationService()
 
     app.jinja_env.globals['company'] = appinfo_service.get_company()
@@ -69,10 +69,10 @@ def create_app():
 
     app.config['FILE_SERVICE'].register_processor(MatchingFileProcessor(app.config['MATCH_SERVICE']))
 
-    if debug:
+    if not debug:
         logging.basicConfig(level=logging.INFO)
     else:
-        logging.basicConfig(filename='cwr_webclient.log', level=logging.INFO, maxBytes=10000, backupCount=1)
+        logging.basicConfig(filename='cwr_webclient.log', level=logging.DEBUG, maxBytes=10000, backupCount=1)
 
     app.jinja_env.globals['url_for_other_page'] = _url_for_other_page
 

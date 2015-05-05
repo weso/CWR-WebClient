@@ -3,6 +3,7 @@
 from abc import ABCMeta, abstractmethod
 import os
 import datetime
+import logging
 
 from werkzeug.utils import secure_filename
 from cwr.parser.file import CWRFileDecoder
@@ -64,6 +65,8 @@ class LocalFileService(FileService):
         else:
             self._processors = processors
 
+        self._logger = logging.getLogger(__name__)
+
     def _read_cwr(self, filename, path):
         file_path = os.path.join(path, filename)
         return self._decoder.decode(file_path)
@@ -72,6 +75,8 @@ class LocalFileService(FileService):
         return self._encoder_json.encode(data)
 
     def get_file(self, file_id):
+        self._logger.info("Acquiring file with id %s" % file_id)
+
         if file_id in self._files_data:
             data = self._files_data[file_id]
         else:
@@ -80,6 +85,8 @@ class LocalFileService(FileService):
         return data
 
     def get_files(self):
+        self._logger.info("Acquiring all files")
+
         files = []
 
         for value in self._files_data.itervalues():
@@ -91,6 +98,8 @@ class LocalFileService(FileService):
         self._processors.append(processor)
 
     def save_file(self, file, path):
+        self._logger.info("Saving file %s to %s" % (file, path))
+
         filename = secure_filename(file.filename)
         file.save(os.path.join(path, filename))
 
@@ -99,7 +108,9 @@ class LocalFileService(FileService):
 
         self._files_data[index] = CWRFileData(index, filename, data, datetime.datetime.now(), WorkloadStatus.done)
 
+        cwr_json = self.generate_json(data);
+
         for processor in self._processors:
-            processor.process(data, index)
+            processor.process(cwr_json, index)
 
         return index
