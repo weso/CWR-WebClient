@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-from flask import render_template, Blueprint, current_app, abort
+from flask import render_template, Blueprint, current_app
 
 
 __author__ = 'Bernardo Martínez Garrido'
@@ -18,7 +18,7 @@ def list():
     files = file_service.get_files()
 
     if not files:
-        abort(404)
+        files = []
 
     return render_template('cwr_file_listing.html', files=files)
 

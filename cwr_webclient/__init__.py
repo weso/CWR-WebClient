@@ -32,7 +32,7 @@ def create_app():
 
     from cwr_webclient.service.appinfo import WESOApplicationInfoService
     from cwr_webclient.service.file import LocalFileService
-    from cwr_webclient.service.match import WSMatchingService
+    from cwr_webclient.service.match import WSMatchingService, TestMatchingService, MatchingFileProcessor
     from cwr_webclient.service.pagination import DefaultPaginationService
 
     appinfo_service = WESOApplicationInfoService()
@@ -60,11 +60,14 @@ def create_app():
     app.config['MATCH_WS'] = DefaultPaginationService()
 
     app.config['FILE_SERVICE'] = LocalFileService(app.config['UPLOAD_FOLDER'])
-    app.config['MATCH_SERVICE'] = WSMatchingService(app.config['MATCH_WS'])
+    # app.config['MATCH_SERVICE'] = WSMatchingService(app.config['MATCH_WS'])
+    app.config['MATCH_SERVICE'] = TestMatchingService()
     app.config['PAGINATION_SERVICE'] = DefaultPaginationService()
 
     app.jinja_env.globals['company'] = appinfo_service.get_company()
     app.jinja_env.globals['application'] = appinfo_service.get_application()
+
+    app.config['FILE_SERVICE'].register_processor(MatchingFileProcessor(app.config['MATCH_SERVICE']))
 
     if debug:
         logging.basicConfig(level=logging.INFO)
