@@ -32,7 +32,7 @@ def create_app():
 
     from cwr_webclient.service.appinfo import WESOApplicationInfoService
     from cwr_webclient.service.file import LocalFileService
-    from cwr_webclient.service.match import LocalMatchingService
+    from cwr_webclient.service.match import WSMatchingService
     from cwr_webclient.service.pagination import DefaultPaginationService
 
     appinfo_service = WESOApplicationInfoService()
@@ -40,6 +40,8 @@ def create_app():
     debug = bool(os.environ.get('CWR_WEBCLIENT_DEBUG', True))
     secret = os.environ.get('CWR_WEBCLIENT_SECRET_KEY', os.urandom(24))
     upload = os.environ.get('CWR_WEBCLIENT_UPLOAD_FOLDER', __uploads__.path())
+
+    match_ws = os.environ.get('CWR_WEBCLIENT_MATCH_WS', 'http://somewhere.org/cwr')
 
     app = Flask(__name__)
     app.register_blueprint(common_blueprint)
@@ -55,8 +57,10 @@ def create_app():
     app.config['SECRET_KEY'] = secret
     app.config['UPLOAD_FOLDER'] = upload
 
+    app.config['MATCH_WS'] = DefaultPaginationService()
+
     app.config['FILE_SERVICE'] = LocalFileService(app.config['UPLOAD_FOLDER'])
-    app.config['MATCH_SERVICE'] = LocalMatchingService()
+    app.config['MATCH_SERVICE'] = WSMatchingService(app.config['MATCH_WS'])
     app.config['PAGINATION_SERVICE'] = DefaultPaginationService()
 
     app.jinja_env.globals['company'] = appinfo_service.get_company()
