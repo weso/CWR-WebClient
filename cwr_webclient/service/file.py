@@ -52,13 +52,25 @@ class FileProcessor(object):
         raise NotImplementedError('The process method must be implemented')
 
 
+class StatusChecker(object):
+    __metaclass__ = ABCMeta
+
+    def __init__(self):
+        pass
+
+    @abstractmethod
+    def get_status(self, file_id):
+        raise NotImplementedError('The get_status method must be implemented')
+
+
 class LocalFileService(FileService):
-    def __init__(self, path, processors=None):
+    def __init__(self, path, checker, processors=None):
         super(FileService, self).__init__()
         self._files_data = {}
         self._path = path
         self._decoder = CWRFileDecoder()
         self._encoder_json = JSONEncoder()
+        self._checker = checker
 
         if not processors:
             self._processors = []
@@ -90,6 +102,7 @@ class LocalFileService(FileService):
         files = []
 
         for value in self._files_data.itervalues():
+            value.status = self._checker.get_status(value.file_id)
             files.append(value)
 
         return files
@@ -106,9 +119,9 @@ class LocalFileService(FileService):
         data = self._read_cwr(filename, self._path)
         index = len(self._files_data)
 
-        self._files_data[index] = CWRFileData(index, filename, data, datetime.datetime.now(), WorkloadStatus.done)
+        self._files_data[index] = CWRFileData(index, filename, data, datetime.datetime.now(), WorkloadStatus.processing)
 
-        cwr_json = self.generate_json(data);
+        cwr_json = self.generate_json(data)
 
         for processor in self._processors:
             processor.process(cwr_json, index)

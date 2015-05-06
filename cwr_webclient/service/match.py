@@ -6,7 +6,8 @@ import logging
 
 import requests
 
-from cwr_webclient.service.file import FileProcessor
+from cwr_webclient.service.file import FileProcessor, StatusChecker
+from cwr_webclient.model.workload import WorkloadStatus
 
 
 """
@@ -74,3 +75,33 @@ class MatchingFileProcessor(FileProcessor):
 
     def process(self, data, file_id):
         self._service.match(data, file_id)
+
+
+class MatchingStatusChecker(StatusChecker):
+    def __init__(self, service, url):
+        super(MatchingStatusChecker, self).__init__()
+        self._service = service
+        self._url = url
+
+    def get_status(self, file_id):
+        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
+
+        data = {}
+        data['file_id'] = file_id
+        data = json.dumps(data)
+
+        response = requests.post(self._url, data=data, headers=headers)
+
+        status = response.json()['status']
+        if status == 'error':
+            status = WorkloadStatus.error
+        elif status == 'waiting':
+            status = WorkloadStatus.waiting
+        elif status == 'processing':
+            status = WorkloadStatus.processing
+        elif status == 'done':
+            status = WorkloadStatus.done
+        elif status == 'rejected':
+            status = WorkloadStatus.rejected
+
+        return status

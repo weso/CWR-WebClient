@@ -32,7 +32,8 @@ def create_app():
 
     from cwr_webclient.service.appinfo import WESOApplicationInfoService
     from cwr_webclient.service.file import LocalFileService
-    from cwr_webclient.service.match import WSMatchingService, TestMatchingService, MatchingFileProcessor
+    from cwr_webclient.service.match import WSMatchingService, TestMatchingService, MatchingFileProcessor, \
+        MatchingStatusChecker
     from cwr_webclient.service.pagination import DefaultPaginationService
 
     appinfo_service = WESOApplicationInfoService()
@@ -42,6 +43,7 @@ def create_app():
     upload = os.environ.get('CWR_WEBCLIENT_UPLOAD_FOLDER', __uploads__.path())
 
     match_ws = os.environ.get('CWR_WEBCLIENT_MATCH_WS', 'http://127.0.0.1:33567/cwr/')
+    match_ws_status = os.environ.get('CWR_WEBCLIENT_MATCH_WS_STATUS', 'http://127.0.0.1:33567/cwr/status')
 
     app = Flask(__name__)
     app.register_blueprint(common_blueprint)
@@ -57,10 +59,11 @@ def create_app():
     app.config['SECRET_KEY'] = secret
     app.config['UPLOAD_FOLDER'] = upload
 
-    app.config['MATCH_WS'] = match_ws
+    app.config['MATCH_SERVICE'] = WSMatchingService(match_ws)
 
-    app.config['FILE_SERVICE'] = LocalFileService(app.config['UPLOAD_FOLDER'])
-    app.config['MATCH_SERVICE'] = WSMatchingService(app.config['MATCH_WS'])
+    checker = MatchingStatusChecker(app.config['MATCH_SERVICE'], match_ws_status)
+
+    app.config['FILE_SERVICE'] = LocalFileService(app.config['UPLOAD_FOLDER'], checker)
     # app.config['MATCH_SERVICE'] = TestMatchingService()
     app.config['PAGINATION_SERVICE'] = DefaultPaginationService()
 
