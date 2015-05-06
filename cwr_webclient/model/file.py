@@ -36,3 +36,23 @@ class CWRFileData(object):
     @property
     def status(self):
         return self._status
+
+    @contents.setter
+    def contents(self, contents):
+        self._contents = contents
+
+    @date.setter
+    def date(self, date):
+        self._date = date
+
+    @file_id.setter
+    def file_id(self, file_id):
+        self._file_id = file_id
+
+    @name.setter
+    def name(self, name):
+        self._name = name
+
+    @status.setter
+    def status(self, status):
+        self._status = status

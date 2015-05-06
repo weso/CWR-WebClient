@@ -16,6 +16,7 @@ class WorkloadStatus(Enum):
     processing = 2
     done = 3
     rejected = 4
+    error = 5
 
 
 class WorkloadInfo(object):

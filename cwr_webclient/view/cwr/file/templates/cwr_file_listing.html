@@ -21,6 +21,8 @@
         <td><span class="label label-warning">{{file.status.name}}</span></td>
         {% elif file.status.name == 'rejected' %}
         <td><span class="label label-danger">{{file.status.name}}</span></td>
+        {% elif file.status.name == 'error' %}
+        <td><span class="label label-danger">{{file.status.name}}</span></td>
         {% endif %}
         {% if file.status.name == 'done' %}
         <td><a href="{{ url_for('cwr_contents.summary', file_id=file.file_id) }}">File contents</a></td>
