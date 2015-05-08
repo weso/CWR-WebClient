@@ -6,12 +6,14 @@ import datetime
 import logging
 
 from werkzeug.utils import secure_filename
-from cwr.parser.file import CWRFileDecoder
-from cwr.parser.cwrjson import JSONEncoder
+from cwr.parser.encoder.cwrjson import JSONEncoder
 
 from cwr_webclient.model.file import CWRFileData
 from cwr_webclient.model.workload import WorkloadStatus
+from cwr.utils.reader import UTF8AdapterReader
+from cwr.parser.decoder.file import default_file_decoder
 
+import chardet
 
 __author__ = 'Bernardo Martínez Garrido'
 __license__ = 'MIT'
@@ -68,8 +70,8 @@ class LocalFileService(FileService):
         super(FileService, self).__init__()
         self._files_data = {}
         self._path = path
-        self._decoder = CWRFileDecoder()
         self._encoder_json = JSONEncoder()
+        self._decoder = default_file_decoder()
         self._checker = checker
 
         if not processors:
@@ -79,9 +81,28 @@ class LocalFileService(FileService):
 
         self._logger = logging.getLogger(__name__)
 
-    def _read_cwr(self, filename, path):
-        file_path = os.path.join(path, filename)
-        return self._decoder.decode(file_path)
+    def _read_cwr(self, file_data):
+        data = {}
+        data['filename'] = os.path.basename(file_data.filename)
+
+        self._logger.info("Reading CWR file %s" % (data['filename']))
+
+        file_data = file_data.read()
+
+        result = chardet.detect(file_data)
+        charenc = result['encoding']
+
+        self._logger.info("Encoding %s" % (charenc))
+        self._logger.info("First three characters %s" % (file_data[0:3]))
+        i = 0
+        while file_data[i:i+1] is not 'H':
+            i += 1
+
+        file_data = file_data[i:]
+
+        data['contents'] = file_data
+
+        return self._decoder.decode(data)
 
     def generate_json(self, data):
         return self._encoder_json.encode(data)
@@ -114,9 +135,11 @@ class LocalFileService(FileService):
         self._logger.info("Saving file %s to %s" % (file, path))
 
         filename = secure_filename(file.filename)
-        file.save(os.path.join(path, filename))
+        file_path = '%s/%s' % (path, filename)
 
-        data = self._read_cwr(filename, self._path)
+        # file.save(file_path)
+
+        data = self._read_cwr(file)
         index = len(self._files_data)
 
         self._files_data[index] = CWRFileData(index, filename, data, datetime.datetime.now(), WorkloadStatus.processing)
