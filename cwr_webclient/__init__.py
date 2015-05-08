@@ -51,7 +51,10 @@ def create_app():
         secret = os.urandom(24)
     upload = config['upload.folder']
     if len(upload) == 0:
-        upload=__uploads__.path()
+        upload = __uploads__.path()
+    log = config['log.folder']
+    if len(log) == 0:
+        log = 'cwr_webapp.log'
 
     # match_ws = os.environ.get('CWR_WEBCLIENT_MATCH_WS', 'http://127.0.0.1:33567/cwr/')
     # match_ws_results = os.environ.get('CWR_WEBCLIENT_MATCH_WS_RESULTS', 'http://127.0.0.1:33567/cwr/results')
@@ -74,7 +77,7 @@ def create_app():
     app.config['SECRET_KEY'] = secret
     app.config['UPLOAD_FOLDER'] = upload
 
-    app.config['MATCH_SERVICE'] = WSMatchingService(match_ws,match_ws_results)
+    app.config['MATCH_SERVICE'] = WSMatchingService(match_ws, match_ws_results)
 
     checker = MatchingStatusChecker(app.config['MATCH_SERVICE'], match_ws_status)
 
@@ -89,7 +92,7 @@ def create_app():
 
     if debug:
         # logging.basicConfig(level=logging.INFO)
-        handler = RotatingFileHandler('/home/cwr/uploads/cwr_webapp.log', maxBytes=10000, backupCount=1)
+        handler = RotatingFileHandler(log, maxBytes=10000, backupCount=1)
         handler.setLevel(logging.DEBUG)
         handler.setFormatter(Formatter('[%(levelname)s][%(asctime)s] %(message)s'))
         app.logger.setLevel(logging.DEBUG)
