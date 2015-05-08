@@ -8,7 +8,6 @@ import logging
 from werkzeug.utils import secure_filename
 from cwr.parser.encoder.cwrjson import JSONEncoder
 from cwr.parser.decoder.file import default_file_decoder
-import chardet
 
 from cwr_webclient.model.file import CWRFileData
 from cwr_webclient.model.workload import WorkloadStatus
@@ -88,13 +87,8 @@ class LocalFileService(FileService):
 
         file_data = file_data.read()
 
-        result = chardet.detect(file_data)
-        charenc = result['encoding']
-
-        self._logger.info("Encoding %s" % (charenc))
-        self._logger.info("First three characters %s" % (file_data[0:3]))
         i = 0
-        while file_data[i:i + 1] is not 'H':
+        while file_data[i:i + 1] != 'H':
             i += 1
 
         file_data = file_data[i:]
