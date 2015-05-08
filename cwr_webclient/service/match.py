@@ -50,9 +50,10 @@ class TestMatchingService(object):
 
 
 class WSMatchingService(object):
-    def __init__(self, url):
+    def __init__(self, url_match, url_results):
         super(WSMatchingService, self).__init__()
-        self._url = url
+        self._url_match = url_match
+        self._url_results = url_results
 
         self._logger = logging.getLogger(__name__)
 
@@ -61,14 +62,22 @@ class WSMatchingService(object):
 
         headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
 
-        self._logger.info("Posting file's data to %s" % self._url)
+        self._logger.info("Posting file's data to %s" % self._url_match)
         cwr_json = json.loads(cwr_json)
         cwr_json['file_id'] = file_id
         cwr_json = json.dumps(cwr_json)
-        requests.post(self._url, data=cwr_json, headers=headers, verify=False)
+        requests.post(self._url_match, data=cwr_json, headers=headers, verify=False)
 
     def get_match_result(self, file_id):
-        return None
+        headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
+
+        data = {}
+        data['file_id'] = file_id
+        data = json.dumps(data)
+
+        json_data = requests.post(self._url_results, data=data, headers=headers).json()
+
+        return json.loads(json_data['results'])
 
 
 class MatchingFileProcessor(FileProcessor):

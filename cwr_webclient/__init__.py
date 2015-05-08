@@ -22,6 +22,8 @@ def _url_for_other_page(page):
 def create_app():
     import os
     import logging
+    from logging.handlers import RotatingFileHandler
+    from logging import Formatter
 
     from flask import Flask
     from werkzeug.contrib.fixers import ProxyFix
@@ -36,14 +38,27 @@ def create_app():
         MatchingStatusChecker
     from cwr_webclient.service.pagination import DefaultPaginationService
 
+    from data_web.accessor_web import CWRWebConfiguration
+
     appinfo_service = WESOApplicationInfoService()
 
-    debug = bool(os.environ.get('CWR_WEBCLIENT_DEBUG', True))
-    secret = os.environ.get('CWR_WEBCLIENT_SECRET_KEY', os.urandom(24))
-    upload = os.environ.get('CWR_WEBCLIENT_UPLOAD_FOLDER', __uploads__.path())
+    config = CWRWebConfiguration()
+    config = config.get_config()
 
-    match_ws = os.environ.get('CWR_WEBCLIENT_MATCH_WS', 'http://127.0.0.1:33567/cwr/')
-    match_ws_status = os.environ.get('CWR_WEBCLIENT_MATCH_WS_STATUS', 'http://127.0.0.1:33567/cwr/status')
+    debug = bool(config['debug'])
+    secret = config['secretKey']
+    if len(secret) == 0:
+        secret = os.urandom(24)
+    upload = config['upload.folder']
+    if len(upload) == 0:
+        upload=__uploads__.path()
+
+    # match_ws = os.environ.get('CWR_WEBCLIENT_MATCH_WS', 'http://127.0.0.1:33567/cwr/')
+    # match_ws_results = os.environ.get('CWR_WEBCLIENT_MATCH_WS_RESULTS', 'http://127.0.0.1:33567/cwr/results')
+    # match_ws_status = os.environ.get('CWR_WEBCLIENT_MATCH_WS_STATUS', 'http://127.0.0.1:33567/cwr/status')
+    match_ws = config['ws.match']
+    match_ws_results = config['ws.match.results']
+    match_ws_status = config['ws.match.status']
 
     app = Flask(__name__)
     app.register_blueprint(common_blueprint)
@@ -59,7 +74,7 @@ def create_app():
     app.config['SECRET_KEY'] = secret
     app.config['UPLOAD_FOLDER'] = upload
 
-    app.config['MATCH_SERVICE'] = WSMatchingService(match_ws)
+    app.config['MATCH_SERVICE'] = WSMatchingService(match_ws,match_ws_results)
 
     checker = MatchingStatusChecker(app.config['MATCH_SERVICE'], match_ws_status)
 
@@ -73,8 +88,12 @@ def create_app():
     app.config['FILE_SERVICE'].register_processor(MatchingFileProcessor(app.config['MATCH_SERVICE']))
 
     if debug:
-        logging.basicConfig(level=logging.INFO)
-        # logging.basicConfig(filename='cwr_webclient.log', level=logging.DEBUG, maxBytes=10000, backupCount=1)
+        # logging.basicConfig(level=logging.INFO)
+        handler = RotatingFileHandler('/home/cwr/uploads/cwr_webapp.log', maxBytes=10000, backupCount=1)
+        handler.setLevel(logging.DEBUG)
+        handler.setFormatter(Formatter('[%(levelname)s][%(asctime)s] %(message)s'))
+        app.logger.setLevel(logging.DEBUG)
+        app.logger.addHandler(handler)
 
     app.jinja_env.globals['url_for_other_page'] = _url_for_other_page
 

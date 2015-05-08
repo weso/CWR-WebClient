@@ -1,4 +1,7 @@
 # Miscellany files
 include LICENSE
 include README.rst
+# The tests folder is removed
 prune tests
+# Data files are added
+include data/*.properties
