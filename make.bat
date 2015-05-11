@@ -1,7 +1,7 @@
 @ECHO OFF
 
 REM Makefile-like batch file for the Python project.
-REM It supports creating distribution files, and deploying them to Pypi and Pypitest
+REM It supports creating distribution files, and deploying them to Pypi and Pypitest or installing them locally
 REM
 REM A Python interpreter is required, and it should be accessible from the command line.
 REM This file should be run from the project's root folder.
@@ -35,8 +35,9 @@ REM Shows the allowed commands to be received as parameters
 if "%1" == "help" (
 	:help
 	echo.Please use `make ^<target^>` where ^<target^> is one of
-	echo.  sdist          to make the source distribution
-	echo.  bdist          to make the binary distribution
+	echo.  dist_source    to make the source distribution
+	echo.  dist_binary    to make the binary distribution
+	echo.  install        to install the project
 	echo.  pypi_reg       to register on pypi
 	echo.  pypitest_reg   to register on pypi-test
 	echo.  pypi           to upload to pypi
@@ -77,7 +78,7 @@ exit /b 1
 
 
 REM Source distribution.
-if "%1" == "sdist" (
+if "%1" == "dist_source" (
 	%PYTHON% setup.py sdist
 	if errorlevel 1 exit /b 1
 	echo.
@@ -87,12 +88,21 @@ if "%1" == "sdist" (
 )
 
 REM Binary distribution.
-if "%1" == "bdist" (
+if "%1" == "dist_binary" (
 	%PYTHON% setup.py bdist
 	if errorlevel 1 exit /b 1
 	echo.
 	echo.Generated binary distribution. It can be found in the
 	echo.%DISTDIR% folder.
+	goto end
+)
+
+REM Install in local libraries repository.
+if "%1" == "install" (
+	%PYTHON% setup.py install
+	if errorlevel 1 exit /b 1
+	echo.
+	echo.Installed the project into the local repository.
 	goto end
 )
 

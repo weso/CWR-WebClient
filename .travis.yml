@@ -4,12 +4,7 @@ python:
   - "2.7"
   - "pypy"
 
-before_script:
-  # Making executable the deployment script
-  - chmod +x ./.scripts/deploy_heroku.sh
 install:
   - pip install tox
 script:
   - tox -e $(echo py$TRAVIS_PYTHON_VERSION | tr -d . | sed -e 's/pypypy/pypy/')
-after_success:
-  - ./.scripts/deploy_heroku.sh

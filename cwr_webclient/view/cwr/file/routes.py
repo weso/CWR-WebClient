@@ -17,6 +17,9 @@ def list():
 
     files = file_service.get_files()
 
+    if not files:
+        files = []
+
     return render_template('cwr_file_listing.html', files=files)
 
 

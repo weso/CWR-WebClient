@@ -23,10 +23,17 @@ CWR validation routes.
 @cwr_contents_blueprint.route('/<int:file_id>', methods=['GET'])
 def summary(file_id):
     cwr_service = current_app.config['FILE_SERVICE']
-    cwr = cwr_service.get_file(file_id).contents
+    cwr = cwr_service.get_file(file_id)
+
+    if not cwr:
+        abort(404)
+
+    cwr = cwr.contents
+
+    groups = cwr.transmission.groups
 
     return render_template('summary.html', cwr=cwr, current_tab='summary_item',
-                           groups=cwr.transmission.groups, file_id=file_id)
+                           groups=groups, file_id=file_id)
 
 
 @cwr_contents_blueprint.route('/<int:file_id>/group/<int:index>', defaults={'page': 1}, methods=['GET'])
