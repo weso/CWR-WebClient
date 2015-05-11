@@ -95,6 +95,8 @@ class MatchingStatusChecker(StatusChecker):
         self._service = service
         self._url = url
 
+        self._logger = logging.getLogger(__name__)
+
     def get_status(self, file_id):
         headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
 
@@ -102,8 +104,10 @@ class MatchingStatusChecker(StatusChecker):
         data['file_id'] = file_id
         data = json.dumps(data)
 
+        self._logger.info("Posting JSON")
         response = requests.post(self._url, data=data, headers=headers)
 
+        self._logger.info("Received response")
         status = response.json()['status']
         if status == 'error':
             status = WorkloadStatus.error

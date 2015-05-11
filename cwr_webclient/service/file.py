@@ -117,7 +117,6 @@ class LocalFileService(FileService):
         self._processors.append(processor)
 
     def save_file(self, file, path):
-        self._logger.info("Saving file %s to %s" % (file, path))
 
         filename = secure_filename(file.filename)
         file_path = '%s/%s' % (path, filename)
@@ -129,6 +128,7 @@ class LocalFileService(FileService):
 
         self._files_data[index] = CWRFileData(index, filename, data, datetime.datetime.now(), WorkloadStatus.processing)
 
+        self._logger.info('Generating JSON')
         cwr_json = self.generate_json(data)
 
         for processor in self._processors:

@@ -36,7 +36,7 @@ def upload_handler():
 
         file_id = file_service.save_file(sent_file, current_app.config['UPLOAD_FOLDER'])
 
-        return redirect(url_for('cwr_file.list'))
+        return redirect(url_for('cwr_crossroads.decisions'))
     else:
         flash('No file selected')
         return redirect(url_for('.upload'))
