@@ -1,5 +1,5 @@
 # -*- encoding: utf-8 -*-
-from flask import render_template, redirect, url_for, Blueprint, current_app
+from flask import render_template, redirect, url_for, Blueprint, current_app, abort
 
 
 __author__ = 'Bernardo Martínez Garrido'
@@ -18,6 +18,10 @@ CWR matching routes.
 def match():
     match_service = current_app.config['MATCH_SERVICE']
     sources = match_service.get_sources()
+
+    if not sources:
+        abort(404)
+
     return render_template('match.html', sources=sources)
 
 
@@ -45,5 +49,8 @@ def edit():
     result['pairs'] = match_service.get_match_pairs()
 
     options = match_service.get_match_options()
+
+    if not options:
+        abort(404)
 
     return render_template('match_edit.html', result=result, options=options)

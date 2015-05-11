@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% import "macro/options.html" as options %}
+{% import "macro/form.html" as form_functions %}
+{% block title %}CWR File Crossroads{% endblock %}
+{% block page_title %}CWR File Crossroads{% endblock %}
+{% block content %}
+<p>Choose what to do with the uploaded file.</p>
+<!-- http://www.dropzonejs.com/bootstrap.html -->
+<form role="form" method="post" enctype="multipart/form-data"
+      action='' data-show-preview="false">
+    {{ options.show_match_options() }}
+</form>
+{% endblock %}

@@ -1,6 +1,6 @@
 # Makefile for the Python project
 #
-# It supports creating distribution files, and deploying them to Pypi and Pypitest
+# It supports creating distribution files, and deploying them to Pypi and Pypitest or installing them locally
 #
 # A Python interpreter is required, and it should be accessible from the command line.
  
@@ -29,26 +29,31 @@ endif
 # Shows the allowed commands to be received as parameters
 help:
 	@echo "Please use 'make <target>' where <target> is one of"
-	@echo "  sdist          to make the standard distribution"
-	@echo "  bdist          to make the binary distribution"
+	@echo "  dist_source    to make the standard distribution"
+	@echo "  dist_binary    to make the binary distribution"
+	@echo "  install        to install the project"
 	@echo "  pypi_reg       to register on pypi"
 	@echo "  pypitest_reg   to register on testpypi"
 	@echo "  pypi           to upload to pypi"
 	@echo "  pypitest       to upload to testpypi"
- 
+
 # Clean option
 # Removes the distribution folder and the .egg file
 clean:
 	rm -r -f $(DISTDIR)
 	rm -r -f $(EGGDIR)
- 
+
 # Source distribution.
-sdist:
+dist_source:
 	$(PYTHON) setup.py sdist
- 
+
 # Binary distribution.
-bdist:
+dist_binary:
 	$(PYTHON) setup.py bdist
+
+# Install in local libraries repository
+install:
+	$(PYTHON) setup.py install
  
 # Pypi registration.
 pypi_reg:
