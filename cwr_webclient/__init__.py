@@ -91,11 +91,13 @@ def create_app():
     app.config['FILE_SERVICE'].register_processor(MatchingFileProcessor(app.config['MATCH_SERVICE']))
 
     if debug:
-        # logging.basicConfig(level=logging.INFO)
         handler = RotatingFileHandler(log, maxBytes=10000, backupCount=1)
         handler.setLevel(logging.DEBUG)
         handler.setFormatter(Formatter('[%(levelname)s][%(asctime)s] %(message)s'))
-        app.logger.setLevel(logging.DEBUG)
+
+        logging.basicConfig(level=logging.DEBUG)
+        logging.getLogger('').addHandler(handler)
+
         app.logger.addHandler(handler)
 
     app.jinja_env.globals['url_for_other_page'] = _url_for_other_page

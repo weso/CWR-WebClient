@@ -6,9 +6,9 @@ import datetime
 import logging
 
 from werkzeug.utils import secure_filename
+
 from cwr.parser.encoder.cwrjson import JSONEncoder
 from cwr.parser.decoder.file import default_file_decoder
-
 from cwr_webclient.model.file import CWRFileData
 from cwr_webclient.model.workload import WorkloadStatus
 
@@ -85,15 +85,7 @@ class LocalFileService(FileService):
 
         self._logger.info("Reading CWR file %s" % (data['filename']))
 
-        file_data = file_data.read()
-
-        i = 0
-        while file_data[i:i + 1] != 'H':
-            i += 1
-
-        file_data = file_data[i:]
-
-        data['contents'] = file_data
+        data['contents'] = file_data.read()
 
         return self._decoder.decode(data)
 
