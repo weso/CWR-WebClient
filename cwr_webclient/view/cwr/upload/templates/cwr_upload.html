@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% import "macro/form.html" as form_functions %}
+{% block title %}Upload{% endblock %}
+{% block page_title %}CWR file upload{% endblock %}
+{% block content %}
+<p>Upload a CWR to start the validation process.</p>
+
+<p>Pay attention this should be a valid CWR file. While the file name does not need to follow the standard
+    naming pattern, the file's content should stick to it.</p>
+
+<p>For finding more about the CWR standard visit <a href="http://www.cisac.org">CISAC's website</a>.</p>
+
+<p>Note: Currently the parser is still under development. Not all CWR files will work.</p>
+{{ form_functions.file_upload(url_for('.upload_handler')) }}
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+<script type="text/javascript">
+    //<![CDATA[
+    window.onload = function () {
+        // Bind normal buttons
+        Ladda.bind('div:not(.progress-demo) button');
+    };
+    //]]>
+</script>
+{% endblock %}
