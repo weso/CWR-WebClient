@@ -6,9 +6,8 @@ import datetime
 import logging
 
 from werkzeug.utils import secure_filename
-
-from cwr.parser.encoder.cwrjson import JSONEncoder
 from cwr.parser.decoder.file import default_file_decoder
+
 from cwr_webclient.model.file import CWRFileData
 from cwr_webclient.model.workload import WorkloadStatus
 
@@ -36,10 +35,6 @@ class FileService(object):
     def save_file(self, file, path):
         raise NotImplementedError('The save_file method must be implemented')
 
-    @abstractmethod
-    def generate_json(self, data):
-        raise NotImplementedError('The generate_json method must be implemented')
-
 
 class FileProcessor(object):
     __metaclass__ = ABCMeta
@@ -64,18 +59,12 @@ class StatusChecker(object):
 
 
 class LocalFileService(FileService):
-    def __init__(self, path, checker, processors=None):
+    def __init__(self, path, checker):
         super(FileService, self).__init__()
         self._files_data = {}
         self._path = path
-        self._encoder_json = JSONEncoder()
         self._decoder = default_file_decoder()
         self._checker = checker
-
-        if not processors:
-            self._processors = []
-        else:
-            self._processors = processors
 
         self._logger = logging.getLogger(__name__)
 
@@ -88,9 +77,6 @@ class LocalFileService(FileService):
         data['contents'] = file_data.read()
 
         return self._decoder.decode(data)
-
-    def generate_json(self, data):
-        return self._encoder_json.encode(data)
 
     def get_file(self, file_id):
         self._logger.info("Acquiring file with id %s" % file_id)
@@ -113,9 +99,6 @@ class LocalFileService(FileService):
 
         return files
 
-    def register_processor(self, processor):
-        self._processors.append(processor)
-
     def save_file(self, file, path):
 
         filename = secure_filename(file.filename)
@@ -127,11 +110,5 @@ class LocalFileService(FileService):
         index = len(self._files_data)
 
         self._files_data[index] = CWRFileData(index, filename, data, datetime.datetime.now(), WorkloadStatus.processing)
-
-        self._logger.info('Generating JSON')
-        cwr_json = self.generate_json(data)
-
-        for processor in self._processors:
-            processor.process(cwr_json, index)
 
         return index

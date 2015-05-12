@@ -6,7 +6,7 @@ import logging
 
 import requests
 
-from cwr_webclient.service.file import FileProcessor, StatusChecker
+from cwr_webclient.service.file import StatusChecker
 from cwr_webclient.model.workload import WorkloadStatus
 
 
@@ -78,15 +78,6 @@ class WSMatchingService(object):
         json_data = requests.post(self._url_results, data=data, headers=headers).json()
 
         return json.loads(json_data['results'])
-
-
-class MatchingFileProcessor(FileProcessor):
-    def __init__(self, service):
-        super(MatchingFileProcessor, self).__init__()
-        self._service = service
-
-    def process(self, data, file_id):
-        self._service.match(data, file_id)
 
 
 class MatchingStatusChecker(StatusChecker):

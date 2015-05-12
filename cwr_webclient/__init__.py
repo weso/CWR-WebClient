@@ -28,14 +28,13 @@ def create_app():
     from flask import Flask
     from werkzeug.contrib.fixers import ProxyFix
     from cwr_webclient.view import common_blueprint, cwr_file_blueprint, cwr_contents_blueprint, \
-        cwr_acknowledgement_blueprint, cwr_match_blueprint, cwr_upload_blueprint, mera_match_blueprint, \
-        cwr_crossroads_blueprint
+        cwr_acknowledgement_blueprint, cwr_match_blueprint, cwr_upload_blueprint, mera_match_blueprint
 
     from cwr_webclient.uploads import __uploads__
 
     from cwr_webclient.service.appinfo import WESOApplicationInfoService
     from cwr_webclient.service.file import LocalFileService
-    from cwr_webclient.service.match import WSMatchingService, TestMatchingService, MatchingFileProcessor, \
+    from cwr_webclient.service.match import WSMatchingService, TestMatchingService, \
         MatchingStatusChecker
     from cwr_webclient.service.pagination import DefaultPaginationService
 
@@ -69,9 +68,8 @@ def create_app():
     app.register_blueprint(cwr_contents_blueprint, url_prefix='/cwr/contents')
     app.register_blueprint(cwr_acknowledgement_blueprint, url_prefix='/cwr/acknowledgement')
     app.register_blueprint(cwr_file_blueprint, url_prefix='/cwr/file')
-    app.register_blueprint(cwr_upload_blueprint, url_prefix='/cwr/upload')
     app.register_blueprint(mera_match_blueprint, url_prefix='/cwr/match')
-    # app.register_blueprint(cwr_crossroads_blueprint, url_prefix='/cwr/crossroads')
+    app.register_blueprint(cwr_upload_blueprint, url_prefix='/cwr/upload')
 
     app.wsgi_app = ProxyFix(app.wsgi_app)
 
@@ -89,8 +87,6 @@ def create_app():
 
     app.jinja_env.globals['company'] = appinfo_service.get_company()
     app.jinja_env.globals['application'] = appinfo_service.get_application()
-
-    app.config['FILE_SERVICE'].register_processor(MatchingFileProcessor(app.config['MATCH_SERVICE']))
 
     if debug:
         handler = RotatingFileHandler(log, maxBytes=10000, backupCount=1)
