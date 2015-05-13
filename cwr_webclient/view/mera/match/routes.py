@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 import logging
 
-from flask import render_template, Blueprint, current_app, redirect, url_for
+from flask import render_template, Blueprint, current_app, redirect, url_for, request
 from cwr.parser.encoder.cwrjson import JSONEncoder
 
 
@@ -44,14 +44,41 @@ def send_match(file_id):
     match_service = current_app.config['MATCH_SERVICE']
     file_service = current_app.config['FILE_SERVICE']
 
-    encoder_json = JSONEncoder()
+    config = request.form
 
-    print 'Working on it'
+    config_dict = {}
+
+    config_subdict = {
+        'blocking_function': float(config['blocking_function']),
+        'result_query': int(config['result_query'])
+    }
+    config_dict['blocking'] = config_subdict
+
+    config_subdict = {
+        "threshold": float(config['findsong.threshold']),
+        "relevances": {
+            "artist": float(config['relevances.artist'])
+        }
+    }
+    config_dict['commands'] = {
+        "find_song": config_subdict
+    }
+
+    config_dict['fields'] = {
+        "song": {
+            "threshold": float(config['song.threshold'])
+        },
+        "artist": {
+            "threshold": float(config['artist.threshold'])
+        }
+    }
+
+    encoder_json = JSONEncoder()
 
     data = file_service.get_file(file_id).contents
 
-    json = encoder_json.encode(data)
+    json_data = encoder_json.encode(data)
 
-    match_service.match(json, file_id)
+    match_service.match(json_data, file_id, config_dict)
 
     return redirect(url_for('cwr_file.list'))

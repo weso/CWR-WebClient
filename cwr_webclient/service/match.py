@@ -57,16 +57,22 @@ class WSMatchingService(object):
 
         self._logger = logging.getLogger(__name__)
 
-    def match(self, cwr_json, file_id):
+    def match(self, cwr_json, file_id, config=None):
         self._logger.info("Matching file with id %s" % file_id)
 
         headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
 
         self._logger.info("Posting file's data to %s" % self._url_match)
-        cwr_json = json.loads(cwr_json)
-        cwr_json['file_id'] = file_id
-        cwr_json = json.dumps(cwr_json)
-        requests.post(self._url_match, data=cwr_json, headers=headers, verify=False)
+
+        cwr_match = {}
+        cwr_match['file_id'] = file_id
+        cwr_match['cwr'] = json.loads(cwr_json)
+        if config:
+            cwr_match['config'] = config
+
+        cwr_match = json.dumps(cwr_match)
+
+        requests.post(self._url_match, data=cwr_match, headers=headers, verify=False)
 
     def get_match_result(self, file_id):
         headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
