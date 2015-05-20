@@ -1,8 +1,9 @@
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
+
+from flask_cache import Cache
 
 __author__ = 'Bernardo Martínez Garrido'
 __license__ = 'MIT'
 __status__ = 'Development'
 
-title = 'CWR Frontend'
-per_page = 20
+cache = Cache()

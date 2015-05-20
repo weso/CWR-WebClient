@@ -9,11 +9,13 @@ import logging
 from logging.handlers import RotatingFileHandler
 from logging import Formatter
 
-from flask import Flask
+from flask import Flask, render_template
 from werkzeug.contrib.fixers import ProxyFix
 
-from cwr_webclient.view import common_blueprint, cwr_file_blueprint, cwr_contents_blueprint, \
-    cwr_acknowledgement_blueprint, cwr_upload_blueprint, mera_match_blueprint
+from cwr_webclient.assets import assets
+from cwr_webclient.extensions import cache
+
+from cwr_webclient.view import *
 from cwr_webclient.config import DevConfig
 from cwr_webclient.service.appinfo import WESOApplicationInfoService
 from cwr_webclient.service.file import LocalFileService
@@ -40,6 +42,22 @@ def _config_templating(app):
 
     app.jinja_env.globals['company'] = appinfo_service.get_company()
     app.jinja_env.globals['application'] = appinfo_service.get_application()
+
+
+def _register_extensions(app):
+    assets.init_app(app)
+    cache.init_app(app)
+
+
+def _register_errorhandlers(app):
+    def render_error(error):
+        # If a HTTPException, pull the `code` attribute; default to 500
+        error_code = getattr(error, 'code', 500)
+        return render_template("{0}.html".format(error_code)), error_code
+
+    for errcode in [401, 404, 500]:
+        app.errorhandler(errcode)(render_error)
+    return None
 
 
 def _load_services(app, config):
@@ -78,9 +96,11 @@ def create_app(config_object=DevConfig):
 
     app = Flask(__name__)
     app.config.from_object(config_object)
+    _register_extensions(app)
     _load_services(app, config)
     _config_templating(app)
     _register_blueprints(app)
+    _register_errorhandlers(app)
 
     app.wsgi_app = ProxyFix(app.wsgi_app)
 
