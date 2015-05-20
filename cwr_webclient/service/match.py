@@ -81,9 +81,14 @@ class WSMatchingService(object):
         data['file_id'] = file_id
         data = json.dumps(data)
 
-        json_data = requests.post(self._url_results, data=data, headers=headers).json()
+        try:
+            # TODO: Don't catch the error like this. Handle each error case.
+            json_data = requests.post(self._url_results, data=data, headers=headers).json()
+            result = json.loads(json_data['results'])
+        except:
+            result = None
 
-        return json.loads(json_data['results'])
+        return result
 
 
 class MatchingStatusChecker(StatusChecker):
