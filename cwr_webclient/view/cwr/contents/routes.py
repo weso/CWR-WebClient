@@ -1,8 +1,6 @@
 # -*- encoding: utf-8 -*-
 from flask import render_template, redirect, url_for, abort, Blueprint, current_app
 
-from cwr_webclient.config import view_conf
-
 
 __author__ = 'Bernardo Martínez Garrido'
 __license__ = 'MIT'
@@ -12,8 +10,6 @@ cwr_contents_blueprint = Blueprint('cwr_contents', __name__,
                                    template_folder='templates',
                                    static_folder='static',
                                    static_url_path='/static/cwr')
-
-PER_PAGE = view_conf.per_page
 
 """
 CWR validation routes.
