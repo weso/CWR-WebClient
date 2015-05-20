@@ -34,7 +34,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     package_data={
-        'data': ['data/*.properties']
+        'data': ['data_web/*.properties']
     },
     version=version,
     description='Web client for CWR services',
