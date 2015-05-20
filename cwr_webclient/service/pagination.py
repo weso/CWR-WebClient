@@ -2,7 +2,6 @@
 
 from abc import ABCMeta, abstractmethod
 
-from cwr_webclient import app_conf
 from cwr_webclient.utils.pagination import Paginator
 
 
@@ -31,17 +30,17 @@ class PaginationService(object):
 
 
 class DefaultPaginationService(object):
-    PER_PAGE = app_conf.per_page
 
-    def __init__(self):
+    def __init__(self, per_page):
         super(DefaultPaginationService, self).__init__()
+        self._per_page = per_page
 
     def get_transactions_paginator(self, page, group):
         total_entries = len(group.transactions)
 
-        return Paginator(page, self.PER_PAGE, total_entries)
+        return Paginator(page, self._per_page, total_entries)
 
     def get_page_transactions(self, page, group):
-        pos = (page - 1) * self.PER_PAGE
+        pos = (page - 1) * self._per_page
 
-        return group.transactions[pos:pos + self.PER_PAGE]
+        return group.transactions[pos:pos + self._per_page]

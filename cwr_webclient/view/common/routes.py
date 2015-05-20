@@ -1,7 +1,5 @@
 # -*- encoding: utf-8 -*-
-from flask import render_template, Blueprint
-
-from cwr_webclient import app_conf
+from flask import render_template, Blueprint, current_app
 
 
 __author__ = 'Bernardo Martínez Garrido'
@@ -20,6 +18,6 @@ Basic routes.
 
 @common_blueprint.route('/', methods=['GET'])
 def index():
-    return render_template('index.html', app_title=app_conf.title)
+    return render_template('index.html', app_title=current_app.config['APP_NAME'])
 
 

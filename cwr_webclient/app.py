@@ -79,7 +79,7 @@ def _load_services(app, config):
     checker = MatchingStatusChecker(service_match, match_ws_status)
 
     app.config['FILE_SERVICE'] = LocalFileService(app.config['UPLOAD_FOLDER'], checker)
-    app.config['PAGINATION_SERVICE'] = DefaultPaginationService()
+    app.config['PAGINATION_SERVICE'] = DefaultPaginationService(int(config['perpage']))
 
 
 def _register_blueprints(app):
@@ -101,6 +101,8 @@ def create_app(config_object=DevConfig):
     _config_templating(app)
     _register_blueprints(app)
     _register_errorhandlers(app)
+
+    app.config['APP_NAME'] = config['app.name']
 
     app.wsgi_app = ProxyFix(app.wsgi_app)
 
