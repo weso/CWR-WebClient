@@ -11,17 +11,16 @@ from logging import Formatter
 
 from flask import Flask
 from werkzeug.contrib.fixers import ProxyFix
+
 from cwr_webclient.view import common_blueprint, cwr_file_blueprint, cwr_contents_blueprint, \
     cwr_acknowledgement_blueprint, cwr_upload_blueprint, mera_match_blueprint
-
-from cwr_webclient.uploads import __uploads__
-
+from cwr_webclient.config import DevConfig
 from cwr_webclient.service.appinfo import WESOApplicationInfoService
 from cwr_webclient.service.file import LocalFileService
 from cwr_webclient.service.match import WSMatchingService, MatchingStatusChecker
 from cwr_webclient.service.pagination import DefaultPaginationService
-
 from data_web.accessor_web import CWRWebConfiguration
+
 
 __author__ = 'Bernardo Martínez Garrido'
 __license__ = 'MIT'
@@ -34,20 +33,6 @@ def _url_for_other_page(page):
     args = request.view_args.copy()
     args['page'] = page
     return url_for(request.endpoint, **args)
-
-
-def _config_app(app, config):
-    debug = bool(config['debug'])
-    secret = config['secretKey']
-    if len(secret) == 0:
-        secret = os.urandom(24)
-    upload = config['upload.folder']
-    if len(upload) == 0:
-        upload = __uploads__.path()
-
-    app.config['DEBUG'] = debug
-    app.config['SECRET_KEY'] = secret
-    app.config['UPLOAD_FOLDER'] = upload
 
 
 def _config_templating(app):
@@ -88,11 +73,11 @@ def _register_blueprints(app):
     app.register_blueprint(cwr_upload_blueprint, url_prefix='/cwr/upload')
 
 
-def create_app():
+def create_app(config_object=DevConfig):
     config = CWRWebConfiguration().get_config()
 
     app = Flask(__name__)
-    _config_app(app, config)
+    app.config.from_object(config_object)
     _load_services(app, config)
     _config_templating(app)
     _register_blueprints(app)

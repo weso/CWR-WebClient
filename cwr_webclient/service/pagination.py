@@ -2,7 +2,7 @@
 
 from abc import ABCMeta, abstractmethod
 
-from cwr_webclient.config import view_conf
+from cwr_webclient import app_conf
 from cwr_webclient.utils.pagination import Paginator
 
 
@@ -31,7 +31,7 @@ class PaginationService(object):
 
 
 class DefaultPaginationService(object):
-    PER_PAGE = view_conf.per_page
+    PER_PAGE = app_conf.per_page
 
     def __init__(self):
         super(DefaultPaginationService, self).__init__()

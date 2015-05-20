@@ -3,3 +3,4 @@
 __author__ = 'Bernardo'
 
 title = 'CWR Frontend'
+per_page = 20

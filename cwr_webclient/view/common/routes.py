@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 from flask import render_template, Blueprint
 
-from cwr_webclient.config import app_conf, view_conf
+from cwr_webclient import app_conf
 
 
 __author__ = 'Bernardo Martínez Garrido'
@@ -12,8 +12,6 @@ common_blueprint = Blueprint('common_views', __name__,
                              template_folder='templates',
                              static_folder='static',
                              static_url_path='/static/common')
-
-PER_PAGE = view_conf.per_page
 
 """
 Basic routes.
