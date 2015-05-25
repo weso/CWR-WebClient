@@ -78,6 +78,7 @@ def _load_services(app, config):
 
     checker = MatchingStatusChecker(service_match, match_ws_status)
 
+    app.config['MATCH_SERVICE'] = service_match
     app.config['FILE_SERVICE'] = LocalFileService(app.config['UPLOAD_FOLDER'], checker)
     app.config['PAGINATION_SERVICE'] = DefaultPaginationService(int(config['perpage']))
 
