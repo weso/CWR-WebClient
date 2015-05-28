@@ -4,7 +4,6 @@ from abc import ABCMeta, abstractmethod
 
 from cwr_webclient.utils.pagination import Paginator
 
-
 """
 Offers services for pagination.
 """
@@ -30,7 +29,6 @@ class PaginationService(object):
 
 
 class DefaultPaginationService(object):
-
     def __init__(self, per_page):
         super(DefaultPaginationService, self).__init__()
         self._per_page = per_page

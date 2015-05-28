@@ -4,7 +4,6 @@ from abc import ABCMeta, abstractmethod
 
 from cwr_webclient.model.info import CompanyInfo, ApplicationInfo
 
-
 """
 Offers services for acquiring application related information.
 """

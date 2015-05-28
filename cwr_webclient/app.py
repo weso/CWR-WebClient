@@ -13,8 +13,7 @@ from flask import Flask, render_template
 from werkzeug.contrib.fixers import ProxyFix
 
 from cwr_webclient.assets import assets
-from cwr_webclient.extensions import cache
-
+from cwr_webclient.extensions import debug_toolbar, cache
 from cwr_webclient.view import *
 from cwr_webclient.config import DevConfig
 from cwr_webclient.service.appinfo import WESOApplicationInfoService
@@ -22,7 +21,6 @@ from cwr_webclient.service.file import LocalFileService
 from cwr_webclient.service.match import WSMatchingService, MatchingStatusChecker
 from cwr_webclient.service.pagination import DefaultPaginationService
 from data_web.accessor_web import CWRWebConfiguration
-
 
 __author__ = 'Bernardo Martínez Garrido'
 __license__ = 'MIT'
@@ -47,6 +45,7 @@ def _config_templating(app):
 def _register_extensions(app):
     assets.init_app(app)
     cache.init_app(app)
+    debug_toolbar.init_app(app)
 
 
 def _register_errorhandlers(app):

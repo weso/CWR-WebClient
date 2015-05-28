@@ -1,7 +1,6 @@
 # -*- encoding: utf-8 -*-
 from flask import render_template, redirect, url_for, request, flash, Blueprint, current_app
 
-
 __author__ = 'Bernardo Martínez Garrido'
 __license__ = 'MIT'
 __status__ = 'Development'

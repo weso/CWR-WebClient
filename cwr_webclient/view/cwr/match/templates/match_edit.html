@@ -1,16 +1,5 @@
 {% extends "base.html" %}
 {% block page_title %}CWR matching edition{% endblock %}
-{% block head %}
-{{ super() }}
-<script type="text/javascript">
-    //<![CDATA[
-    function deleteRow(btn) {
-        var row = btn.parentNode.parentNode;
-        row.parentNode.removeChild(row);
-    }
-    //]]>
-</script>
-{% endblock %}
 {% block content %}
 <div class="jumbotron">
     <h2>Matchmaking manual edition</h2>
@@ -50,4 +39,15 @@
     matchmaking
     results</a>
 <p></p>
+{% endblock %}
+{% block js %}
+{{ super() }}
+<script type="text/javascript">
+    //<![CDATA[
+    function deleteRow(btn) {
+        var row = btn.parentNode.parentNode;
+        row.parentNode.removeChild(row);
+    }
+    //]]>
+</script>
 {% endblock %}

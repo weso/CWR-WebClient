@@ -1,25 +1,5 @@
 {% extends "base.html" %}
 {% block page_title %}CWR matching information{% endblock %}
-{% block head %}
-{{ super() }}
-<script type="text/javascript">
-    //<![CDATA[
-    window.onload = function () {
-        $('#progress-bar').css({opacity: 0});
-        $('#button-next').css({opacity: 0});
-
-        $('#button-progress').click(function () {
-            $('#button-progress').attr("disabled", "disabled");
-            $('#progress-bar').css({opacity: 1});
-
-            timedIncrease = setInterval(function () {
-                conditionedIncrease()
-            }, 500)
-        });
-    };
-    //]]>
-</script>
-{% endblock %}
 {% block content %}
 <div class="jumbotron">
     <h2>Matching the file against other sources</h2>
@@ -75,4 +55,24 @@
 <a id="button-next" class="btn btn-primary btn-lg" role="button" href="{{ url_for('.report') }}">Go to
     matching reports</a>
 <p></p>
+{% endblock %}
+{% block js %}
+{{ super() }}
+<script type="text/javascript">
+    //<![CDATA[
+    window.onload = function () {
+        $('#progress-bar').css({opacity: 0});
+        $('#button-next').css({opacity: 0});
+
+        $('#button-progress').click(function () {
+            $('#button-progress').attr("disabled", "disabled");
+            $('#progress-bar').css({opacity: 1});
+
+            timedIncrease = setInterval(function () {
+                conditionedIncrease()
+            }, 500)
+        });
+    };
+    //]]>
+</script>
 {% endblock %}

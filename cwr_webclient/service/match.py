@@ -9,7 +9,6 @@ import requests
 from cwr_webclient.service.file import StatusChecker
 from cwr_webclient.model.workload import WorkloadStatus
 
-
 """
 Offers services for CWR files.
 """

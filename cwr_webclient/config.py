@@ -4,7 +4,6 @@ import os
 from cwr_webclient.uploads import __uploads__
 from data_web.accessor_web import CWRWebConfiguration
 
-
 __author__ = 'Bernardo Martínez Garrido'
 __license__ = 'MIT'
 __status__ = 'Development'

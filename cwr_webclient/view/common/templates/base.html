@@ -4,7 +4,6 @@
 {% import "macro/navbar.html" as navbar_functions %}
 {% import "macro/footer.html" as footer_functions %}
 <head>
-    {% block head %}
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="CWR validation and processing web application.">
@@ -12,9 +11,9 @@
     <meta name="author" content="WESO, Bernardo Martínez Garrido">
     <title>{% block site_title %}CWR Web Application{% endblock %}</title>
     <link rel=stylesheet type=text/css
-          href="{{ url_for('common_views.static', filename='css/bootstrap.min.css') }}">
+          href="{{ url_for('common_views.static', filename='libs/bootstrap/dist/css/bootstrap.min.css') }}">
     <link rel=stylesheet type=text/css href="{{ url_for('common_views.static', filename='css/style.css') }}">
-    {% endblock %}
+    {% block css %}{% endblock %}
 </head>
 <body>
 {{ navbar_functions.main_menu() }}
@@ -35,15 +34,13 @@
         </div>
     </div>
 </div>
-{% block scripts %}
-<script
-        src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-<script src="{{ url_for('common_views.static', filename='js/bootstrap.min.js') }}"></script>
+<script src="{{ url_for('common_views.static', filename='libs/jQuery/dist/jquery.min.js') }}"></script>
+<script src="{{ url_for('common_views.static', filename='libs/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+<script src="{{ url_for('common_views.static', filename='js/bootstrap-filestyle.min.js') }}"></script>
 <script src="{{ url_for('common_views.static', filename='js/progressbar.js') }}"></script>
 <script src="{{ url_for('common_views.static', filename='js/checklist.js') }}"></script>
 <script src="{{ url_for('common_views.static', filename='js/loader.js') }}"></script>
 <script src="{{ url_for('common_views.static', filename='js/navbar.js') }}"></script>
-<script src="{{ url_for('common_views.static', filename='js/bootstrap-filestyle.min.js') }}"></script>
-{% endblock %}
+{% block scripts %}{% endblock %}
 </body>
 </html>

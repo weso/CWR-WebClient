@@ -11,7 +11,6 @@ from cwr.parser.decoder.file import default_file_decoder
 from cwr_webclient.model.file import CWRFileData
 from cwr_webclient.model.workload import WorkloadStatus
 
-
 __author__ = 'Bernardo Martínez Garrido'
 __license__ = 'MIT'
 __status__ = 'Development'
