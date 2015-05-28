@@ -29,7 +29,7 @@ class WESOApplicationInfoService(ApplicationInfoService):
         super(WESOApplicationInfoService, self).__init__()
         # TODO: Change this, the data should be read from somewhere
         self._company = CompanyInfo('WESO', 'http://www.weso.es')
-        self._application = ApplicationInfo(2015, 'https://github.com/weso/CWR-WebClient', 'GitHub')
+        self._application = ApplicationInfo('CWR Frontend', 2015, 'https://github.com/weso/CWR-WebClient', 'GitHub')
 
     def get_company(self):
         return self._company

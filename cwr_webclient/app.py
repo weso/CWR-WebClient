@@ -100,8 +100,6 @@ def create_app(config_object=DevConfig):
     _register_blueprints(app)
     _register_errorhandlers(app)
 
-    app.config['APP_NAME'] = config['app.name']
-
     app.wsgi_app = ProxyFix(app.wsgi_app)
 
     if app.config['DEBUG']:
