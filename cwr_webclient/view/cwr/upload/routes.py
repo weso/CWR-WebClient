@@ -36,12 +36,11 @@ def upload_handler():
 
         file_id = file_service.save_file(sent_file, current_app.config['UPLOAD_FOLDER'])
 
-        return redirect(url_for('cwr_crossroads.decisions'))
+        return redirect(url_for('mera_match.setup_match', file_id=file_id))
     else:
         flash('No file selected')
         return redirect(url_for('.upload'))
 
 
 def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1] not in REJECTED_EXTENSIONS
+    return '.' in filename and filename.rsplit('.', 1)[1] not in REJECTED_EXTENSIONS

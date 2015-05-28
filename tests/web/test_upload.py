@@ -3,6 +3,7 @@
 import unittest
 
 from cwr_webclient import create_app
+from cwr_webclient.config import TestConfig
 from tests.utils.web import assert_flashes
 
 
@@ -13,7 +14,7 @@ __status__ = 'Development'
 
 class TestUpload(unittest.TestCase):
     def setUp(self):
-        self._app = create_app()
+        self._app = create_app(TestConfig)
 
         self._app.config['DEBUG'] = False
         self._app.config['TESTING'] = True
