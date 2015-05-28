@@ -1,13 +1,13 @@
 {% macro message_flasher() %}
-{% with messages = get_flashed_messages() %}
+{% with messages = get_flashed_messages(with_categories=true) %}
 {% if messages %}
 <div class="alerts">
-    {% for message in messages %}
-    <div id="flash_{{loop.index}}" class="alert-message warning">
-        <a class="close" onclick="$('#flash_{{loop.index}}').toggle();">×</a>
-
-        <p>{{ message | safe }}</p>
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }}">
+        <a class="close" title="Close" href="#" data-dismiss="alert">&times;</a>
+        {{message}}
     </div>
+    <!-- end .alert -->
     {% endfor %}
 </div>
 {% endif %}

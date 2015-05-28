@@ -12,7 +12,6 @@ from logging import Formatter
 from flask import Flask, render_template
 from werkzeug.contrib.fixers import ProxyFix
 
-from cwr_webclient.assets import assets
 from cwr_webclient.extensions import debug_toolbar, cache
 from cwr_webclient.view import *
 from cwr_webclient.config import DevConfig
@@ -43,7 +42,6 @@ def _config_templating(app):
 
 
 def _register_extensions(app):
-    assets.init_app(app)
     cache.init_app(app)
     debug_toolbar.init_app(app)
 
