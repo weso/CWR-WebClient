@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}Matching{% endblock %}
+{% block page_title %}CWR matching information{% endblock %}
+{% block head %}
+{{ super() }}
+<script type="text/javascript">
+    //<![CDATA[
+    window.onload = function () {
+        $('#progress-bar').css({opacity: 0});
+        $('#button-next').css({opacity: 0});
+
+        $('#button-progress').click(function () {
+            $('#button-progress').attr("disabled", "disabled");
+            $('#progress-bar').css({opacity: 1});
+
+            timedIncrease = setInterval(function () {
+                conditionedIncrease()
+            }, 500)
+        });
+    };
+    //]]>
+</script>
+{% endblock %}
+{% block content %}
+<div class="jumbotron">
+    <h2>Matching the file against other sources</h2>
+
+    <p>Choose the sources for the matching.</p>
+
+    <p>External enrichment sources will be applied.</p>
+
+    <p>As this is a mock, these sources won't really be used.</p>
+
+    <form action="">
+        <div class="well">
+            <h3>CWR files to use as sources:</h3>
+            {% for source in sources.cwr %}
+            <div class="checkbox">
+                <label><input type="checkbox" value={{ source.id }}>{{ source.name }}</label>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="well">
+            <h3>USO files with matches to use as sources:</h3>
+            {% for source in sources.uso %}
+            {% if source.matched %}
+            <div class="checkbox">
+                <label><input type="checkbox" value={{ source.id }}>{{ source.name }}</label>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+        <div class="well">
+            <h3>USO files with no matches to use as sources:</h3>
+            {% for source in sources.uso %}
+            {% if not source.matched %}
+            <div class="checkbox">
+                <label><input type="checkbox" value={{ source.id }}>{{ source.name }}</label>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </form>
+
+
+</div>
+<a id="button-progress" class="btn btn-primary btn-lg" role="button">Use sources</a>
+<div id="progress-bar">
+    <p>Matching</p>
+
+    <div class="progress progress-striped active">
+        <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+        </div>
+    </div>
+</div>
+<a id="button-next" class="btn btn-primary btn-lg" role="button" href="{{ url_for('.report') }}">Go to
+    matching reports</a>
+<p></p>
+{% endblock %}

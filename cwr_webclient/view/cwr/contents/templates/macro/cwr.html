@@ -1,0 +1,68 @@
+{% macro show_groups_navbar(groups, file_id) %}
+<nav class="navbar navbar-default navbar">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" rel="summary" href="{{ url_for('cwr_contents.summary', file_id=file_id) }}">Summary</a>
+    </div>
+
+    <div class="collapse navbar-collapse">
+
+        <ul class="nav navbar-nav">
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Transactions <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    {% for group in groups %}
+                    <li><a href="{{ url_for('cwr_contents.transactions', index=loop.index0, file_id=file_id) }}"
+                           class="list-group-item">{{
+                        group.group_header.transaction_type }}</a></li>
+                    {% endfor %}
+                </ul>
+            </li>
+            <li><a id="button-download-cwr-report" href="#">Download report</a></li>
+            <li><a href="{{ url_for('cwr_acknowledgement.report', file_id=file_id) }}">Generate
+                acknowledgement file</a></li>
+            <li><a href="{{ url_for('mera_match.result', file_id=file_id) }}">Do matching</a></li>
+        </ul>
+    </div>
+</nav>
+{% endmacro %}
+
+
+{% macro show_group_info(group) %}
+<div class="infohead panel panel-default">
+    <div class="panel-heading">Transaction group summary</div>
+    <div class="infotable panel-body">
+        <ul class="list-inline">
+            <li>
+                <div class="panel panel-default">
+                    <div class="panel-heading">Group Information</div>
+                    <dl class="dl-horizontal">
+                        <dt>Group ID</dt>
+                        <dd>{{ group.group_header.group_id }}</dd>
+                        <dt>Version number</dt>
+                        <dd>{{ group.group_header.version_number }}</dd>
+                        <dt>Batch Request ID</dt>
+                        <dd>{{ group.group_header.batch_request_id }}</dd>
+                    </dl>
+                </div>
+            </li>
+            <li>
+                <div class="panel panel-default">
+                    <div class="panel-heading">Group Counts</div>
+                    <dl class="dl-horizontal">
+                        <dt>Transaction Count</dt>
+                        <dd>{{ group.group_trailer.transaction_count }}</dd>
+                        <dt>Record Count</dt>
+                        <dd>{{ group.group_trailer.record_count }}</dd>
+                    </dl>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+{% endmacro %}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}File Listing{% endblock %}
+{% block page_title %}CWR file listing{% endblock %}
+{% block content %}
+<p>Here are shown the CWR files on the server.</p>
+<table class="table">
+    <tr>
+        <th>File</th>
+        <th>Date</th>
+        <th>Status</th>
+        <th>Contents</th>
+        <th>Matching</th>
+    </tr>
+    {% for file in files %}
+    <tr>
+        <td>{{file.name}}</td>
+        <td>{{file.date.date()}}</td>
+        {% if file.status.name == 'done' %}
+        <td><span class="label label-success">{{file.status.name}}</span></td>
+        {% elif file.status.name == 'processing' %}
+        <td><span class="label label-warning">{{file.status.name}}</span></td>
+        {% elif file.status.name == 'rejected' %}
+        <td><span class="label label-danger">{{file.status.name}}</span></td>
+        {% elif file.status.name == 'error' %}
+        <td><span class="label label-danger">{{file.status.name}}</span></td>
+        {% endif %}
+        <td><a href="{{ url_for('cwr_contents.summary', file_id=file.file_id) }}">File contents</a></td>
+        {% if file.status.name == 'done' %}
+        <td><a href="{{ url_for('mera_match.result', file_id=file.file_id) }}">Match</a></td>
+        {% else %}
+        <td>Unavailable</td>
+        {% endif %}
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
