@@ -21,3 +21,7 @@ WTForms==2.0.2
 # Auth
 Flask-Login==0.2.11
 Flask-Bcrypt==0.6.2
+
+# Database
+Flask-SQLAlchemy==2.0
+SQLAlchemy==0.9.8
