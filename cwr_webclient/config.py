@@ -39,6 +39,15 @@ class DevConfig(Config):
     CACHE_TYPE = 'simple'  # Can be "memcached", "redis", etc.
 
 
+class ProdConfig(Config):
+    """
+    Development configuration.
+    """
+    ENV = 'prod'
+    DEBUG = False
+    DEBUG_TB_ENABLED = False
+
+
 class TestConfig(Config):
     TESTING = True
     DEBUG = True
