@@ -148,7 +148,10 @@
             $nextIndicator && $nextIndicator.addClass('active')
         }
 
-        var slidEvent = $.Event('slid.bs.carousel', {relatedTarget: relatedTarget, direction: direction}) // yes, "slid"
+        var slidEvent = $.Event('slid.bs.carousel', {
+            relatedTarget: relatedTarget,
+            direction: direction
+        }) // yes, "slid"
         if ($.support.transition && this.$element.hasClass('slide')) {
             $next.addClass(type)
             $next[0].offsetWidth // force reflow

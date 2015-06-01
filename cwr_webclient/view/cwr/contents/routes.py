@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
-from flask import render_template, redirect, url_for, abort, Blueprint, current_app
+from flask import render_template, redirect, url_for, abort, Blueprint, \
+    current_app
 
 __author__ = 'Bernardo Martínez Garrido'
 __license__ = 'MIT'
@@ -31,8 +32,10 @@ def summary(file_id):
                            groups=groups, file_id=file_id)
 
 
-@cwr_contents_blueprint.route('/<int:file_id>/group/<int:index>', defaults={'page': 1}, methods=['GET'])
-@cwr_contents_blueprint.route('/<int:file_id>/group/<int:index>/page/<int:page>', methods=['GET'])
+@cwr_contents_blueprint.route('/<int:file_id>/group/<int:index>',
+                              defaults={'page': 1}, methods=['GET'])
+@cwr_contents_blueprint.route(
+    '/<int:file_id>/group/<int:index>/page/<int:page>', methods=['GET'])
 def transactions(index, page, file_id):
     cwr_service = current_app.config['FILE_SERVICE']
     cwr = cwr_service.get_file(file_id).contents
@@ -47,8 +50,10 @@ def transactions(index, page, file_id):
     transactions = pagination_service.get_page_transactions(page, group)
     pagination = pagination_service.get_transactions_paginator(page, group)
 
-    return render_template('transactions.html', paginator=pagination, groups=cwr.transmission.groups,
-                           group=group, transactions=transactions, current_tab='agreements_item', file_id=file_id)
+    return render_template('transactions.html', paginator=pagination,
+                           groups=cwr.transmission.groups,
+                           group=group, transactions=transactions,
+                           current_tab='agreements_item', file_id=file_id)
 
 
 @cwr_contents_blueprint.route('/download', methods=['GET'])

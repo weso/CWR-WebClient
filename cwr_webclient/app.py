@@ -10,7 +10,6 @@ from logging.handlers import RotatingFileHandler
 from logging import Formatter
 
 from flask import Flask, render_template
-
 from werkzeug.contrib.fixers import ProxyFix
 
 from cwr_webclient.extensions import debug_toolbar, cache, bcrypt
@@ -65,27 +64,33 @@ def _load_services(app, config):
     match_ws_status = config['ws.match.status']
 
     if len(match_ws) == 0:
-        match_ws = os.environ.get('CWR_WEBCLIENT_MATCH_WS', 'http://127.0.0.1:33567/cwr/')
+        match_ws = os.environ.get('CWR_WEBCLIENT_MATCH_WS',
+                                  'http://127.0.0.1:33567/cwr/')
 
     if len(match_ws_results) == 0:
-        match_ws_results = os.environ.get('CWR_WEBCLIENT_MATCH_WS_RESULTS', 'http://127.0.0.1:33567/cwr/results')
+        match_ws_results = os.environ.get('CWR_WEBCLIENT_MATCH_WS_RESULTS',
+                                          'http://127.0.0.1:33567/cwr/results')
 
     if len(match_ws_status) == 0:
-        match_ws_status = os.environ.get('CWR_WEBCLIENT_MATCH_WS_STATUS', 'http://127.0.0.1:33567/cwr/status')
+        match_ws_status = os.environ.get('CWR_WEBCLIENT_MATCH_WS_STATUS',
+                                         'http://127.0.0.1:33567/cwr/status')
 
     service_match = WSMatchingService(match_ws, match_ws_results)
 
     checker = MatchingStatusChecker(service_match, match_ws_status)
 
     app.config['MATCH_SERVICE'] = service_match
-    app.config['FILE_SERVICE'] = LocalFileService(app.config['UPLOAD_FOLDER'], checker)
-    app.config['PAGINATION_SERVICE'] = DefaultPaginationService(int(config['perpage']))
+    app.config['FILE_SERVICE'] = LocalFileService(app.config['UPLOAD_FOLDER'],
+                                                  checker)
+    app.config['PAGINATION_SERVICE'] = DefaultPaginationService(
+        int(config['perpage']))
 
 
 def _register_blueprints(app):
     app.register_blueprint(common_blueprint)
     app.register_blueprint(cwr_contents_blueprint, url_prefix='/cwr/contents')
-    app.register_blueprint(cwr_acknowledgement_blueprint, url_prefix='/cwr/acknowledgement')
+    app.register_blueprint(cwr_acknowledgement_blueprint,
+                           url_prefix='/cwr/acknowledgement')
     app.register_blueprint(cwr_file_blueprint, url_prefix='/cwr/file')
     app.register_blueprint(mera_match_blueprint, url_prefix='/cwr/match')
     app.register_blueprint(cwr_upload_blueprint, url_prefix='/cwr/upload')
@@ -111,7 +116,8 @@ def create_app(config_object=DevConfig):
 
         handler = RotatingFileHandler(log, maxBytes=10000, backupCount=1)
         handler.setLevel(logging.DEBUG)
-        handler.setFormatter(Formatter('[%(levelname)s][%(asctime)s] %(message)s'))
+        handler.setFormatter(
+            Formatter('[%(levelname)s][%(asctime)s] %(message)s'))
 
         logging.basicConfig(level=logging.DEBUG)
         logging.getLogger('').addHandler(handler)

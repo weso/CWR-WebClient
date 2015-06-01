@@ -6,13 +6,15 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="CWR validation and processing web application.">
+    <meta name="description"
+          content="CWR validation and processing web application.">
     <meta name="keywords" content="CWR, commonworks, validation, file">
     <meta name="author" content="WESO, Bernardo Martínez Garrido">
     <title>{% block site_title %}{{ application.name }}{% endblock %}</title>
     <link rel=stylesheet type=text/css
           href="{{ url_for('common_views.static', filename='libs/bootstrap/dist/css/bootstrap.min.css') }}">
-    <link rel=stylesheet type=text/css href="{{ url_for('common_views.static', filename='css/style.css') }}">
+    <link rel=stylesheet type=text/css
+          href="{{ url_for('common_views.static', filename='css/style.css') }}">
     {% block css %}{% endblock %}
 </head>
 <body>

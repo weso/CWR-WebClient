@@ -1,7 +1,8 @@
 # -*- encoding: utf-8 -*-
 import logging
 
-from flask import render_template, Blueprint, current_app, redirect, url_for, request
+from flask import render_template, Blueprint, current_app, redirect, url_for, \
+    request
 from cwr.parser.encoder.cwrjson import JSONEncoder
 
 __author__ = 'Bernardo Martínez Garrido'

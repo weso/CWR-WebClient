@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
-from flask import render_template, redirect, url_for, Blueprint, current_app, abort
+from flask import render_template, redirect, url_for, Blueprint, current_app, \
+    abort
 
 __author__ = 'Bernardo Martínez Garrido'
 __license__ = 'MIT'

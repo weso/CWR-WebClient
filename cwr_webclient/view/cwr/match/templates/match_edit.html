@@ -20,7 +20,9 @@
                 <select>
                     {% for option in options %}
                     {% if loop.index == rowloop.index %}
-                    <option value={{ option.value }} selected>{{ option.name }}</option>
+                    <option value={{ option.value }} selected>{{ option.name
+                        }}
+                    </option>
                     {% else %}
                     <option value={{ option.value }}>{{ option.name }}</option>
                     {% endif %}
@@ -35,7 +37,8 @@
 
 </div>
 </div>
-<a id="button-next" class="btn btn-primary btn-lg" role="button" href="{{ url_for('.report') }}">Back to
+<a id="button-next" class="btn btn-primary btn-lg" role="button"
+   href="{{ url_for('.report') }}">Back to
     matchmaking
     results</a>
 <p></p>

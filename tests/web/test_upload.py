@@ -6,7 +6,6 @@ from cwr_webclient import create_app
 from cwr_webclient.config import TestConfig
 from tests.utils.web import assert_flashes
 
-
 __author__ = 'Bernardo Martínez Garrido'
 __license__ = 'MIT'
 __status__ = 'Development'

@@ -6,7 +6,6 @@ import datetime
 import logging
 
 from werkzeug.utils import secure_filename
-
 from cwr.parser.decoder.file import default_file_decoder
 
 from cwr_webclient.model.file import CWRFileData
@@ -29,7 +28,7 @@ class FileService(object):
 
     @abstractmethod
     def get_file(self, id):
-        raise NotImplementedError('The get_data method must be implemented')
+        raise NotImplementedError('The get_file method must be implemented')
 
     @abstractmethod
     def save_file(self, file, path):
@@ -109,6 +108,8 @@ class LocalFileService(FileService):
         data = self._read_cwr(file)
         index = len(self._files_data)
 
-        self._files_data[index] = CWRFileData(index, filename, data, datetime.datetime.now(), WorkloadStatus.processing)
+        self._files_data[index] = CWRFileData(index, filename, data,
+                                              datetime.datetime.now(),
+                                              WorkloadStatus.processing)
 
         return index

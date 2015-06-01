@@ -27,7 +27,11 @@ define([
         rnumsplit = new RegExp("^(" + pnum + ")(.*)$", "i"),
         rrelNum = new RegExp("^([+-])=(" + pnum + ")", "i"),
 
-        cssShow = {position: "absolute", visibility: "hidden", display: "block"},
+        cssShow = {
+            position: "absolute",
+            visibility: "hidden",
+            display: "block"
+        },
         cssNormalTransform = {
             letterSpacing: "0",
             fontWeight: "400"

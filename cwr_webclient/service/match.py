@@ -30,7 +30,8 @@ class MatchingService(object):
 
     @abstractmethod
     def get_match_result(self, file_id):
-        raise NotImplementedError('The get_match_result method must be implemented')
+        raise NotImplementedError(
+            'The get_match_result method must be implemented')
 
 
 class TestMatchingService(object):
@@ -71,7 +72,8 @@ class WSMatchingService(object):
 
         cwr_match = json.dumps(cwr_match)
 
-        requests.post(self._url_match, data=cwr_match, headers=headers, verify=False)
+        requests.post(self._url_match, data=cwr_match, headers=headers,
+                      verify=False)
 
     def get_match_result(self, file_id):
         headers = {'Content-Type': 'application/json', 'Accept': 'text/plain'}
@@ -82,7 +84,8 @@ class WSMatchingService(object):
 
         try:
             # TODO: Don't catch the error like this. Handle each error case.
-            json_data = requests.post(self._url_results, data=data, headers=headers).json()
+            json_data = requests.post(self._url_results, data=data,
+                                      headers=headers).json()
             result = json.loads(json_data['results'])
         except:
             result = None

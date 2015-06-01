@@ -448,7 +448,10 @@ define([
 
             // Add the remaining (directly-bound) handlers
             if (delegateCount < handlers.length) {
-                handlerQueue.push({elem: this, handlers: handlers.slice(delegateCount)});
+                handlerQueue.push({
+                    elem: this,
+                    handlers: handlers.slice(delegateCount)
+                });
             }
 
             return handlerQueue;

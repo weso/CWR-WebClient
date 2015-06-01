@@ -73,7 +73,10 @@
         }
 
         this.options.selector ?
-            (this._options = $.extend({}, this.options, {trigger: 'manual', selector: ''})) :
+            (this._options = $.extend({}, this.options, {
+                trigger: 'manual',
+                selector: ''
+            })) :
             this.fixTitle()
     }
 
@@ -340,19 +343,34 @@
         var elRect = el.getBoundingClientRect()
         if (elRect.width == null) {
             // width and height are missing in IE8, so compute them manually; see https://github.com/twbs/bootstrap/issues/14093
-            elRect = $.extend({}, elRect, {width: elRect.right - elRect.left, height: elRect.bottom - elRect.top})
+            elRect = $.extend({}, elRect, {
+                width: elRect.right - elRect.left,
+                height: elRect.bottom - elRect.top
+            })
         }
         var elOffset = isBody ? {top: 0, left: 0} : $element.offset()
         var scroll = {scroll: isBody ? document.documentElement.scrollTop || document.body.scrollTop : $element.scrollTop()}
-        var outerDims = isBody ? {width: $(window).width(), height: $(window).height()} : null
+        var outerDims = isBody ? {
+            width: $(window).width(),
+            height: $(window).height()
+        } : null
 
         return $.extend({}, elRect, scroll, outerDims, elOffset)
     }
 
     Tooltip.prototype.getCalculatedOffset = function (placement, pos, actualWidth, actualHeight) {
-        return placement == 'bottom' ? {top: pos.top + pos.height, left: pos.left + pos.width / 2 - actualWidth / 2} :
-            placement == 'top' ? {top: pos.top - actualHeight, left: pos.left + pos.width / 2 - actualWidth / 2} :
-                placement == 'left' ? {top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left - actualWidth} :
+        return placement == 'bottom' ? {
+            top: pos.top + pos.height,
+            left: pos.left + pos.width / 2 - actualWidth / 2
+        } :
+            placement == 'top' ? {
+                top: pos.top - actualHeight,
+                left: pos.left + pos.width / 2 - actualWidth / 2
+            } :
+                placement == 'left' ? {
+                    top: pos.top + pos.height / 2 - actualHeight / 2,
+                    left: pos.left - actualWidth
+                } :
                     /* placement == 'right' */ {
                     top: pos.top + pos.height / 2 - actualHeight / 2,
                     left: pos.left + pos.width

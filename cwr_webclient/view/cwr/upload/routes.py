@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
-from flask import render_template, redirect, url_for, request, flash, Blueprint, current_app
+from flask import render_template, redirect, url_for, request, flash, Blueprint, \
+    current_app
 
 __author__ = 'Bernardo Martínez Garrido'
 __license__ = 'MIT'
@@ -33,7 +34,8 @@ def upload_handler():
     if sent_file:
         file_service = current_app.config['FILE_SERVICE']
 
-        file_id = file_service.save_file(sent_file, current_app.config['UPLOAD_FOLDER'])
+        file_id = file_service.save_file(sent_file,
+                                         current_app.config['UPLOAD_FOLDER'])
 
         return redirect(url_for('mera_match.setup_match', file_id=file_id))
     else:
@@ -42,4 +44,5 @@ def upload_handler():
 
 
 def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1] not in REJECTED_EXTENSIONS
+    return '.' in filename and filename.rsplit('.', 1)[
+                                   1] not in REJECTED_EXTENSIONS

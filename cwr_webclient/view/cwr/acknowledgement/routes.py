@@ -13,6 +13,7 @@ CWR acknowledgement routes.
 """
 
 
-@cwr_acknowledgement_blueprint.route('/<int:file_id>/acknowledgement', methods=['GET'])
+@cwr_acknowledgement_blueprint.route('/<int:file_id>/acknowledgement',
+                                     methods=['GET'])
 def report(file_id):
     return render_template('acknowledgement.html', file_id=file_id)

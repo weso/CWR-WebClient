@@ -21,11 +21,13 @@ class PaginationService(object):
 
     @abstractmethod
     def get_transactions_paginator(self, page, group):
-        raise NotImplementedError('The get_transactions_paginator method must be implemented')
+        raise NotImplementedError(
+            'The get_transactions_paginator method must be implemented')
 
     @abstractmethod
     def get_page_transactions(self, page, group):
-        raise NotImplementedError('The get_page_transactions method must be implemented')
+        raise NotImplementedError(
+            'The get_page_transactions method must be implemented')
 
 
 class DefaultPaginationService(object):
