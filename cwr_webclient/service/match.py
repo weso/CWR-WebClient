@@ -64,9 +64,7 @@ class WSMatchingService(object):
 
         self._logger.info("Posting file's data to %s" % self._url_match)
 
-        cwr_match = {}
-        cwr_match['file_id'] = file_id
-        cwr_match['cwr'] = json.loads(cwr_json)
+        cwr_match = {'file_id': file_id, 'cwr': json.loads(cwr_json)}
         if config:
             cwr_match['config'] = config
 
@@ -84,8 +82,8 @@ class WSMatchingService(object):
 
         try:
             # TODO: Don't catch the error like this. Handle each error case.
-            json_data = requests.post(self._url_results, data=data,
-                                      headers=headers).json()
+            json_data = requests.get(self._url_results, data=data,
+                                     headers=headers).json()
             result = json.loads(json_data['results'])
         except:
             result = None
@@ -109,19 +107,22 @@ class MatchingStatusChecker(StatusChecker):
         data = json.dumps(data)
 
         self._logger.info("Posting JSON")
-        response = requests.post(self._url, data=data, headers=headers)
+        response = requests.get(self._url, data=data, headers=headers)
 
         self._logger.info("Received response")
-        status = response.json()['status']
-        if status == 'error':
-            status = WorkloadStatus.error
-        elif status == 'waiting':
-            status = WorkloadStatus.waiting
-        elif status == 'processing':
-            status = WorkloadStatus.processing
-        elif status == 'done':
-            status = WorkloadStatus.done
-        elif status == 'rejected':
-            status = WorkloadStatus.rejected
+        if response.status_code == 200:
+            status = response.json()['status']
+            if status == 'error':
+                status = WorkloadStatus.error
+            elif status == 'waiting':
+                status = WorkloadStatus.waiting
+            elif status == 'processing':
+                status = WorkloadStatus.processing
+            elif status == 'done':
+                status = WorkloadStatus.done
+            elif status == 'rejected':
+                status = WorkloadStatus.rejected
+        else:
+            status = None
 
         return status
