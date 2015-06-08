@@ -32,12 +32,12 @@ def upload_handler():
         return redirect(url_for('.upload'))
 
     if sent_file:
-        file_service = current_app.config['FILE_SERVICE']
+        admin_service = current_app.config['CWR_ADMIN_SERVICE']
 
-        file_id = file_service.save_file(sent_file,
-                                         current_app.config['UPLOAD_FOLDER'])
+        file_id = admin_service.process(sent_file)
 
-        return redirect(url_for('mera_match.setup_match', file_id=file_id))
+        # return redirect(url_for('mera_match.setup_match', file_id=file_id))
+        return redirect(url_for('cwr_file.list'))
     else:
         flash('No file selected')
         return redirect(url_for('.upload'))

@@ -1,7 +1,6 @@
 # -*- encoding: utf-8 -*-
 import os
 
-from cwr_webclient.uploads import __uploads__
 from data_web.accessor_web import CWRWebConfiguration
 
 __author__ = 'Bernardo Martínez Garrido'
@@ -22,9 +21,6 @@ class Config(object):
     DEBUG_TB_ENABLED = False  # Disable Debug toolbar
     DEBUG_TB_INTERCEPT_REDIRECTS = False
     CACHE_TYPE = 'simple'  # Can be "memcached", "redis", etc.
-
-    # TODO: Should be removed
-    UPLOAD_FOLDER = os_env.get('CWR_WEBCLIENT_UPLOAD', __uploads__.path())
 
 
 class DevConfig(Config):

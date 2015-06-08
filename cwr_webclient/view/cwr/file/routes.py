@@ -12,7 +12,7 @@ cwr_file_blueprint = Blueprint('cwr_file', __name__,
 
 @cwr_file_blueprint.route('/', methods=['GET'])
 def list():
-    file_service = current_app.config['FILE_SERVICE']
+    file_service = current_app.config['CWR_ADMIN_SERVICE']
 
     files = file_service.get_files()
 

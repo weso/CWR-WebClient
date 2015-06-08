@@ -10,15 +10,14 @@ from logging.handlers import RotatingFileHandler
 from logging import Formatter
 
 from flask import Flask, render_template
+
 from werkzeug.contrib.fixers import ProxyFix
 
 from cwr_webclient.extensions import debug_toolbar, cache, bcrypt
 from cwr_webclient.view import *
 from cwr_webclient.config import DevConfig
-from cwr_webclient.service.appinfo import WESOApplicationInfoService
-from cwr_webclient.service.file import LocalFileService
-from cwr_webclient.service.match import WSMatchingService, MatchingStatusChecker
-from cwr_webclient.service.pagination import DefaultPaginationService
+from cwr_webclient.service import DefaultPaginationService, \
+    WESOApplicationInfoService, WSCWRService
 from data_web.accessor_web import CWRWebConfiguration
 
 __author__ = 'Bernardo Martínez Garrido'
@@ -75,13 +74,10 @@ def _load_services(app, config):
         match_ws_status = os.environ.get('CWR_WEBCLIENT_MATCH_WS_STATUS',
                                          'http://127.0.0.1:33567/cwr/status')
 
-    service_match = WSMatchingService(match_ws, match_ws_results)
+    service_admin = WSCWRService('http://127.0.0.1:33508/cwr/process',
+                                 'http://127.0.0.1:33508/cwr/files')
 
-    checker = MatchingStatusChecker(service_match, match_ws_status)
-
-    app.config['MATCH_SERVICE'] = service_match
-    app.config['FILE_SERVICE'] = LocalFileService(app.config['UPLOAD_FOLDER'],
-                                                  checker)
+    app.config['CWR_ADMIN_SERVICE'] = service_admin
     app.config['PAGINATION_SERVICE'] = DefaultPaginationService(
         int(config['perpage']))
 
