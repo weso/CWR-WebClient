@@ -88,7 +88,6 @@ def _register_blueprints(app):
     app.register_blueprint(cwr_acknowledgement_blueprint,
                            url_prefix='/cwr/acknowledgement')
     app.register_blueprint(cwr_file_blueprint, url_prefix='/cwr/file')
-    app.register_blueprint(mera_match_blueprint, url_prefix='/cwr/match')
     app.register_blueprint(cwr_upload_blueprint, url_prefix='/cwr/upload')
 
 

@@ -46,8 +46,4 @@ class WSCWRService(CWRService):
     def get_files(self):
         files = requests.get(self._url_files).json()
 
-        print 'Files:'
-        print files.__class__.__name__
-        print files
-
         return files
