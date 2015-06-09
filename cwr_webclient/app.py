@@ -68,14 +68,14 @@ def _load_services(app, config):
 
     if len(match_ws_results) == 0:
         match_ws_results = os.environ.get('CWR_WEBCLIENT_MATCH_WS_RESULTS',
-                                          'http://127.0.0.1:33567/cwr/results')
+                                          'http://127.0.0.1:33567/cwr/results/')
 
     if len(match_ws_status) == 0:
         match_ws_status = os.environ.get('CWR_WEBCLIENT_MATCH_WS_STATUS',
-                                         'http://127.0.0.1:33567/cwr/status')
+                                         'http://127.0.0.1:33567/cwr/status/')
 
-    service_admin = WSCWRService('http://127.0.0.1:33508/cwr/process',
-                                 'http://127.0.0.1:33508/cwr/files')
+    service_admin = WSCWRService('http://127.0.0.1:33508/cwr/process/',
+                                 'http://127.0.0.1:33508/cwr/files/')
 
     app.config['CWR_ADMIN_SERVICE'] = service_admin
     app.config['PAGINATION_SERVICE'] = DefaultPaginationService(
@@ -84,11 +84,11 @@ def _load_services(app, config):
 
 def _register_blueprints(app):
     app.register_blueprint(common_blueprint)
-    app.register_blueprint(cwr_contents_blueprint, url_prefix='/cwr/contents')
+    app.register_blueprint(cwr_contents_blueprint, url_prefix='/cwr/contents/')
     app.register_blueprint(cwr_acknowledgement_blueprint,
-                           url_prefix='/cwr/acknowledgement')
-    app.register_blueprint(cwr_file_blueprint, url_prefix='/cwr/file')
-    app.register_blueprint(cwr_upload_blueprint, url_prefix='/cwr/upload')
+                           url_prefix='/cwr/acknowledgement/')
+    app.register_blueprint(cwr_file_blueprint, url_prefix='/cwr/file/')
+    app.register_blueprint(cwr_upload_blueprint, url_prefix='/cwr/upload/')
 
 
 def create_app(config_object=DevConfig):

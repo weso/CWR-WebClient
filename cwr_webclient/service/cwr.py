@@ -2,6 +2,7 @@
 
 from abc import ABCMeta, abstractmethod
 import json
+from requests.exceptions import ConnectionError
 
 import requests
 
@@ -39,11 +40,17 @@ class WSCWRService(CWRService):
 
         headers = {'Content-Type': 'application/json'}
 
-        requests.post(self._url, data=json.dumps(data), headers=headers)
+        try:
+            requests.post(self._url, data=json.dumps(data), headers=headers)
+        except (ConnectionError, ValueError):
+            pass
 
         return 0
 
     def get_files(self):
-        files = requests.get(self._url_files).json()
+        try:
+            files = requests.get(self._url_files).json()
+        except (ConnectionError, ValueError):
+            files = []
 
         return files
