@@ -1,3 +1,3 @@
-from cwr_webclient.service.cwr import WSCWRService
+from cwr_webclient.service.cwr_service import WSCWRService
 from cwr_webclient.service.appinfo import WESOApplicationInfoService
 from cwr_webclient.service.pagination import DefaultPaginationService

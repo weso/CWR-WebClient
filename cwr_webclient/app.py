@@ -10,7 +10,6 @@ from logging.handlers import RotatingFileHandler
 from logging import Formatter
 
 from flask import Flask, render_template
-
 from werkzeug.contrib.fixers import ProxyFix
 
 from cwr_webclient.extensions import debug_toolbar, cache, bcrypt
@@ -84,11 +83,12 @@ def _load_services(app, config):
 
 def _register_blueprints(app):
     app.register_blueprint(common_blueprint)
-    app.register_blueprint(cwr_contents_blueprint, url_prefix='/cwr/contents/')
+    app.register_blueprint(cwr_contents_blueprint, url_prefix='/cwr/contents')
     app.register_blueprint(cwr_acknowledgement_blueprint,
-                           url_prefix='/cwr/acknowledgement/')
-    app.register_blueprint(cwr_file_blueprint, url_prefix='/cwr/file/')
-    app.register_blueprint(cwr_upload_blueprint, url_prefix='/cwr/upload/')
+                           url_prefix='/cwr/acknowledgement')
+    app.register_blueprint(cwr_file_blueprint, url_prefix='/cwr/file')
+    app.register_blueprint(cwr_upload_blueprint, url_prefix='/cwr/upload')
+    app.register_blueprint(mera_match_blueprint, url_prefix='/mera/match')
 
 
 def create_app(config_object=DevConfig):

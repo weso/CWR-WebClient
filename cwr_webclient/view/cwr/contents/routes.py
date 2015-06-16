@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 from flask import render_template, redirect, url_for, abort, Blueprint, \
     current_app
+from cwr.parser.decoder.cwrjson import JSONDecoder
 
 __author__ = 'Bernardo Martínez Garrido'
 __license__ = 'MIT'
@@ -16,15 +17,18 @@ CWR validation routes.
 """
 
 
-@cwr_contents_blueprint.route('/<int:file_id>', methods=['GET'])
+@cwr_contents_blueprint.route('/<string:file_id>', methods=['GET'])
 def summary(file_id):
-    cwr_service = current_app.config['FILE_SERVICE']
+    cwr_service = current_app.config['CWR_ADMIN_SERVICE']
     cwr = cwr_service.get_file(file_id)
+    cwr = cwr['contents']
 
     if not cwr:
         abort(404)
 
-    cwr = cwr.contents
+    decoder = JSONDecoder()
+
+    cwr = decoder.decode(cwr)
 
     groups = cwr.transmission.groups
 
@@ -32,16 +36,21 @@ def summary(file_id):
                            groups=groups, file_id=file_id)
 
 
-@cwr_contents_blueprint.route('/<int:file_id>/group/<int:index>',
+@cwr_contents_blueprint.route('/<string:file_id>/group/<int:index>',
                               defaults={'page': 1}, methods=['GET'])
 @cwr_contents_blueprint.route(
-    '/<int:file_id>/group/<int:index>/page/<int:page>', methods=['GET'])
+    '/<string:file_id>/group/<int:index>/page/<int:page>', methods=['GET'])
 def transactions(index, page, file_id):
-    cwr_service = current_app.config['FILE_SERVICE']
-    cwr = cwr_service.get_file(file_id).contents
+    cwr_service = current_app.config['CWR_ADMIN_SERVICE']
+    cwr = cwr_service.get_file(file_id)
+    cwr = cwr['contents']
 
     if not cwr and page != 1:
         abort(404)
+
+    decoder = JSONDecoder()
+
+    cwr = decoder.decode(cwr)
 
     group = cwr.transmission.groups[index]
 

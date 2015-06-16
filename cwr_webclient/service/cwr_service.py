@@ -2,13 +2,16 @@
 
 from abc import ABCMeta, abstractmethod
 import json
-from requests.exceptions import ConnectionError
+import logging
 
+from requests.exceptions import ConnectionError
 import requests
 
 __author__ = 'Bernardo Martínez Garrido'
 __license__ = 'MIT'
 __status__ = 'Development'
+
+_logger = logging.getLogger(__name__)
 
 
 class CWRService(object):
@@ -25,6 +28,10 @@ class CWRService(object):
     def get_files(self):
         raise NotImplementedError('The get_files method must be implemented')
 
+    @abstractmethod
+    def get_file(self, file_id):
+        raise NotImplementedError('The get_file method must be implemented')
+
 
 class WSCWRService(CWRService):
     def __init__(self, url, url_files):
@@ -36,14 +43,19 @@ class WSCWRService(CWRService):
         data = {}
         data['filename'] = str(file_data.filename)
 
-        data['contents'] = str(file_data.read())
+        data['contents'] = str(file_data.read()).decode('latin-1')
 
-        headers = {'Content-Type': 'application/json'}
+        _logger.info('Processing file %s' % file_data.filename)
+
+        headers = {'Accept': 'application/json',
+                   'Content-Type': 'application/json'}
+
+        data = json.dumps(data)
 
         try:
-            requests.post(self._url, data=json.dumps(data), headers=headers)
+            requests.post(self._url, data=data, headers=headers)
         except (ConnectionError, ValueError):
-            pass
+            _logger.info('Error sending file')
 
         return 0
 
@@ -54,3 +66,17 @@ class WSCWRService(CWRService):
             files = []
 
         return files
+
+    def get_file(self, file_id):
+        data = {}
+        data['id'] = file_id
+
+        headers = {'Content-Type': 'application/json'}
+
+        try:
+            file = requests.get(self._url_files, data=json.dumps(data),
+                                headers=headers).json()
+        except (ConnectionError, ValueError):
+            file = None
+
+        return file
