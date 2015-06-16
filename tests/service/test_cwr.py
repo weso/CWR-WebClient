@@ -3,7 +3,7 @@
 import unittest
 import StringIO
 
-from cwr_webclient.service.cwr import WSCWRService
+from cwr_webclient.service.cwr_service import WSCWRService
 
 __author__ = 'Bernardo Martínez Garrido'
 __license__ = 'MIT'
