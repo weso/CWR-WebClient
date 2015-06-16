@@ -89,6 +89,7 @@ def _register_blueprints(app):
     app.register_blueprint(cwr_file_blueprint, url_prefix='/cwr/file')
     app.register_blueprint(cwr_upload_blueprint, url_prefix='/cwr/upload')
     app.register_blueprint(mera_match_blueprint, url_prefix='/mera/match')
+    app.register_blueprint(uso_upload_blueprint, url_prefix='/uso/upload')
 
 
 def create_app(config_object=DevConfig):
