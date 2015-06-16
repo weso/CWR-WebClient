@@ -74,7 +74,8 @@ def _load_services(app, config):
                                          'http://127.0.0.1:33567/cwr/status/')
 
     service_admin = WSCWRService('http://127.0.0.1:33508/cwr/process/',
-                                 'http://127.0.0.1:33508/cwr/files/')
+                                 'http://127.0.0.1:33508/cwr/files/',
+                                 'http://127.0.0.1:33508/cwr/files/remove/')
 
     app.config['CWR_ADMIN_SERVICE'] = service_admin
     app.config['PAGINATION_SERVICE'] = DefaultPaginationService(

@@ -34,10 +34,11 @@ class CWRService(object):
 
 
 class WSCWRService(CWRService):
-    def __init__(self, url, url_files):
+    def __init__(self, url, url_files, url_file_delete):
         super(WSCWRService, self).__init__()
         self._url = url
         self._url_files = url_files
+        self._url_file_delete = url_file_delete
 
     def process(self, file_data):
         data = {}
@@ -66,6 +67,19 @@ class WSCWRService(CWRService):
             files = []
 
         return files
+
+    def delete_file(self, file_id):
+        _logger.info('Deleting file with id %s' % file_id)
+        data = {}
+        data['file_id'] = file_id
+
+        headers = {'Content-Type': 'application/json'}
+
+        try:
+            requests.post(self._url_file_delete, data=json.dumps(data),
+                                headers=headers).json()
+        except (ConnectionError, ValueError):
+            pass
 
     def get_file(self, file_id):
         data = {}
