@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% block title %}Index{% endblock %}
 {% block page_title %}CWR frontend{% endblock %}
 {% block content %}
 <div class="row">
@@ -8,15 +7,19 @@
 
         <p>This is a prototype for the CWR web application.</p>
 
-        <p>It is still under development, but several steps can be tried and tested. Mainly the CWR validation steps.
-            But pay attention that not all the CWR files may be correctly read yet.</p>
+        <p>It is still under development, but several steps can be tried and
+            tested. Mainly the CWR validation steps.
+            But pay attention that not all the CWR files may be correctly read
+            yet.</p>
 
-        <p>Once the application is fully working it will offer several features, which include among them:</p>
+        <p>Once the application is fully working it will offer several features,
+            which include among them:</p>
         <ol>
             <li>CWR file uploading and storage</li>
             <li>CWR file validation and acknowledgement file creation</li>
         </ol>
-        <p>And also will allow connecting to external modules for other related jobs, such as:</p>
+        <p>And also will allow connecting to external modules for other related
+            jobs, such as:</p>
         <ol>
             <li>Data matching</li>
             <li>Results report and manual edition</li>
@@ -26,10 +29,12 @@
     <div class="col-md-4">
         <h2>Uploading files</h2>
 
-        <p>You can try uploading a file for the CWR validation process. Remember that not all files will be read
+        <p>You can try uploading a file for the CWR validation process. Remember
+            that not all files will be read
             correctly on the current version.</p>
 
-        <p><a class="btn btn-default" role="button" href="{{ url_for('cwr_upload.upload') }}">Upload CWR files</a>
+        <p><a class="btn btn-default" role="button"
+              href="{{ url_for('cwr_upload.upload') }}">Upload CWR files</a>
     </div>
 </div>
 {% endblock %}

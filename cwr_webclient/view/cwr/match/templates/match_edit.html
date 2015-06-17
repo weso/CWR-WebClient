@@ -1,17 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Matching{% endblock %}
 {% block page_title %}CWR matching edition{% endblock %}
-{% block head %}
-{{ super() }}
-<script type="text/javascript">
-    //<![CDATA[
-    function deleteRow(btn) {
-        var row = btn.parentNode.parentNode;
-        row.parentNode.removeChild(row);
-    }
-    //]]>
-</script>
-{% endblock %}
 {% block content %}
 <div class="jumbotron">
     <h2>Matchmaking manual edition</h2>
@@ -32,7 +20,9 @@
                 <select>
                     {% for option in options %}
                     {% if loop.index == rowloop.index %}
-                    <option value={{ option.value }} selected>{{ option.name }}</option>
+                    <option value={{ option.value }} selected>{{ option.name
+                        }}
+                    </option>
                     {% else %}
                     <option value={{ option.value }}>{{ option.name }}</option>
                     {% endif %}
@@ -47,8 +37,20 @@
 
 </div>
 </div>
-<a id="button-next" class="btn btn-primary btn-lg" role="button" href="{{ url_for('.report') }}">Back to
+<a id="button-next" class="btn btn-primary btn-lg" role="button"
+   href="{{ url_for('.report') }}">Back to
     matchmaking
     results</a>
 <p></p>
+{% endblock %}
+{% block js %}
+{{ super() }}
+<script type="text/javascript">
+    //<![CDATA[
+    function deleteRow(btn) {
+        var row = btn.parentNode.parentNode;
+        row.parentNode.removeChild(row);
+    }
+    //]]>
+</script>
 {% endblock %}

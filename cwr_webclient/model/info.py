@@ -24,10 +24,15 @@ class CompanyInfo(object):
 
 
 class ApplicationInfo(object):
-    def __init__(self, year, cms_url, cms_name):
+    def __init__(self, name, year, cms_url, cms_name):
+        self._name = name
         self._year = year
         self._cms_url = cms_url
         self._cms_name = cms_name
+
+    @property
+    def name(self):
+        return self._name
 
     @property
     def year(self):

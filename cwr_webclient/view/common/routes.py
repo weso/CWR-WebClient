@@ -1,6 +1,5 @@
 # -*- encoding: utf-8 -*-
-from flask import render_template, Blueprint, current_app
-
+from flask import render_template, Blueprint
 
 __author__ = 'Bernardo Martínez Garrido'
 __license__ = 'MIT'
@@ -18,6 +17,9 @@ Basic routes.
 
 @common_blueprint.route('/', methods=['GET'])
 def index():
-    return render_template('index.html', app_title=current_app.config['APP_NAME'])
+    return render_template('index.html')
 
 
+@common_blueprint.route('/about', methods=['GET'])
+def about():
+    return render_template('about.html')

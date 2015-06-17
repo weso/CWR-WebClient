@@ -1,9 +1,7 @@
 # -*- encoding: utf-8 -*-
 import os
 
-from cwr_webclient.uploads import __uploads__
 from data_web.accessor_web import CWRWebConfiguration
-
 
 __author__ = 'Bernardo Martínez Garrido'
 __license__ = 'MIT'
@@ -24,9 +22,6 @@ class Config(object):
     DEBUG_TB_INTERCEPT_REDIRECTS = False
     CACHE_TYPE = 'simple'  # Can be "memcached", "redis", etc.
 
-    # TODO: Should be removed
-    UPLOAD_FOLDER = os_env.get('CWR_WEBCLIENT_UPLOAD', __uploads__.path())
-
 
 class DevConfig(Config):
     """
@@ -37,6 +32,15 @@ class DevConfig(Config):
     DEBUG_TB_ENABLED = True
     ASSETS_DEBUG = True  # Don't bundle/minify static assets
     CACHE_TYPE = 'simple'  # Can be "memcached", "redis", etc.
+
+
+class ProdConfig(Config):
+    """
+    Development configuration.
+    """
+    ENV = 'prod'
+    DEBUG = False
+    DEBUG_TB_ENABLED = False
 
 
 class TestConfig(Config):
