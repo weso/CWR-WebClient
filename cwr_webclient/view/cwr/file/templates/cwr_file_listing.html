@@ -30,12 +30,14 @@
             <a href="{{ url_for('cwr_contents.summary', file_id=file.file_id) }}">File
                 contents</a></td>
         {% if file.status == 'done' %}
-        <td><a href="{{ url_for('mera_match.result', file_id=file.file_id) }}">Match</a>
+        <td><a href="{{ url_for('mera_match.summary', file_id=file.file_id) }}">Match</a>
         </td>
         {% else %}
         <td>Unavailable</td>
         {% endif %}
-        <td><a href="{{ url_for('cwr_file.delete', file_id=file.file_id) }}"><span class="label label-danger">X</span></a></td>
+        <td>
+            <a href="{{ url_for('cwr_file.delete', file_id=file.file_id) }}"><span
+                    class="label label-danger">X</span></a></td>
     </tr>
     {% endfor %}
 </table>

@@ -77,7 +77,7 @@ class WSCWRService(CWRService):
 
         try:
             requests.post(self._url_file_delete, data=json.dumps(data),
-                                headers=headers).json()
+                          headers=headers).json()
         except (ConnectionError, ValueError):
             pass
 

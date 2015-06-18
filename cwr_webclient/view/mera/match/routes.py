@@ -2,7 +2,7 @@
 import logging
 import json
 
-from flask import render_template, Blueprint, current_app
+from flask import render_template, Blueprint, current_app, abort
 
 __author__ = 'Bernardo Martínez Garrido'
 __license__ = 'MIT'
@@ -18,7 +18,24 @@ Upload routes.
 """
 
 
-@mera_match_blueprint.route('/<string:file_id>', methods=['GET'])
+@mera_match_blueprint.route('/<string:file_id>/summary/', methods=['GET'])
+def summary(file_id):
+    _logger.info('Checking summery for id %s' % file_id)
+
+    match_service = current_app.config['CWR_ADMIN_SERVICE']
+
+    data = json.loads(match_service.get_file(file_id)['match'])
+
+    print data
+
+    if not data:
+        abort(404)
+
+    return render_template('mera_match_summary.html', file_id=file_id,
+                           matches=data)
+
+
+@mera_match_blueprint.route('/<string:file_id>/results/', methods=['GET'])
 def result(file_id):
     _logger.info('Checking results for id %s' % file_id)
 
@@ -27,10 +44,9 @@ def result(file_id):
     data = json.loads(match_service.get_file(file_id)['match'])
 
     print data
-    print data.__class__.__name__
 
     if not data:
-        _logger.info('No data found')
-        data = []
+        abort(404)
 
-    return render_template('mera_match.html', file_id=file_id, matches=data)
+    return render_template('mera_match_results.html', file_id=file_id,
+                           matches=data)

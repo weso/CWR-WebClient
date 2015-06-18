@@ -1,0 +1,7 @@
+{% extends "mera_match_base.html" %}
+{% block page_title %}MERA matching summary{% endblock %}
+{% block content %}
+{{ super() }}
+<p>Summary of the matching results.</p>
+<p>Total of results: {{ matches|length }}</p>
+{% endblock %}

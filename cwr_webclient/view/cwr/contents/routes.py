@@ -21,10 +21,11 @@ CWR validation routes.
 def summary(file_id):
     cwr_service = current_app.config['CWR_ADMIN_SERVICE']
     cwr = cwr_service.get_file(file_id)
-    cwr = cwr['contents']
 
-    if not cwr:
+    if not cwr or 'contents' not in cwr or not cwr['contents']:
         abort(404)
+
+    cwr = cwr['contents']
 
     decoder = JSONDecoder()
 
