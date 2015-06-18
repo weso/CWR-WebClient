@@ -10,13 +10,14 @@ from logging.handlers import RotatingFileHandler
 from logging import Formatter
 
 from flask import Flask, render_template
+
 from werkzeug.contrib.fixers import ProxyFix
 
 from cwr_webclient.extensions import debug_toolbar, cache, bcrypt
 from cwr_webclient.view import *
 from cwr_webclient.config import DevConfig
 from cwr_webclient.service import DefaultPaginationService, \
-    WESOApplicationInfoService, WSCWRService
+    WESOApplicationInfoService, WSCWRService, MeraReportService
 from data_web.accessor_web import CWRWebConfiguration
 
 __author__ = 'Bernardo Martínez Garrido'
@@ -80,6 +81,7 @@ def _load_services(app, config):
     app.config['CWR_ADMIN_SERVICE'] = service_admin
     app.config['PAGINATION_SERVICE'] = DefaultPaginationService(
         int(config['perpage']))
+    app.config['CWR_MATCH_REPORT_SERVICE'] = MeraReportService(service_admin)
 
 
 def _register_blueprints(app):

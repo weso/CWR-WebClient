@@ -18,7 +18,8 @@
             <li><a href="{{ url_for('mera_match.result', file_id=file_id) }}">Check
                 results</a>
             </li>
-            <li><a id="button-download-match-report" href="#">Download
+            <li><a href="{{ url_for('mera_match.report', file_id=file_id) }}"
+                   href="#">Download
                 report</a>
             </li>
         </ul>
