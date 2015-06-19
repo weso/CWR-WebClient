@@ -36,7 +36,8 @@
         <td>Unavailable</td>
         {% endif %}
         <td>
-            <a href="{{ url_for('cwr_file.delete', file_id=file.file_id) }}"><span
+            <a href="{{ url_for('cwr_file.delete', file_id=file.file_id) }}"
+               onclick='return confirm("Are you sure you want to delete the file {{file.name}}?")'><span
                     class="label label-danger">X</span></a></td>
     </tr>
     {% endfor %}
