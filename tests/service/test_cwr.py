@@ -12,7 +12,8 @@ __status__ = 'Development'
 
 class TestWSCWRServiceNoService(unittest.TestCase):
     def setUp(self):
-        self._service = WSCWRService('http://127.0.0.1:1', 'http://127.0.0.1:1', 'http://127.0.0.1:1')
+        self._service = WSCWRService('http://127.0.0.1:1', 'http://127.0.0.1:1',
+                                     'http://127.0.0.1:1')
 
     def test_process(self):
         file = StringIO.StringIO('text1')

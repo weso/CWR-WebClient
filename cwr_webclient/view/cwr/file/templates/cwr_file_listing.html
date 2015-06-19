@@ -6,7 +6,6 @@
     <tr>
         <th>File</th>
         <th>Date</th>
-        <th>Status</th>
         <th>Contents</th>
         <th>Matching</th>
         <th>Delete</th>
@@ -15,25 +14,38 @@
     <tr>
         <td>{{file.name}}</td>
         <td>{{file.date}}</td>
-        {% if file.status == 'done' %}
-        <td><span class="label label-success">{{file.status}}</span></td>
-        {% elif file.status == 'processing' %}
-        <td><span class="label label-warning">{{file.status}}</span></td>
-        {% elif file.status == 'rejected' %}
-        <td><span class="label label-danger">{{file.status}}</span></td>
-        {% elif file.status == 'error' %}
-        <td><span class="label label-danger">{{file.status}}</span></td>
-        {% else %}
-        <td>{{file.status}}</td>
-        {% endif %}
+        {% if file.parse_status == 'done' %}
         <td>
             <a href="{{ url_for('cwr_contents.summary', file_id=file.file_id) }}">File
                 contents</a></td>
-        {% if file.status == 'done' %}
+        {% else %}
+        {% if file.parse_status == 'done' %}
+        <td><span class="label label-success">{{file.parse_status}}</span></td>
+        {% elif file.parse_status == 'processing' %}
+        <td><span class="label label-warning">{{file.parse_status}}</span></td>
+        {% elif file.parse_status == 'rejected' %}
+        <td><span class="label label-danger">{{file.parse_status}}</span></td>
+        {% elif file.parse_status == 'error' %}
+        <td><span class="label label-danger">{{file.parse_status}}</span></td>
+        {% else %}
+        <td>{{file.parse_status}}</td>
+        {% endif %}
+        {% endif %}
+        {% if file.match_status == 'done' %}
         <td><a href="{{ url_for('mera_match.summary', file_id=file.file_id) }}">Match</a>
         </td>
         {% else %}
-        <td>Unavailable</td>
+        {% if file.match_status == 'done' %}
+        <td><span class="label label-success">{{file.match_status}}</span></td>
+        {% elif file.match_status == 'processing' %}
+        <td><span class="label label-warning">{{file.match_status}}</span></td>
+        {% elif file.match_status == 'rejected' %}
+        <td><span class="label label-danger">{{file.match_status}}</span></td>
+        {% elif file.match_status == 'error' %}
+        <td><span class="label label-danger">{{file.match_status}}</span></td>
+        {% else %}
+        <td>{{file.match_status}}</td>
+        {% endif %}
         {% endif %}
         <td>
             <a href="{{ url_for('cwr_file.delete', file_id=file.file_id) }}"

@@ -10,6 +10,7 @@ from logging.handlers import RotatingFileHandler
 from logging import Formatter
 
 from flask import Flask, render_template
+
 from werkzeug.contrib.fixers import ProxyFix
 
 from cwr_webclient.extensions import debug_toolbar, cache, bcrypt
