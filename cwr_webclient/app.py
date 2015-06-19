@@ -10,7 +10,6 @@ from logging.handlers import RotatingFileHandler
 from logging import Formatter
 
 from flask import Flask, render_template
-
 from werkzeug.contrib.fixers import ProxyFix
 
 from cwr_webclient.extensions import debug_toolbar, cache, bcrypt
@@ -76,7 +75,8 @@ def _load_services(app, config):
 
     service_admin = WSCWRService('http://127.0.0.1:33508/cwr/process/',
                                  'http://127.0.0.1:33508/cwr/files/',
-                                 'http://127.0.0.1:33508/cwr/files/remove/')
+                                 'http://127.0.0.1:33508/cwr/files/remove/',
+                                 'http://127.0.0.1:33508/cwr/match/begin/')
 
     app.config['CWR_ADMIN_SERVICE'] = service_admin
     app.config['PAGINATION_SERVICE'] = DefaultPaginationService(

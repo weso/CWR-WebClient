@@ -31,6 +31,9 @@
         <td>{{file.parse_status}}</td>
         {% endif %}
         {% endif %}
+        {% if file.parse_status != 'done' %}
+        <td>Please, wait for the parsing to finish</td>
+        {% else %}
         {% if file.match_status == 'done' %}
         <td><a href="{{ url_for('mera_match.summary', file_id=file.file_id) }}">Match</a>
         </td>
@@ -43,8 +46,12 @@
         <td><span class="label label-danger">{{file.match_status}}</span></td>
         {% elif file.match_status == 'error' %}
         <td><span class="label label-danger">{{file.match_status}}</span></td>
+        {% elif file.match_status == 'none' %}
+        <td><a href="{{ url_for('mera_match.begin', file_id=file.file_id) }}">Begin</a>
+        </td>
         {% else %}
         <td>{{file.match_status}}</td>
+        {% endif %}
         {% endif %}
         {% endif %}
         <td>

@@ -2,7 +2,8 @@
 import logging
 import json
 
-from flask import render_template, Blueprint, current_app, abort, make_response
+from flask import render_template, Blueprint, current_app, abort, make_response, \
+    redirect, url_for
 
 __author__ = 'Bernardo Martínez Garrido'
 __license__ = 'MIT'
@@ -53,6 +54,17 @@ def report(file_id):
         "Content-type"] = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
 
     return response
+
+
+@mera_match_blueprint.route('/begin/<string:file_id>', methods=['GET'])
+def begin(file_id):
+    match_service = current_app.config['CWR_ADMIN_SERVICE']
+
+    _logger.info('Beginning match for id %s' % file_id)
+
+    match_service.begin_match(file_id)
+
+    return redirect(url_for('cwr_file.list'))
 
 
 def _get_matches(file_id):
