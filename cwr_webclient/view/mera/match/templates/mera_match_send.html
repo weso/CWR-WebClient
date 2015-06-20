@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% import "macro/mera_options.html" as options %}
+{% block title %}CWR File Crossroads{% endblock %}
+{% block page_title %}CWR File Crossroads{% endblock %}
+{% block content %}
+<p>Choose what to do with the uploaded file.</p>
+<!-- http://www.dropzonejs.com/bootstrap.html -->
+<form role="form" method="post" enctype="multipart/form-data"
+      action={{url_for('.send_match', file_id=file_id)}}
+      data-show-preview="false">
+    {{ options.show_match_options() }}
+
+    <button type="submit" class="btn btn-primary"
+            data-style="expand-right"><span
+            >Submit</span></button>
+</form>
+{% endblock %}

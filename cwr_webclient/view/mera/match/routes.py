@@ -3,7 +3,7 @@ import logging
 import json
 
 from flask import render_template, Blueprint, current_app, abort, make_response, \
-    redirect, url_for
+    redirect, url_for, request
 
 __author__ = 'Bernardo Martínez Garrido'
 __license__ = 'MIT'
@@ -58,11 +58,45 @@ def report(file_id):
 
 @mera_match_blueprint.route('/begin/<string:file_id>', methods=['GET'])
 def begin(file_id):
-    match_service = current_app.config['CWR_ADMIN_SERVICE']
-
     _logger.info('Beginning match for id %s' % file_id)
 
-    match_service.begin_match(file_id)
+    return render_template('mera_match_send.html', file_id=file_id)
+
+
+@mera_match_blueprint.route('/send/<string:file_id>', methods=['POST'])
+def send_match(file_id):
+    config = request.form
+
+    config_dict = {}
+
+    config_subdict = {
+        'blocking_function': float(config['blocking_function']),
+        'result_query': int(config['result_query'])
+    }
+    config_dict['blocking'] = config_subdict
+
+    config_subdict = {
+        "threshold": float(config['findsong.threshold']),
+        "relevances": {
+            "artist": float(config['relevances.artist'])
+        }
+    }
+    config_dict['commands'] = {
+        "find_song": config_subdict
+    }
+
+    config_dict['fields'] = {
+        "song": {
+            "threshold": float(config['song.threshold'])
+        },
+        "artist": {
+            "threshold": float(config['artist.threshold'])
+        }
+    }
+
+    match_service = current_app.config['CWR_ADMIN_SERVICE']
+
+    match_service.begin_match(file_id, config_dict)
 
     return redirect(url_for('cwr_file.list'))
 

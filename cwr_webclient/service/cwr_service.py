@@ -61,12 +61,13 @@ class WSCWRService(CWRService):
 
         return 0
 
-    def begin_match(self, file_id):
+    def begin_match(self, file_id, config):
         headers = {'Accept': 'application/json',
                    'Content-Type': 'application/json'}
 
         data = {}
         data['file_id'] = file_id
+        data['config'] = config
 
         data = json.dumps(data)
 
