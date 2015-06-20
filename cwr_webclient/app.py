@@ -16,7 +16,8 @@ from cwr_webclient.extensions import debug_toolbar, cache, bcrypt
 from cwr_webclient.view import *
 from cwr_webclient.config import DevConfig
 from cwr_webclient.service import DefaultPaginationService, \
-    WESOApplicationInfoService, WSCWRService, MeraReportService
+    WESOApplicationInfoService, WSCWRService, MeraReportService, \
+    CWRReportService
 from data_web.accessor_web import CWRWebConfiguration
 
 __author__ = 'Bernardo Martínez Garrido'
@@ -81,7 +82,8 @@ def _load_services(app, config):
     app.config['CWR_ADMIN_SERVICE'] = service_admin
     app.config['PAGINATION_SERVICE'] = DefaultPaginationService(
         int(config['perpage']))
-    app.config['CWR_MATCH_REPORT_SERVICE'] = MeraReportService(service_admin)
+    app.config['CWR_MATCH_REPORT_SERVICE'] = MeraReportService()
+    app.config['CWR_REPORT_SERVICE'] = CWRReportService()
 
 
 def _register_blueprints(app):

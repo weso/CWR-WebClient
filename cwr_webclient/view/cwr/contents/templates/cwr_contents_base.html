@@ -13,15 +13,3 @@
     {% endblock %}
 </div>
 {% endblock %}
-{% block scripts %}
-{{ super() }}
-<script type="text/javascript">
-    //<![CDATA[
-    window.onload = function () {
-        $('#button-download-cwr-report').click(function () {
-            alert('This would start a download dialog for the report file')
-        });
-    };
-    //]]>
-</script>
-{% endblock %}

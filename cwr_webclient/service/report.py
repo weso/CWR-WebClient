@@ -2,7 +2,8 @@
 
 from abc import ABCMeta, abstractmethod
 
-from cwr_webclient.report.mera import generate_match_report_excel
+from cwr_webclient.report import mera as mera_reporter
+from cwr_webclient.report import cwr as cwr_reporter
 
 """
 Offers services for pagination.
@@ -26,9 +27,10 @@ class ReportService(object):
 
 
 class MeraReportService(ReportService):
-    def __init__(self, match_service):
-        super(MeraReportService, self).__init__()
-        self._match_service = match_service
-
     def generate_report_excel(self, data):
-        return generate_match_report_excel(data)
+        return mera_reporter.generate_match_report_excel(data)
+
+
+class CWRReportService(ReportService):
+    def generate_report_excel(self, data):
+        return cwr_reporter.generate_cwr_report_excel(data)

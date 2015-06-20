@@ -41,7 +41,7 @@ def result(file_id):
 
 @mera_match_blueprint.route('/<string:file_id>/report/', methods=['GET'])
 def report(file_id):
-    _logger.info('Checking summery for id %s' % file_id)
+    _logger.info('Generating match report for id %s' % file_id)
 
     report_service = current_app.config['CWR_MATCH_REPORT_SERVICE']
 
