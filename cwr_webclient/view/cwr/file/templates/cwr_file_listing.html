@@ -2,63 +2,92 @@
 {% block page_title %}CWR file listing{% endblock %}
 {% block content %}
 <p>Here are shown the CWR files on the server.</p>
-<table class="table">
-    <tr>
-        <th>File</th>
-        <th>Date</th>
-        <th>Contents</th>
-        <th>Matching</th>
-        <th>Delete</th>
-    </tr>
-    {% for file in files %}
-    <tr>
-        <td>{{file.name}}</td>
-        <td>{{file.date}}</td>
-        {% if file.parse_status == 'done' %}
-        <td>
-            <a href="{{ url_for('cwr_contents.summary', file_id=file.file_id) }}">File
-                contents</a></td>
-        {% else %}
-        {% if file.parse_status == 'done' %}
-        <td><span class="label label-success">{{file.parse_status}}</span></td>
-        {% elif file.parse_status == 'processing' %}
-        <td><span class="label label-warning">{{file.parse_status}}</span></td>
-        {% elif file.parse_status == 'rejected' %}
-        <td><span class="label label-danger">{{file.parse_status}}</span></td>
-        {% elif file.parse_status == 'error' %}
-        <td><span class="label label-danger">{{file.parse_status}}</span></td>
-        {% else %}
-        <td>{{file.parse_status}}</td>
-        {% endif %}
-        {% endif %}
-        {% if file.parse_status != 'done' %}
-        <td>Please, wait for the parsing to finish</td>
-        {% else %}
-        {% if file.match_status == 'done' %}
-        <td><a href="{{ url_for('mera_match.summary', file_id=file.file_id) }}">Match</a>
-        </td>
-        {% else %}
-        {% if file.match_status == 'done' %}
-        <td><span class="label label-success">{{file.match_status}}</span></td>
-        {% elif file.match_status == 'processing' %}
-        <td><span class="label label-warning">{{file.match_status}}</span></td>
-        {% elif file.match_status == 'rejected' %}
-        <td><span class="label label-danger">{{file.match_status}}</span></td>
-        {% elif file.match_status == 'error' %}
-        <td><span class="label label-danger">{{file.match_status}}</span></td>
-        {% elif file.match_status == 'none' %}
-        <td><a href="{{ url_for('mera_match.begin', file_id=file.file_id) }}">Begin</a>
-        </td>
-        {% else %}
-        <td>{{file.match_status}}</td>
-        {% endif %}
-        {% endif %}
-        {% endif %}
-        <td>
-            <a href="{{ url_for('cwr_file.delete', file_id=file.file_id) }}"
-               onclick='return confirm("Are you sure you want to delete the file {{file.name}}?")'><span
-                    class="label label-danger">X</span></a></td>
-    </tr>
-    {% endfor %}
-</table>
+<div class="panel panel-primary filterable">
+    <div class="panel-heading">
+        <h3 class="panel-title">Users</h3>
+
+        <div class="pull-right">
+            <button class="btn btn-default btn-xs btn-filter"><span
+                    class="glyphicon glyphicon-filter"></span> Filter
+            </button>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+        <tr class="filters">
+            <th><input type="text" class="form-control" placeholder="File"
+                       disabled>
+            </th>
+            <th><input type="text" class="form-control" placeholder="Date"
+                       disabled>
+            </th>
+            <th>Contents</th>
+            <th>Matching</th>
+            <th>Delete</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for file in files %}
+        <tr>
+            <td>{{file.name}}</td>
+            <td>{{file.date}}</td>
+            {% if file.parse_status == 'done' %}
+            <td>
+                <a href="{{ url_for('cwr_contents.summary', file_id=file.file_id) }}">File
+                    contents</a></td>
+            {% else %}
+            {% if file.parse_status == 'done' %}
+            <td><span class="label label-success">{{file.parse_status}}</span>
+            </td>
+            {% elif file.parse_status == 'processing' %}
+            <td><span class="label label-warning">{{file.parse_status}}</span>
+            </td>
+            {% elif file.parse_status == 'rejected' %}
+            <td><span class="label label-danger">{{file.parse_status}}</span>
+            </td>
+            {% elif file.parse_status == 'error' %}
+            <td><span class="label label-danger">{{file.parse_status}}</span>
+            </td>
+            {% else %}
+            <td>{{file.parse_status}}</td>
+            {% endif %}
+            {% endif %}
+            {% if file.parse_status != 'done' %}
+            <td>Please, wait for the parsing to finish</td>
+            {% else %}
+            {% if file.match_status == 'done' %}
+            <td>
+                <a href="{{ url_for('mera_match.summary', file_id=file.file_id) }}">Match</a>
+            </td>
+            {% else %}
+            {% if file.match_status == 'done' %}
+            <td><span class="label label-success">{{file.match_status}}</span>
+            </td>
+            {% elif file.match_status == 'processing' %}
+            <td><span class="label label-warning">{{file.match_status}}</span>
+            </td>
+            {% elif file.match_status == 'rejected' %}
+            <td><span class="label label-danger">{{file.match_status}}</span>
+            </td>
+            {% elif file.match_status == 'error' %}
+            <td><span class="label label-danger">{{file.match_status}}</span>
+            </td>
+            {% elif file.match_status == 'none' %}
+            <td>
+                <a href="{{ url_for('mera_match.begin', file_id=file.file_id) }}">Begin</a>
+            </td>
+            {% else %}
+            <td>{{file.match_status}}</td>
+            {% endif %}
+            {% endif %}
+            {% endif %}
+            <td>
+                <a href="{{ url_for('cwr_file.delete', file_id=file.file_id) }}"
+                   onclick='return confirm("Are you sure you want to delete the file {{file.name}}?")'><span
+                        class="label label-danger">X</span></a></td>
+        </tr>
+        </tbody>
+        {% endfor %}
+    </table>
+</div>
 {% endblock %}
