@@ -34,7 +34,7 @@ def upload_handler():
     if sent_file:
         admin_service = current_app.config['CWR_ADMIN_SERVICE']
 
-        file_id = admin_service.process(sent_file)
+        admin_service.process(sent_file)
 
         # return redirect(url_for('mera_match.setup_match', file_id=file_id))
         return redirect(url_for('cwr_file.list'))

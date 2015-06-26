@@ -22,7 +22,7 @@ class CWRService(object):
 
     @abstractmethod
     def process(self, file_data):
-        raise NotImplementedError('The validate method must be implemented')
+        raise NotImplementedError('The process method must be implemented')
 
     @abstractmethod
     def get_files(self):
@@ -58,8 +58,6 @@ class WSCWRService(CWRService):
             requests.post(self._url, data=data, headers=headers)
         except (ConnectionError, ValueError):
             _logger.info('Error sending file')
-
-        return 0
 
     def begin_match(self, file_id, config):
         headers = {'Accept': 'application/json',
