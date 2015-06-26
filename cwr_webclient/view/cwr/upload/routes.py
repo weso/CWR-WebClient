@@ -10,7 +10,7 @@ cwr_upload_blueprint = Blueprint('cwr_upload', __name__,
                                  template_folder='templates',
                                  static_folder='static')
 
-REJECTED_EXTENSIONS = set(['html', 'htm', 'php'])
+REJECTED_EXTENSIONS = set(['html', 'htm', 'php', 'exe', 'bat', 'sh'])
 
 """
 Upload routes.
