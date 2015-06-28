@@ -58,26 +58,21 @@ def _register_errorhandlers(app):
 
 
 def _load_services(app, config):
-    match_ws = config['ws.match']
-    match_ws_results = config['ws.match.results']
-    match_ws_status = config['ws.match.status']
+    admin_ws = os.environ.get('CWR_ADMIN_WS',
+                              'http://127.0.0.1:33508/cwr/')
 
-    if len(match_ws) == 0:
-        match_ws = os.environ.get('CWR_WEBCLIENT_MATCH_WS',
-                                  'http://127.0.0.1:33567/cwr/')
+    process_cwr = admin_ws + 'process/'
 
-    if len(match_ws_results) == 0:
-        match_ws_results = os.environ.get('CWR_WEBCLIENT_MATCH_WS_RESULTS',
-                                          'http://127.0.0.1:33567/cwr/results/')
+    files = admin_ws + 'files/'
 
-    if len(match_ws_status) == 0:
-        match_ws_status = os.environ.get('CWR_WEBCLIENT_MATCH_WS_STATUS',
-                                         'http://127.0.0.1:33567/cwr/status/')
+    remove_cwr = files + 'remove/'
 
-    service_admin = WSCWRService('http://127.0.0.1:33508/cwr/process/',
-                                 'http://127.0.0.1:33508/cwr/files/',
-                                 'http://127.0.0.1:33508/cwr/files/remove/',
-                                 'http://127.0.0.1:33508/cwr/match/begin/')
+    match_begin = admin_ws + 'match/begin/'
+
+    service_admin = WSCWRService(process_cwr,
+                                 files,
+                                 remove_cwr,
+                                 match_begin)
 
     app.config['CWR_ADMIN_SERVICE'] = service_admin
     app.config['PAGINATION_SERVICE'] = DefaultPaginationService(
