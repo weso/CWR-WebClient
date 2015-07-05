@@ -41,11 +41,16 @@ def result(file_id):
 
 @mera_match_blueprint.route('/<string:file_id>/report/', methods=['GET'])
 def report(file_id):
+    cwr_service = current_app.config['CWR_ADMIN_SERVICE']
+    cwr = cwr_service.get_file(file_id)
+    filename = cwr['name']
+
     _logger.info('Generating match report for id %s' % file_id)
 
     report_service = current_app.config['CWR_MATCH_REPORT_SERVICE']
 
-    report = report_service.generate_report_excel(_get_matches(file_id))
+    report = report_service.generate_report_excel(_get_matches(file_id),
+                                                  filename)
 
     response = make_response(report)
 

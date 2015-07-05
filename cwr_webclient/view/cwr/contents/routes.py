@@ -75,6 +75,7 @@ def report_download():
 def report(file_id):
     cwr_service = current_app.config['CWR_ADMIN_SERVICE']
     cwr = cwr_service.get_file(file_id)
+    filename = cwr['name']
 
     if not cwr or 'contents' not in cwr or not cwr['contents']:
         abort(404)
@@ -87,7 +88,7 @@ def report(file_id):
 
     report_service = current_app.config['CWR_REPORT_SERVICE']
 
-    report = report_service.generate_report_excel(cwr)
+    report = report_service.generate_report_excel(cwr, filename)
 
     response = make_response(report)
 

@@ -21,16 +21,16 @@ class ReportService(object):
         pass
 
     @abstractmethod
-    def generate_report_excel(self, data):
+    def generate_report_excel(self, data, filename):
         raise NotImplementedError(
             'The generate_report_excel method must be implemented')
 
 
 class MeraReportService(ReportService):
-    def generate_report_excel(self, data):
-        return mera_reporter.generate_match_report_excel(data)
+    def generate_report_excel(self, data, filename):
+        return mera_reporter.generate_match_report_excel(data, filename)
 
 
 class CWRReportService(ReportService):
-    def generate_report_excel(self, data):
+    def generate_report_excel(self, data, filename):
         return cwr_reporter.generate_cwr_report_excel(data)

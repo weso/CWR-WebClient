@@ -11,7 +11,7 @@ __status__ = 'Development'
 if __name__ == '__main__':
     port = int(os.environ.get('CWR_WEB_CLIENT_PORT', 33507))
     host = os.environ.get('CWR_WEB_CLIENT_HOST', '127.0.0.1')
-    env = os.environ.get('CWR_WEB_CLIENT_ENV', 'prod')
+    env = os.environ.get('CWR_WEB_CLIENT_ENV', 'dev')
 
     if env == 'prod':
         app = create_app(ProdConfig)
