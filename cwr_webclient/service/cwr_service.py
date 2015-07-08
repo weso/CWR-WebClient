@@ -34,12 +34,14 @@ class CWRService(object):
 
 
 class WSCWRService(CWRService):
-    def __init__(self, url, url_files, url_file_delete, url_match_begin):
+    def __init__(self, url, url_files, url_file_delete, url_match_begin,
+                 url_match_reject):
         super(WSCWRService, self).__init__()
         self._url = url
         self._url_files = url_files
         self._url_file_delete = url_file_delete
         self._url_match_begin = url_match_begin
+        self._url_match_reject = url_match_reject
 
     def process(self, file_data):
         data = {}
@@ -55,7 +57,9 @@ class WSCWRService(CWRService):
         data = json.dumps(data)
 
         try:
+            _logger.info('Sending uploaded file')
             requests.post(self._url, data=data, headers=headers)
+            _logger.info('Sent uploaded file')
         except (ConnectionError, ValueError):
             _logger.info('Error sending file')
 
@@ -71,6 +75,21 @@ class WSCWRService(CWRService):
 
         try:
             requests.post(self._url_match_begin, data=data, headers=headers)
+        except (ConnectionError, ValueError):
+            _logger.info('Error asking for match')
+
+    def reject_match(self, file_id, pos):
+        headers = {'Accept': 'application/json',
+                   'Content-Type': 'application/json'}
+
+        data = {}
+        data['file_id'] = file_id
+        data['pos'] = pos
+
+        data = json.dumps(data)
+
+        try:
+            requests.post(self._url_match_reject, data=data, headers=headers)
         except (ConnectionError, ValueError):
             _logger.info('Error asking for match')
 

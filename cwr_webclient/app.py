@@ -68,11 +68,13 @@ def _load_services(app, config):
     remove_cwr = files + 'remove/'
 
     match_begin = admin_ws + 'match/begin/'
+    match_reject = admin_ws + 'match/reject/'
 
     service_admin = WSCWRService(process_cwr,
                                  files,
                                  remove_cwr,
-                                 match_begin)
+                                 match_begin,
+                                 match_reject)
 
     app.config['CWR_ADMIN_SERVICE'] = service_admin
     app.config['PAGINATION_SERVICE'] = DefaultPaginationService(

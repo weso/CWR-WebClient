@@ -68,6 +68,18 @@ def begin(file_id):
     return render_template('mera_match_send.html', file_id=file_id)
 
 
+@mera_match_blueprint.route('/reject/<string:file_id><int:pos>',
+                            methods=['GET'])
+def reject_match(file_id, pos):
+    _logger.info('Rejecting match #%s for id %s' % (pos, file_id))
+
+    cwr_service = current_app.config['CWR_ADMIN_SERVICE']
+
+    cwr_service.reject_match(file_id, pos)
+
+    return redirect(url_for('.result', file_id=file_id))
+
+
 @mera_match_blueprint.route('/send/<string:file_id>', methods=['POST'])
 def send_match(file_id):
     config = request.form
@@ -111,7 +123,7 @@ def _get_matches(file_id):
 
     data = match_service.get_file(file_id)
 
-    if not data or 'match' not in data:
+    if not data or 'match' not in data or not data['match']:
         abort(404)
 
     return json.loads(data['match'])

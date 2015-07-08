@@ -27,10 +27,17 @@
 </nav>
 {% endmacro %}
 
-{% macro show_results_list(matches) %}
+{% macro show_results_list(matches, file_id) %}
 {% for match in matches %}
 <div class="panel panel-info">
     <div class="panel-heading">
+        <p><a class="pull-right"
+              href="{{ url_for('.reject_match', file_id=file_id, pos=loop.index) }}"
+              onclick='return confirm("Are you sure you want to delete the match #{{ loop.index }}?")'>Reject</a>
+        </p>
+
+        <p>Match #{{ loop.index }}</p>
+
         <p>{{match.query}} <span class="badge">{{match.type_of_query}}</span>
         </p>
 
