@@ -31,12 +31,20 @@
 {% for match in matches %}
 <div class="panel panel-info">
     <div class="panel-heading">
-        {% if match.rejected is not defined or not match.rejected %}
-        <p><a class="pull-right"
-              href="{{ url_for('.reject_match', file_id=file_id, pos=loop.index) }}"
-              onclick='return confirm("Are you sure you want to delete the match #{{ loop.index }}?")'>Reject</a>
-        </p>
-        {% endif %}
+        <div class="pull-right">
+            {% if match.rejected is not defined or not match.rejected %}
+            <p><a
+                    href="{{ url_for('.reject_match', file_id=file_id, pos=loop.index) }}"
+                    onclick='return confirm("Are you sure you want to delete the match #{{ loop.index }}?")'>Reject</a>
+            </p>
+            {% endif %}
+            {% if match.accepted is not defined or not match.accepted %}
+            <p><a
+                    href="{{ url_for('.confirm_match', file_id=file_id, pos=loop.index) }}"
+                    onclick='return confirm("Are you sure you want to confirm the match #{{ loop.index }}?")'>Confirm</a>
+            </p>
+            {% endif %}
+        </div>
 
         <p>Match #{{ loop.index }}</p>
 
@@ -46,6 +54,8 @@
         <p>ISWC: {{match.iswc}}</p>
         {% if match.rejected is defined and match.rejected %}
         <p class="match-rejected">REJECTED</p>
+        {% elif match.accepted is defined and match.accepted %}
+        <p class="match-accepted">ACCEPTED</p>
         {% endif %}
 
     </div>

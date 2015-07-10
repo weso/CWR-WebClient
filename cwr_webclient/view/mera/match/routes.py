@@ -80,6 +80,18 @@ def reject_match(file_id, pos):
     return redirect(url_for('.result', file_id=file_id))
 
 
+@mera_match_blueprint.route('/confirm/<string:file_id><int:pos>',
+                            methods=['GET'])
+def confirm_match(file_id, pos):
+    _logger.info('Confirming match #%s for id %s' % (pos, file_id))
+
+    cwr_service = current_app.config['CWR_ADMIN_SERVICE']
+
+    cwr_service.confirm_match(file_id, pos)
+
+    return redirect(url_for('.result', file_id=file_id))
+
+
 @mera_match_blueprint.route('/send/<string:file_id>', methods=['POST'])
 def send_match(file_id):
     config = request.form
