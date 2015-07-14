@@ -1,6 +1,5 @@
 # -*- encoding: utf-8 -*-
-from flask import render_template, redirect, url_for, request, flash, Blueprint, \
-    current_app
+from flask import render_template, redirect, url_for, request, flash, Blueprint
 
 __author__ = 'Bernardo Martínez Garrido'
 __license__ = 'MIT'

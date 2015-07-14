@@ -1,41 +1,10 @@
-{% macro main_menu() %}
-<nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed"
-                    data-toggle="collapse" data-target="#navbar"
-                    aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="{{ url_for('common_views.index') }}">Home</a>
-            <a class="navbar-brand" href="{{ url_for('common_views.about') }}">About</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-            <form class="navbar-form navbar-right">
-                <div class="form-group">
-                    <input type="text" placeholder="Email" class="form-control">
-                </div>
-                <div class="form-group">
-                    <input type="password" placeholder="Password"
-                           class="form-control">
-                </div>
-                <button type="submit" class="btn btn-success">Sign in</button>
-            </form>
-        </div>
-    </div>
-</nav>
-{% endmacro %}
-
 {% macro side_menu() %}
-<div class="col-sm-3 col-md-2 sidebar">
-    <ul class="nav nav-stacked">
-        <strong>CWR</strong>
-        <hr>
-        <li class="nav-header"><a href="#" data-toggle="collapse"
-                                  data-target="#cwrFileMenu">Files<i
+<div id="sidebar-wrapper">
+    <ul class="sidebar-nav">
+        <li class="sidebar-brand"><a href="{{ url_for('common_views.index') }}">Home</a>
+        </li>
+        <li><a href="#" data-toggle="collapse"
+               data-target="#cwrFileMenu">CWR<i
                 class="glyphicon glyphicon-chevron-right"></i></a>
             <ul class="nav nav-stacked collapse" id="cwrFileMenu">
                 <li><a href="{{ url_for('cwr_file.list') }}">Files list</a></li>
@@ -43,26 +12,24 @@
                 <li><a href="{{ url_for('cwr_upload.upload') }}">Upload</a></li>
             </ul>
         </li>
-        <hr>
-        <strong>USO</strong>
-        <hr>
-        <li class="nav-header"><a href="#" data-toggle="collapse"
-                                  data-target="#usoFileMenu">Files<i
+        <li><a href="#" data-toggle="collapse"
+               data-target="#usoFileMenu">USO<i
                 class="glyphicon glyphicon-chevron-right"></i></a>
             <ul class="nav nav-stacked collapse" id="usoFileMenu">
                 <li><a href="{{ url_for('uso_upload.upload') }}">Upload</a></li>
             </ul>
         </li>
-        <hr>
-        <strong>Links</strong>
-        <hr>
-        <ul class="nav nav-pills nav-stacked">
-            <li class="nav-header"></li>
-            <li><a href="http://www.cisac.org/"><i
-                    class="glyphicon glyphicon-link"></i>CISAC</a></li>
-            <li><a href="http://www.weso.es/"><i
-                    class="glyphicon glyphicon-link"></i>WESO</a></li>
-        </ul>
+        <li><a href="{{ url_for('common_views.about') }}">About</a></li>
+        <li><a href="#" data-toggle="collapse"
+               data-target="#linksMenu">Links<i
+                class="glyphicon glyphicon-chevron-right"></i></a>
+            <ul class="nav nav-stacked collapse" id="linksMenu">
+                <li><a href="http://www.cisac.org/"><i
+                        class="glyphicon glyphicon-link"></i>CISAC</a></li>
+                <li><a href="http://www.weso.es/"><i
+                        class="glyphicon glyphicon-link"></i>WESO</a></li>
+            </ul>
+        </li>
     </ul>
 </div>
 {% endmacro %}

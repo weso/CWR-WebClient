@@ -1,9 +1,63 @@
-{% macro show_results_list(matches) %}
+{% macro show_navbar(file_id) %}
+<nav class="navbar navbar-default navbar">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse"
+                data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" rel="summary"
+           href="{{ url_for('mera_match.summary', file_id=file_id) }}">Summary</a>
+    </div>
+
+    <div class="collapse navbar-collapse">
+
+        <ul class="nav navbar-nav">
+            <li><a href="{{ url_for('mera_match.result', file_id=file_id) }}">Check
+                results</a>
+            </li>
+            <li><a href="{{ url_for('mera_match.report', file_id=file_id) }}"
+                   href="#">Download
+                report</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+{% endmacro %}
+
+{% macro show_results_list(matches, file_id) %}
 {% for match in matches %}
 <div class="panel panel-info">
     <div class="panel-heading">
+        <div class="pull-right">
+            {% if match.rejected is not defined or not match.rejected %}
+            <p><a
+                    href="{{ url_for('.reject_match', file_id=file_id, pos=loop.index) }}"
+                    onclick='return confirm("Are you sure you want to delete the match #{{ loop.index }}?")'>Reject</a>
+            </p>
+            {% endif %}
+            {% if match.accepted is not defined or not match.accepted %}
+            <p><a
+                    href="{{ url_for('.confirm_match', file_id=file_id, pos=loop.index) }}"
+                    onclick='return confirm("Are you sure you want to confirm the match #{{ loop.index }}?")'>Confirm</a>
+            </p>
+            {% endif %}
+        </div>
+
+        <p>Match #{{ loop.index }}</p>
+
         <p>{{match.query}} <span class="badge">{{match.type_of_query}}</span>
         </p>
+
+        <p>ISWC: {{match.iswc}}</p>
+        {% if match.rejected is defined and match.rejected %}
+        <p class="match-rejected">REJECTED</p>
+        {% elif match.accepted is defined and match.accepted %}
+        <p class="match-accepted">ACCEPTED</p>
+        {% endif %}
+
     </div>
     <div class="panel-body">
         <div class="container">
@@ -37,6 +91,10 @@
                 <div class="panel-heading">
                     <p>{{result.entity}} <span class="badge">{{result.refined_score}}</span>
                     </p>
+
+                    <p>ISRC: {{result.isrc}}</p>
+
+                    <p>USO Transaction ID: {{result.usos_transaction_id}}</p>
                 </div>
                 <div class="panel-body">
 

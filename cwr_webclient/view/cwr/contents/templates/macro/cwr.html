@@ -27,13 +27,12 @@
                     {% endfor %}
                 </ul>
             </li>
-            <li><a id="button-download-cwr-report" href="#">Download report</a>
+            <li><a href="{{ url_for('cwr_contents.report', file_id=file_id) }}"
+                   href="#">Download report</a>
             </li>
             <li>
                 <a href="{{ url_for('cwr_acknowledgement.report', file_id=file_id) }}">Generate
                     acknowledgement file</a></li>
-            <li><a href="{{ url_for('mera_match.result', file_id=file_id) }}">Do
-                matching</a></li>
         </ul>
     </div>
 </nav>

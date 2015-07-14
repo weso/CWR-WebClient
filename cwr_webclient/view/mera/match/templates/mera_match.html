@@ -1,9 +1,0 @@
-{% extends "base.html" %}
-{% import "macro/mera_match.html" as match_record %}
-{% block title %}MERA matching{% endblock %}
-{% block page_title %}MERA matching results{% endblock %}
-{% block content %}
-<p>Results of matching against MERA.</p>
-<p>Queries done:</p>
-{{match_record.show_results_list(matches)}}
-{% endblock %}

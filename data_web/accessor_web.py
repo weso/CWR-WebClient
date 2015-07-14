@@ -41,7 +41,7 @@ class _FileReader(object):
 
                 if "=" not in line: continue  # skips blanks and comments w/o =
                 if line.startswith(
-                    "#"): continue  # skips comments which contain =
+                        "#"): continue  # skips comments which contain =
 
                 k, v = line.split("=", 1)
                 config[k] = v

@@ -1,6 +1,6 @@
 # -*- encoding: utf-8 -*-
 from flask import render_template, redirect, url_for, abort, Blueprint, \
-    current_app
+    current_app, make_response
 from cwr.parser.decoder.cwrjson import JSONDecoder
 
 __author__ = 'Bernardo Martínez Garrido'
@@ -21,10 +21,11 @@ CWR validation routes.
 def summary(file_id):
     cwr_service = current_app.config['CWR_ADMIN_SERVICE']
     cwr = cwr_service.get_file(file_id)
-    cwr = cwr['contents']
 
-    if not cwr:
+    if not cwr or 'contents' not in cwr or not cwr['contents']:
         abort(404)
+
+    cwr = cwr['contents']
 
     decoder = JSONDecoder()
 
@@ -68,3 +69,31 @@ def transactions(index, page, file_id):
 @cwr_contents_blueprint.route('/download', methods=['GET'])
 def report_download():
     return redirect(url_for('.summary'))
+
+
+@cwr_contents_blueprint.route('/<string:file_id>/report/', methods=['GET'])
+def report(file_id):
+    cwr_service = current_app.config['CWR_ADMIN_SERVICE']
+    cwr = cwr_service.get_file(file_id)
+    filename = cwr['name']
+
+    if not cwr or 'contents' not in cwr or not cwr['contents']:
+        abort(404)
+
+    cwr = cwr['contents']
+
+    decoder = JSONDecoder()
+
+    cwr = decoder.decode(cwr)
+
+    report_service = current_app.config['CWR_REPORT_SERVICE']
+
+    report = report_service.generate_report_excel(cwr, filename)
+
+    response = make_response(report)
+
+    response.headers["Content-Disposition"] = "attachment; filename=result.xlsx"
+    response.headers[
+        "Content-type"] = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+
+    return response

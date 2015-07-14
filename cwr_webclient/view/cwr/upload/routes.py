@@ -10,7 +10,7 @@ cwr_upload_blueprint = Blueprint('cwr_upload', __name__,
                                  template_folder='templates',
                                  static_folder='static')
 
-REJECTED_EXTENSIONS = set(['html', 'htm', 'php'])
+REJECTED_EXTENSIONS = set(['html', 'htm', 'php', 'exe', 'bat', 'sh'])
 
 """
 Upload routes.
@@ -32,12 +32,15 @@ def upload_handler():
         return redirect(url_for('.upload'))
 
     if sent_file:
-        admin_service = current_app.config['CWR_ADMIN_SERVICE']
+        if allowed_file(sent_file.filename):
+            admin_service = current_app.config['CWR_ADMIN_SERVICE']
 
-        file_id = admin_service.process(sent_file)
+            admin_service.process(sent_file)
 
-        # return redirect(url_for('mera_match.setup_match', file_id=file_id))
-        return redirect(url_for('cwr_file.list'))
+            # return redirect(url_for('mera_match.setup_match', file_id=file_id))
+            return redirect(url_for('cwr_file.list'))
+        flash('Invalid file')
+        return redirect(url_for('.upload'))
     else:
         flash('No file selected')
         return redirect(url_for('.upload'))

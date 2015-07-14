@@ -16,7 +16,8 @@ from cwr_webclient.extensions import debug_toolbar, cache, bcrypt
 from cwr_webclient.view import *
 from cwr_webclient.config import DevConfig
 from cwr_webclient.service import DefaultPaginationService, \
-    WESOApplicationInfoService, WSCWRService
+    WESOApplicationInfoService, WSCWRService, MeraReportService, \
+    CWRReportService
 from data_web.accessor_web import CWRWebConfiguration
 
 __author__ = 'Bernardo Martínez Garrido'
@@ -57,29 +58,31 @@ def _register_errorhandlers(app):
 
 
 def _load_services(app, config):
-    match_ws = config['ws.match']
-    match_ws_results = config['ws.match.results']
-    match_ws_status = config['ws.match.status']
+    admin_ws = os.environ.get('CWR_ADMIN_WS',
+                              'http://127.0.0.1:33508/cwr/')
 
-    if len(match_ws) == 0:
-        match_ws = os.environ.get('CWR_WEBCLIENT_MATCH_WS',
-                                  'http://127.0.0.1:33567/cwr/')
+    process_cwr = admin_ws + 'process/'
 
-    if len(match_ws_results) == 0:
-        match_ws_results = os.environ.get('CWR_WEBCLIENT_MATCH_WS_RESULTS',
-                                          'http://127.0.0.1:33567/cwr/results/')
+    files = admin_ws + 'files/'
 
-    if len(match_ws_status) == 0:
-        match_ws_status = os.environ.get('CWR_WEBCLIENT_MATCH_WS_STATUS',
-                                         'http://127.0.0.1:33567/cwr/status/')
+    remove_cwr = files + 'remove/'
 
-    service_admin = WSCWRService('http://127.0.0.1:33508/cwr/process/',
-                                 'http://127.0.0.1:33508/cwr/files/',
-                                 'http://127.0.0.1:33508/cwr/files/remove/')
+    match_begin = admin_ws + 'match/begin/'
+    match_reject = admin_ws + 'match/reject/'
+    match_accept = admin_ws + 'match/confirm/'
+
+    service_admin = WSCWRService(process_cwr,
+                                 files,
+                                 remove_cwr,
+                                 match_begin,
+                                 match_reject,
+                                 match_accept)
 
     app.config['CWR_ADMIN_SERVICE'] = service_admin
     app.config['PAGINATION_SERVICE'] = DefaultPaginationService(
         int(config['perpage']))
+    app.config['CWR_MATCH_REPORT_SERVICE'] = MeraReportService()
+    app.config['CWR_REPORT_SERVICE'] = CWRReportService()
 
 
 def _register_blueprints(app):

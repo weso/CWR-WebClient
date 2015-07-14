@@ -18,20 +18,24 @@
     {% block css %}{% endblock %}
 </head>
 <body>
-{{ navbar_functions.main_menu() }}
-<div class="container-fluid">
-    <div class="row">
-        {% block sidebar %}
-        {{ navbar_functions.side_menu() }}
-        {% endblock %}
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <h1 class="page-header">{% block page_title %}{% endblock %}</h1>
+<div id="wrapper">
+    {% block sidebar %}
+    {{ navbar_functions.side_menu() }}
+    {% endblock %}
+    <div id="page-content-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">{% block page_title %}{% endblock
+                        %}</h1>
 
-            <div class="row placeholders">
-                {{ flash_functions.message_flasher() }}
-                {% block content %}
-                {% endblock %}
-                {{ footer_functions.footer() }}
+                    <div class="row placeholders">
+                        {{ flash_functions.message_flasher() }}
+                        {% block content %}
+                        {% endblock %}
+                        {{ footer_functions.footer() }}
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -43,6 +47,7 @@
 <script src="{{ url_for('common_views.static', filename='js/checklist.js') }}"></script>
 <script src="{{ url_for('common_views.static', filename='js/loader.js') }}"></script>
 <script src="{{ url_for('common_views.static', filename='js/navbar.js') }}"></script>
+<script src="{{ url_for('common_views.static', filename='js/filtertable.js') }}"></script>
 {% block scripts %}{% endblock %}
 </body>
 </html>

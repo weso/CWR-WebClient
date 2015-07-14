@@ -26,3 +26,6 @@ Flask-Bcrypt==0.6.2
 # Database
 Flask-SQLAlchemy==2.0
 SQLAlchemy==0.9.8
+
+# Reporting
+xlsxwriter==0.7.3
