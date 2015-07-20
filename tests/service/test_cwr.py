@@ -16,6 +16,7 @@ class TestWSCWRServiceNoService(unittest.TestCase):
                                      'http://127.0.0.1:1',
                                      'http://127.0.0.1:1',
                                      'http://127.0.0.1:1',
+                                     'http://127.0.0.1:1',
                                      'http://127.0.0.1:1')
 
     def test_process(self):
