@@ -23,6 +23,7 @@
             </th>
             <th>Contents</th>
             <th>Matching</th>
+            <th>Feedback</th>
             <th>Delete</th>
         </tr>
         </thead>
@@ -80,6 +81,13 @@
             <td>{{file.match_status}}</td>
             {% endif %}
             {% endif %}
+            {% endif %}
+            {% if file.match_status == 'done' %}
+            <td>
+                <a href="{{ url_for('mera_match.feedback', file_id=file.file_id) }}">Send</a>
+            </td>
+            {% else %}
+            <td>Needs match</td>
             {% endif %}
             <td>
                 <a href="{{ url_for('cwr_file.delete', file_id=file.file_id) }}"

@@ -68,6 +68,17 @@ def begin(file_id):
     return render_template('mera_match_send.html', file_id=file_id)
 
 
+@mera_match_blueprint.route('/feedback/<string:file_id>', methods=['GET'])
+def feedback(file_id):
+    _logger.info('Sending feedback for id %s' % file_id)
+
+    match_service = current_app.config['CWR_ADMIN_SERVICE']
+
+    match_service.send_feedback(file_id)
+
+    return redirect(url_for('cwr_file.list'))
+
+
 @mera_match_blueprint.route('/reject/<string:file_id><int:pos>',
                             methods=['GET'])
 def reject_match(file_id, pos):
