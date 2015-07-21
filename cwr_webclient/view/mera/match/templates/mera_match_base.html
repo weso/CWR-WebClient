@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% import "macro/mera_match.html" as match_record %}
+{% block title %}MERA matching{% endblock %}
+{% block content %}
+{{ super() }}
+{{match_record.show_navbar(file_id)}}
+{% endblock %}

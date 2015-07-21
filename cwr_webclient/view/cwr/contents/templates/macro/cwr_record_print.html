@@ -5,19 +5,23 @@
     <div class="transaction-info">
         <div class="panel panel-default">
             {% if transaction|length > 0 %}
-            <div class="panel-heading" role="tab" id="transaction_heading_{{loop.index}}}">
+            <div class="panel-heading" role="tab"
+                 id="transaction_heading_{{loop.index}}}">
                 <h2 class="panel-title">
-                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse_{{loop.index}}"
+                    <a data-toggle="collapse" data-parent="#accordion"
+                       href="#collapse_{{loop.index}}"
                        aria-expanded="true"
                        aria-controls="collapseOne">
-                        Transaction number {{ transaction[0].transaction_sequence_n }}
+                        Transaction number {{
+                        transaction[0].transaction_sequence_n }}
                         of type {{ transaction[0].record_type }},
                         with {{ transaction|length }} records (Click to expand)
                     </a>
                 </h2>
             </div>
             {% endif %}
-            <div id="collapse_{{loop.index}}" class="panel-collapse collapse" role="tabpanel"
+            <div id="collapse_{{loop.index}}" class="panel-collapse collapse"
+                 role="tabpanel"
                  aria-labelledby="headingOne">
                 <div class="panel-body">
                     {{ print_transaction(transaction) }}
@@ -31,7 +35,8 @@
 
 {% macro print_active_icon(name, active) %}
 {% if active %}
-<input type="checkbox" name={{name}} value={{name}} disabled="disabled" checked="checked">
+<input type="checkbox" name={{name}} value={{name}} disabled="disabled"
+       checked="checked">
 {% else %}
 <input type="checkbox" name={{name}} value={{name}} disabled="disabled">
 {% endif %}
@@ -84,7 +89,8 @@
 {% endmacro %}
 
 {% macro print_transaction_record_head(record) %}
-<h3>{{ record.record_type }} [{{ record.transaction_sequence_n }}:{{ record.record_sequence_n }}]</h3>
+<h3>{{ record.record_type }} [{{ record.transaction_sequence_n }}:{{
+    record.record_sequence_n }}]</h3>
 {% endmacro %}
 
 {% macro print_ipa(record) %}
@@ -185,7 +191,8 @@
 {% macro print_agr_record(record) %}
 <div class="info">
     <div class="head">
-        <p><strong>{{ record.agreement_type }}</strong> agreement for <strong>{{ record.number_of_works }}</strong>
+        <p><strong>{{ record.agreement_type }}</strong> agreement for <strong>{{
+            record.number_of_works }}</strong>
             works</p>
     </div>
     <div class="sheet">
@@ -214,18 +221,23 @@
             <!-- Shares Change -->
             <tr>
                 <td>Shares change</td>
-                <td>{{print_active_icon('shares_change',record.shares_change)}}</td>
+                <td>
+                    {{print_active_icon('shares_change',record.shares_change)}}
+                </td>
             </tr>
             <!-- Advance Given -->
             <tr>
                 <td>Advance given</td>
-                <td>{{print_active_icon('advance_given',record.advance_given)}}</td>
+                <td>
+                    {{print_active_icon('advance_given',record.advance_given)}}
+                </td>
         </table>
     </div>
     <div class="body">
         <!-- International Standard Code -->
         {% if record.international_standard_code %}
-        <p>International Standard Code: {{ record.international_standard_code }}</p>
+        <p>International Standard Code: {{ record.international_standard_code
+            }}</p>
         {% endif %}
     </div>
 </div>
@@ -306,7 +318,9 @@
         <table>
             <tr>
                 <td>Included</td>
-                <td>{{print_active_icon('inclusion_exclusion_indicator',record.inclusion_exclusion_indicator == 'I')}}
+                <td>
+                    {{print_active_icon('inclusion_exclusion_indicator',record.inclusion_exclusion_indicator
+                    == 'I')}}
                 </td>
             </tr>
         </table>
@@ -500,8 +514,10 @@
         {% endif %}
     </table>
     {% endif %}
-    {% if record.work_type or record.musical_work_distribution_category or record.version_type
-    or record.text_music_relationship or record.music_arrangement or record.lyric_adaptation %}
+    {% if record.work_type or record.musical_work_distribution_category or
+    record.version_type
+    or record.text_music_relationship or record.music_arrangement or
+    record.lyric_adaptation %}
     <p>Tags:</p>
     <table>
         <tr>

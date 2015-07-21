@@ -48,7 +48,10 @@
     }
 
     function a(t) {
-        for (var e = {x: t.offsetLeft, y: t.offsetTop}; t = t.offsetParent;)e.x += t.offsetLeft, e.y += t.offsetTop;
+        for (var e = {
+            x: t.offsetLeft,
+            y: t.offsetTop
+        }; t = t.offsetParent;)e.x += t.offsetLeft, e.y += t.offsetTop;
         return e
     }
 
@@ -63,7 +66,10 @@
 
         c.addRule(".spin-vml", "behavior:url(#default#VML)"), s.prototype.lines = function (t, n) {
             function r() {
-                return o(i("group", {coordsize: u + " " + u, coordorigin: -l + " " + -l}), {width: u, height: u})
+                return o(i("group", {
+                    coordsize: u + " " + u,
+                    coordorigin: -l + " " + -l
+                }), {width: u, height: u})
             }
 
             function a(t, a, s) {
@@ -76,7 +82,10 @@
                     left: n.radius,
                     top: -n.width >> 1,
                     filter: s
-                }), i("fill", {color: n.color, opacity: n.opacity}), i("stroke", {opacity: 0}))))
+                }), i("fill", {
+                    color: n.color,
+                    opacity: n.opacity
+                }), i("stroke", {opacity: 0}))))
             }
 
             var s, l = n.length + n.width, u = 2 * l, d = 2 * -(n.width + n.length) + "px", f = o(r(), {

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% import "macro/form.html" as form_functions %}
+{% block page_title %}USO file upload{% endblock %}
+{% block content %}
+<p>This allows uploading USO files to the matching service, to be used as
+    enrichment sources</p>
+
+{{ form_functions.file_upload(url_for('.upload_handler')) }}
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+<script type="text/javascript">
+    //<![CDATA[
+    window.onload = function () {
+        // Bind normal buttons
+        Ladda.bind('div:not(.progress-demo) button');
+    };
+    //]]>
+</script>
+{% endblock %}

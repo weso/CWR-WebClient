@@ -12,17 +12,13 @@ from logging import Formatter
 from flask import Flask, render_template
 from werkzeug.contrib.fixers import ProxyFix
 
-from cwr_webclient.assets import assets
-from cwr_webclient.extensions import cache
-
+from cwr_webclient.extensions import debug_toolbar, cache, bcrypt
 from cwr_webclient.view import *
 from cwr_webclient.config import DevConfig
-from cwr_webclient.service.appinfo import WESOApplicationInfoService
-from cwr_webclient.service.file import LocalFileService
-from cwr_webclient.service.match import WSMatchingService, MatchingStatusChecker
-from cwr_webclient.service.pagination import DefaultPaginationService
+from cwr_webclient.service import DefaultPaginationService, \
+    WESOApplicationInfoService, WSCWRService, MeraReportService, \
+    CWRReportService
 from data_web.accessor_web import CWRWebConfiguration
-
 
 __author__ = 'Bernardo Martínez Garrido'
 __license__ = 'MIT'
@@ -45,8 +41,9 @@ def _config_templating(app):
 
 
 def _register_extensions(app):
-    assets.init_app(app)
+    bcrypt.init_app(app)
     cache.init_app(app)
+    debug_toolbar.init_app(app)
 
 
 def _register_errorhandlers(app):
@@ -61,35 +58,44 @@ def _register_errorhandlers(app):
 
 
 def _load_services(app, config):
-    match_ws = config['ws.match']
-    match_ws_results = config['ws.match.results']
-    match_ws_status = config['ws.match.status']
+    admin_ws = os.environ.get('CWR_ADMIN_WS',
+                              'http://127.0.0.1:33508/cwr/')
 
-    if len(match_ws) == 0:
-        match_ws = os.environ.get('CWR_WEBCLIENT_MATCH_WS', 'http://127.0.0.1:33567/cwr/')
+    process_cwr = admin_ws + 'process/'
 
-    if len(match_ws_results) == 0:
-        match_ws_results = os.environ.get('CWR_WEBCLIENT_MATCH_WS_RESULTS', 'http://127.0.0.1:33567/cwr/results')
+    files = admin_ws + 'files/'
 
-    if len(match_ws_status) == 0:
-        match_ws_status = os.environ.get('CWR_WEBCLIENT_MATCH_WS_STATUS', 'http://127.0.0.1:33567/cwr/status')
+    remove_cwr = files + 'remove/'
 
-    service_match = WSMatchingService(match_ws, match_ws_results)
+    match_begin = admin_ws + 'match/begin/'
+    match_reject = admin_ws + 'match/reject/'
+    match_accept = admin_ws + 'match/confirm/'
+    match_feedback = admin_ws + 'match/feedback/'
 
-    checker = MatchingStatusChecker(service_match, match_ws_status)
+    service_admin = WSCWRService(process_cwr,
+                                 files,
+                                 remove_cwr,
+                                 match_begin,
+                                 match_reject,
+                                 match_accept,
+                                 match_feedback)
 
-    app.config['MATCH_SERVICE'] = service_match
-    app.config['FILE_SERVICE'] = LocalFileService(app.config['UPLOAD_FOLDER'], checker)
-    app.config['PAGINATION_SERVICE'] = DefaultPaginationService(int(config['perpage']))
+    app.config['CWR_ADMIN_SERVICE'] = service_admin
+    app.config['PAGINATION_SERVICE'] = DefaultPaginationService(
+        int(config['perpage']))
+    app.config['CWR_MATCH_REPORT_SERVICE'] = MeraReportService()
+    app.config['CWR_REPORT_SERVICE'] = CWRReportService()
 
 
 def _register_blueprints(app):
     app.register_blueprint(common_blueprint)
     app.register_blueprint(cwr_contents_blueprint, url_prefix='/cwr/contents')
-    app.register_blueprint(cwr_acknowledgement_blueprint, url_prefix='/cwr/acknowledgement')
+    app.register_blueprint(cwr_acknowledgement_blueprint,
+                           url_prefix='/cwr/acknowledgement')
     app.register_blueprint(cwr_file_blueprint, url_prefix='/cwr/file')
-    app.register_blueprint(mera_match_blueprint, url_prefix='/cwr/match')
     app.register_blueprint(cwr_upload_blueprint, url_prefix='/cwr/upload')
+    app.register_blueprint(mera_match_blueprint, url_prefix='/mera/match')
+    app.register_blueprint(uso_upload_blueprint, url_prefix='/uso/upload')
 
 
 def create_app(config_object=DevConfig):
@@ -103,8 +109,6 @@ def create_app(config_object=DevConfig):
     _register_blueprints(app)
     _register_errorhandlers(app)
 
-    app.config['APP_NAME'] = config['app.name']
-
     app.wsgi_app = ProxyFix(app.wsgi_app)
 
     if app.config['DEBUG']:
@@ -114,7 +118,8 @@ def create_app(config_object=DevConfig):
 
         handler = RotatingFileHandler(log, maxBytes=10000, backupCount=1)
         handler.setLevel(logging.DEBUG)
-        handler.setFormatter(Formatter('[%(levelname)s][%(asctime)s] %(message)s'))
+        handler.setFormatter(
+            Formatter('[%(levelname)s][%(asctime)s] %(message)s'))
 
         logging.basicConfig(level=logging.DEBUG)
         logging.getLogger('').addHandler(handler)

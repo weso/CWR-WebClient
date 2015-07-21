@@ -1,0 +1,106 @@
+{% macro show_match_options() %}
+<div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="transaction_heading_mera_config">
+        <h2 class="panel-title">
+            Configure MERA matching
+        </h2>
+    </div>
+    <div class="panel-body">
+        <fieldset>
+
+            <h3>General</h3>
+
+            <div class="control-group">
+                <label class="control-label" for="artist.threshold">score
+                    threshold</label>
+
+                <div class="controls">
+                    <input id="score.threshold" name="artist.threshold"
+                           type="text" value="0.9"
+                           class="input-xlarge" required="">
+
+                </div>
+            </div>
+
+            <h3>Blocking</h3>
+
+            <div class="control-group">
+                <label class="control-label" for="blocking_function">Blocking
+                    function</label>
+
+                <div class="controls">
+                    <input id="blocking_function" name="blocking_function"
+                           type="text" value="40"
+                           class="input-xlarge" required="">
+
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="result_query">Result
+                    query</label>
+
+                <div class="controls">
+                    <input id="result_query" name="result_query" type="text"
+                           value="5"
+                           class="input-xlarge" required="">
+
+                </div>
+            </div>
+
+            <h3>Commands (find song)</h3>
+
+            <div class="control-group">
+                <label class="control-label" for="findsong.threshold">Song
+                    threshold</label>
+
+                <div class="controls">
+                    <input id="findsong.threshold" name="findsong.threshold"
+                           type="text" value="1.60"
+                           class="input-xlarge" required="">
+
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="relevances.artist">Artist
+                    relevance</label>
+
+                <div class="controls">
+                    <input id="relevances.artist" name="relevances.artist"
+                           type="text" value="0.80"
+                           class="input-xlarge" required="">
+
+                </div>
+            </div>
+
+            <h3>Fields</h3>
+
+            <div class="control-group">
+                <label class="control-label" for="song.threshold">Song
+                    threshold</label>
+
+                <div class="controls">
+                    <input id="song.threshold" name="song.threshold" type="text"
+                           value="0.75"
+                           class="input-xlarge" required="">
+
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label" for="artist.threshold">Artist
+                    threshold</label>
+
+                <div class="controls">
+                    <input id="artist.threshold" name="artist.threshold"
+                           type="text" value="0.75"
+                           class="input-xlarge" required="">
+
+                </div>
+            </div>
+
+        </fieldset>
+    </div>
+</div>
+{% endmacro %}

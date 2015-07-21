@@ -1,32 +1,38 @@
 {% macro show_groups_navbar(groups, file_id) %}
 <nav class="navbar navbar-default navbar">
     <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <button type="button" class="navbar-toggle" data-toggle="collapse"
+                data-target=".navbar-collapse">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" rel="summary" href="{{ url_for('cwr_contents.summary', file_id=file_id) }}">Summary</a>
+        <a class="navbar-brand" rel="summary"
+           href="{{ url_for('cwr_contents.summary', file_id=file_id) }}">Summary</a>
     </div>
 
     <div class="collapse navbar-collapse">
 
         <ul class="nav navbar-nav">
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Transactions <b class="caret"></b></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Transactions
+                    <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                     {% for group in groups %}
-                    <li><a href="{{ url_for('cwr_contents.transactions', index=loop.index0, file_id=file_id) }}"
+                    <li>
+                        <a href="{{ url_for('cwr_contents.transactions', index=loop.index0, file_id=file_id) }}"
                            class="list-group-item">{{
-                        group.group_header.transaction_type }}</a></li>
+                            group.group_header.transaction_type }}</a></li>
                     {% endfor %}
                 </ul>
             </li>
-            <li><a id="button-download-cwr-report" href="#">Download report</a></li>
-            <li><a href="{{ url_for('cwr_acknowledgement.report', file_id=file_id) }}">Generate
-                acknowledgement file</a></li>
-            <li><a href="{{ url_for('mera_match.result', file_id=file_id) }}">Do matching</a></li>
+            <li><a href="{{ url_for('cwr_contents.report', file_id=file_id) }}"
+                   href="#">Download report</a>
+            </li>
+            <li>
+                <a href="{{ url_for('cwr_acknowledgement.report', file_id=file_id) }}">Generate
+                    acknowledgement file</a></li>
         </ul>
     </div>
 </nav>
